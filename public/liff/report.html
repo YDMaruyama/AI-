@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>日報入力</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f5f7fa;
+  color: #1f2937;
+  min-height: 100vh;
+}
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
+header {
+  text-align: center;
+  padding: 20px 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 24px 20px;
+}
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+  margin-top: 18px;
+}
+label:first-child { margin-top: 0; }
+label .required {
+  color: #ef4444;
+  margin-left: 4px;
+  font-size: 12px;
+}
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #1f2937;
+  background: #f9fafb;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  font-family: inherit;
+  resize: none;
+}
+input:focus, textarea:focus {
+  border-color: #4f46e5;
+  background: #fff;
+}
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 24px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.submit-btn:active { transform: scale(0.98); background: #4338ca; }
+.submit-btn:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+/* 成功画面 */
+#result {
+  display: none;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+#result .check {
+  font-size: 64px;
+  animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+#result h2 {
+  margin-top: 12px;
+  font-size: 22px;
+  color: #1f2937;
+}
+#result .detail {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ローディング */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>&#x1f4cb; 日報入力</header>
+
+  <form id="reportForm" class="card">
+    <label>作業内容<span class="required">*</span></label>
+    <textarea id="inputWorkContent" rows="3" placeholder="本日の作業内容を入力"></textarea>
+
+    <label>利用者の様子</label>
+    <textarea id="inputClientNotes" rows="2" placeholder="利用者の様子・変化など"></textarea>
+
+    <label>外部やり取り</label>
+    <input type="text" id="inputExternalContacts" placeholder="外部との連絡・やり取り" />
+
+    <label>引き継ぎ事項</label>
+    <input type="text" id="inputHandover" placeholder="次の担当者への引き継ぎ" />
+
+    <label>その他</label>
+    <input type="text" id="inputOtherNotes" placeholder="その他の連絡事項" />
+
+    <button type="submit" class="submit-btn">日報を提出</button>
+  </form>
+
+  <div id="result"></div>
+</div>
+
+<script>
+(function() {
+  // --- LIFF初期化 ---
+  liff.init({ liffId: '2009645462-9uoUdsTL' }).then(function() {
+    if (!liff.isLoggedIn()) liff.login();
+  }).catch(function(err) {
+    console.error('LIFF init error', err);
+  });
+
+  // --- フォーム送信 ---
+  document.getElementById('reportForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    var workContent = document.getElementById('inputWorkContent').value.trim();
+    if (!workContent) {
+      alert('作業内容を入力してください');
+      return;
+    }
+
+    var submitBtn = document.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中...';
+
+    // ローディング表示
+    var overlay = document.createElement('div');
+    overlay.className = 'loading-overlay';
+    overlay.innerHTML = '<div class="spinner"></div>';
+    document.body.appendChild(overlay);
+
+    var loadingTimeout = setTimeout(function() {
+      overlay.remove();
+      submitBtn.disabled = false;
+      submitBtn.textContent = '再送信';
+      alert('通信に時間がかかっています。再試行してください。');
+    }, 15000);
+
+    var token = '';
+    try { token = liff.getAccessToken(); } catch(ex) {}
+
+    var data = {
+      work_content: workContent,
+      client_notes: document.getElementById('inputClientNotes').value.trim(),
+      external_contacts: document.getElementById('inputExternalContacts').value.trim(),
+      handover: document.getElementById('inputHandover').value.trim(),
+      other_notes: document.getElementById('inputOtherNotes').value.trim(),
+      liffToken: token,
+    };
+
+    try {
+      var res = await fetch('/api/liff?action=report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (res.status === 401) {
+        clearTimeout(loadingTimeout);
+        overlay.remove();
+        submitBtn.disabled = false;
+        submitBtn.textContent = '再送信';
+        alert('認証に失敗しました。LINEから再度開いてください。');
+        return;
+      }
+
+      var result = await res.json();
+
+      clearTimeout(loadingTimeout);
+      overlay.remove();
+
+      if (result.status === 'ok') {
+        document.getElementById('reportForm').style.display = 'none';
+        var resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML =
+          '<div class="check">&#x2705;</div>' +
+          '<h2>日報を提出しました！</h2>' +
+          '<p class="detail">お疲れさまでした</p>';
+
+        // LIFFからトークに結果送信
+        try {
+          if (liff.isInClient()) {
+            liff.sendMessages([{
+              type: 'text',
+              text: '\u{1f4cb} 日報を提出しました',
+            }]);
+          }
+        } catch(ex) {}
+
+        // 3秒後にLIFFを閉じる
+        setTimeout(function() {
+          try { if (liff.isInClient()) liff.closeWindow(); } catch(ex) {}
+        }, 3000);
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '再送信';
+        alert('エラー: ' + (result.error || '提出に失敗しました'));
+      }
+    } catch(err) {
+      clearTimeout(loadingTimeout);
+      overlay.remove();
+      submitBtn.disabled = false;
+      submitBtn.textContent = '再送信';
+      alert('通信エラーが発生しました。入力内容は保持されています。');
+    }
+  });
+})();
+</script>
+</body>
+</html>

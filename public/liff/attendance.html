@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>出欠登録</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f5f7fa;
+  color: #1f2937;
+  min-height: 100vh;
+}
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
+header {
+  text-align: center;
+  padding: 20px 0 4px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+.date-label {
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 16px 20px;
+}
+.client-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.client-row:last-child { border-bottom: none; }
+.client-name {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+.status-btns {
+  display: flex;
+  gap: 4px;
+}
+.status-btn {
+  padding: 6px 10px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  font-size: 12px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.status-btn:active { transform: scale(0.96); }
+.status-btn.active-present {
+  background: #10b981;
+  color: #fff;
+  border-color: #10b981;
+  font-weight: 600;
+}
+.status-btn.active-absent {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+  font-weight: 600;
+}
+.status-btn.active-late {
+  background: #f59e0b;
+  color: #fff;
+  border-color: #f59e0b;
+  font-weight: 600;
+}
+.status-btn.active-early {
+  background: #8b5cf6;
+  color: #fff;
+  border-color: #8b5cf6;
+  font-weight: 600;
+}
+.summary-bar {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #f0f0ff;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #4f46e5;
+  font-weight: 600;
+}
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 16px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.submit-btn:active { transform: scale(0.98); background: #4338ca; }
+.submit-btn:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+/* ローディング */
+.loading-msg {
+  text-align: center;
+  padding: 40px 0;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* 成功画面 */
+#result {
+  display: none;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+#result .check {
+  font-size: 64px;
+  animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+#result h2 {
+  margin-top: 12px;
+  font-size: 22px;
+  color: #1f2937;
+}
+#result .detail {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>&#x1f4dd; 出欠登録</header>
+  <div class="date-label" id="dateLabel"></div>
+
+  <div id="formArea" class="card">
+    <div class="loading-msg">読み込み中...</div>
+  </div>
+
+  <div id="summaryBar" class="summary-bar" style="display:none;"></div>
+  <button id="submitBtn" class="submit-btn" style="display:none;">登録する</button>
+
+  <div id="result"></div>
+</div>
+
+<script>
+(function() {
+  var clients = [];
+  var records = {}; // client_id -> status
+
+  // --- 日付表示 ---
+  var today = new Date();
+  var yyyy = today.getFullYear();
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var dd = String(today.getDate()).padStart(2, '0');
+  document.getElementById('dateLabel').textContent = yyyy + '/' + mm + '/' + dd;
+
+  // --- LIFF初期化 ---
+  liff.init({ liffId: '2009645462-BzAkGY6I' }).then(function() {
+    if (!liff.isLoggedIn()) {
+      liff.login();
+      return;
+    }
+    loadClients();
+  }).catch(function(err) {
+    console.error('LIFF init error', err);
+  });
+
+  // --- 利用者一覧読み込み ---
+  async function loadClients() {
+    var token = '';
+    try { token = liff.getAccessToken(); } catch(ex) {}
+
+    try {
+      var res = await fetch('/api/liff?action=clients&liffToken=' + encodeURIComponent(token));
+
+      if (res.status === 401) {
+        document.getElementById('formArea').innerHTML = '<div class="loading-msg">認証に失敗しました。LINEから再度開いてください。</div>';
+        return;
+      }
+
+      var data = await res.json();
+
+      if (data.error || data.status === 'error') {
+        document.getElementById('formArea').innerHTML = '<div class="loading-msg">エラー: ' + escHtml(data.error || '読み込みに失敗しました') + '</div>';
+        return;
+      }
+
+      clients = data.data || [];
+      if (clients.length === 0) {
+        document.getElementById('formArea').innerHTML = '<div class="loading-msg">利用者が登録されていません</div>';
+        return;
+      }
+
+      // デフォルトは全員「出席」
+      clients.forEach(function(c) {
+        records[c.id] = 'present';
+      });
+
+      renderClients();
+      updateSummary();
+      document.getElementById('submitBtn').style.display = 'block';
+      document.getElementById('summaryBar').style.display = 'block';
+    } catch(err) {
+      document.getElementById('formArea').innerHTML = '<div class="loading-msg">通信エラーが発生しました</div>';
+    }
+  }
+
+  // --- 利用者リスト描画 ---
+  function renderClients() {
+    var html = '';
+    clients.forEach(function(c) {
+      var st = records[c.id];
+      html += '<div class="client-row">' +
+        '<span class="client-name">' + escHtml(c.name) + '</span>' +
+        '<div class="status-btns">' +
+          statusBtn(c.id, 'present', '出席', st) +
+          statusBtn(c.id, 'absent', '欠席', st) +
+          statusBtn(c.id, 'late', '遅刻', st) +
+          statusBtn(c.id, 'early_leave', '早退', st) +
+        '</div></div>';
+    });
+    document.getElementById('formArea').innerHTML = html;
+
+    // イベント
+    document.querySelectorAll('.status-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var cid = btn.getAttribute('data-cid');
+        var status = btn.getAttribute('data-status');
+        records[cid] = status;
+        renderClients();
+        updateSummary();
+      });
+    });
+  }
+
+  function statusBtn(cid, status, label, current) {
+    var activeClass = '';
+    if (current === status) {
+      var classMap = { present: 'active-present', absent: 'active-absent', late: 'active-late', early_leave: 'active-early' };
+      activeClass = ' ' + classMap[status];
+    }
+    return '<button type="button" class="status-btn' + activeClass + '" data-cid="' + cid + '" data-status="' + status + '">' + label + '</button>';
+  }
+
+  // --- サマリー更新 ---
+  function updateSummary() {
+    var counts = { present: 0, absent: 0, late: 0, early_leave: 0 };
+    Object.values(records).forEach(function(s) { counts[s] = (counts[s] || 0) + 1; });
+    document.getElementById('summaryBar').textContent =
+      '出席: ' + counts.present + ' / 欠席: ' + counts.absent +
+      ' / 遅刻: ' + counts.late + ' / 早退: ' + counts.early_leave;
+  }
+
+  // --- 送信 ---
+  document.getElementById('submitBtn').addEventListener('click', async function() {
+    var submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中...';
+
+    var overlay = document.createElement('div');
+    overlay.className = 'loading-overlay';
+    overlay.innerHTML = '<div class="spinner"></div>';
+    document.body.appendChild(overlay);
+
+    var loadingTimeout = setTimeout(function() {
+      overlay.remove();
+      submitBtn.disabled = false;
+      submitBtn.textContent = '再送信';
+      alert('通信に時間がかかっています。再試行してください。');
+    }, 15000);
+
+    var token = '';
+    try { token = liff.getAccessToken(); } catch(ex) {}
+
+    var recordsList = clients.map(function(c) {
+      return { client_id: c.id, status: records[c.id], note: '' };
+    });
+
+    try {
+      var res = await fetch('/api/liff?action=attendance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ records: recordsList, liffToken: token }),
+      });
+
+      if (res.status === 401) {
+        clearTimeout(loadingTimeout);
+        overlay.remove();
+        submitBtn.disabled = false;
+        submitBtn.textContent = '再送信';
+        alert('認証に失敗しました。LINEから再度開いてください。');
+        return;
+      }
+
+      var result = await res.json();
+
+      clearTimeout(loadingTimeout);
+      overlay.remove();
+
+      if (result.status === 'ok') {
+        document.getElementById('formArea').style.display = 'none';
+        document.getElementById('summaryBar').style.display = 'none';
+        submitBtn.style.display = 'none';
+        var resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+
+        var counts = { present: 0, absent: 0, late: 0, early_leave: 0 };
+        Object.values(records).forEach(function(s) { counts[s] = (counts[s] || 0) + 1; });
+
+        resultDiv.innerHTML =
+          '<div class="check">&#x2705;</div>' +
+          '<h2>出欠を登録しました！</h2>' +
+          '<p class="detail">出席 ' + counts.present + '名 / 欠席 ' + counts.absent + '名</p>';
+
+        try {
+          if (liff.isInClient()) {
+            liff.sendMessages([{
+              type: 'text',
+              text: '\u{1f4dd} 出欠登録完了（出席' + counts.present + '名/欠席' + counts.absent + '名/遅刻' + counts.late + '名/早退' + counts.early_leave + '名）',
+            }]);
+          }
+        } catch(ex) {}
+
+        setTimeout(function() {
+          try { if (liff.isInClient()) liff.closeWindow(); } catch(ex) {}
+        }, 3000);
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '登録する';
+        alert('エラー: ' + (result.error || '登録に失敗しました'));
+      }
+    } catch(err) {
+      clearTimeout(loadingTimeout);
+      overlay.remove();
+      submitBtn.disabled = false;
+      submitBtn.textContent = '再送信';
+      alert('通信エラーが発生しました。入力内容は保持されています。');
+    }
+  });
+
+  function escHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+})();
+</script>
+</body>
+</html>

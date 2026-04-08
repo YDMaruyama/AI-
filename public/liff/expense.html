@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>経費入力</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f5f7fa;
+  color: #1f2937;
+  min-height: 100vh;
+}
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
+header {
+  text-align: center;
+  padding: 20px 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 24px 20px;
+}
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+  margin-top: 18px;
+}
+label:first-child { margin-top: 0; }
+input[type="date"],
+input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #1f2937;
+  background: #f9fafb;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+input:focus {
+  border-color: #4f46e5;
+  background: #fff;
+}
+.amount-wrap {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.amount-wrap:focus-within {
+  border-color: #4f46e5;
+  background: #fff;
+}
+.amount-wrap .yen {
+  padding: 0 0 0 14px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #9ca3af;
+}
+.amount-wrap input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 14px 10px 6px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  outline: none;
+  width: 100%;
+}
+.category-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.cat-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 8px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f9fafb;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.cat-btn:active { transform: scale(0.96); }
+.cat-btn.active {
+  background: #4f46e5;
+  color: #fff;
+  border-color: #4f46e5;
+  font-weight: 600;
+}
+.file-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.file-label:active { border-color: #4f46e5; }
+input[type="file"] { display: none; }
+#preview {
+  margin-top: 10px;
+  display: none;
+}
+#preview img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 24px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.submit-btn:active { transform: scale(0.98); background: #4338ca; }
+.submit-btn:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+/* 成功画面 */
+#result {
+  display: none;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+#result .check {
+  font-size: 64px;
+  animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+#result h2 {
+  margin-top: 12px;
+  font-size: 22px;
+  color: #1f2937;
+}
+#result .detail {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #374151;
+}
+#result .cat-label {
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 4px;
+}
+#result .month-total {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #f0f0ff;
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 14px;
+  color: #4f46e5;
+  font-weight: 600;
+}
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ローディング */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>&#x1f9fe; 経費入力</header>
+
+  <form id="expenseForm" class="card">
+    <label>日付</label>
+    <input type="date" id="inputDate" />
+
+    <label>金額</label>
+    <div class="amount-wrap">
+      <span class="yen">&yen;</span>
+      <input type="number" id="inputAmount" inputmode="numeric" placeholder="660" autofocus />
+    </div>
+
+    <label>店舗名</label>
+    <input type="text" id="inputStore" placeholder="コメダ珈琲" />
+
+    <label>カテゴリ</label>
+    <div class="category-grid">
+      <button type="button" class="cat-btn" data-cat="交通費">&#x1f683; 交通費</button>
+      <button type="button" class="cat-btn" data-cat="消耗品">&#x1f4e6; 消耗品</button>
+      <button type="button" class="cat-btn" data-cat="食費">&#x1f37d;&#xfe0f; 食費</button>
+      <button type="button" class="cat-btn" data-cat="通信費">&#x1f4f1; 通信費</button>
+      <button type="button" class="cat-btn" data-cat="水道光熱費">&#x1f4a1; 水道光熱費</button>
+      <button type="button" class="cat-btn" data-cat="家賃">&#x1f3e0; 家賃</button>
+      <button type="button" class="cat-btn" data-cat="保険">&#x1f6e1;&#xfe0f; 保険</button>
+      <button type="button" class="cat-btn" data-cat="修繕費">&#x1f6e0;&#xfe0f; 修繕費</button>
+      <button type="button" class="cat-btn" data-cat="備品">&#x1f527; 備品</button>
+      <button type="button" class="cat-btn" data-cat="外注費">&#x1f4bc; 外注費</button>
+      <button type="button" class="cat-btn" data-cat="会議費">&#x2615; 会議費</button>
+      <button type="button" class="cat-btn" data-cat="接待交際費">&#x1f37b; 接待交際費</button>
+      <button type="button" class="cat-btn" data-cat="研修費">&#x1f4da; 研修費</button>
+      <button type="button" class="cat-btn" data-cat="その他">&#x1f4cb; その他</button>
+    </div>
+
+    <label>メモ（任意）</label>
+    <input type="text" id="inputMemo" placeholder="事務作業" />
+
+    <label>レシート写真（任意）</label>
+    <label class="file-label" for="inputFile">&#x1f4f7; タップして撮影・選択</label>
+    <input type="file" id="inputFile" accept="image/*" capture="environment" />
+    <div id="preview">
+      <img id="previewImg" alt="レシートプレビュー" />
+    </div>
+
+    <button type="submit" class="submit-btn">登録する</button>
+  </form>
+
+  <div id="result"></div>
+</div>
+
+<script>
+(function() {
+  // --- LIFF初期化 ---
+  liff.init({ liffId: '2009645462-9iyGZLqw' }).then(function() {
+    if (!liff.isLoggedIn()) liff.login();
+  }).catch(function(err) {
+    console.error('LIFF init error', err);
+  });
+
+  // --- 日付を今日にセット ---
+  var today = new Date();
+  var yyyy = today.getFullYear();
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var dd = String(today.getDate()).padStart(2, '0');
+  document.getElementById('inputDate').value = yyyy + '-' + mm + '-' + dd;
+
+  // --- カテゴリ選択 ---
+  var selectedCategory = '';
+  var catBtns = document.querySelectorAll('.cat-btn');
+  catBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      catBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedCategory = btn.getAttribute('data-cat');
+    });
+  });
+
+  // --- レシートプレビュー ---
+  document.getElementById('inputFile').addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    if (file) {
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        document.getElementById('previewImg').src = ev.target.result;
+        document.getElementById('preview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // --- フォーム送信 ---
+  document.getElementById('expenseForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    var amount = Number(document.getElementById('inputAmount').value);
+    if (!amount || amount <= 0) {
+      alert('金額を入力してください');
+      return;
+    }
+
+    var submitBtn = document.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中...';
+
+    // ローディング表示
+    var overlay = document.createElement('div');
+    overlay.className = 'loading-overlay';
+    overlay.innerHTML = '<div class="spinner"></div>';
+    document.body.appendChild(overlay);
+
+    var loadingTimeout = setTimeout(function() {
+      overlay.remove();
+      submitBtn.disabled = false;
+      submitBtn.textContent = '再送信';
+      alert('通信に時間がかかっています。再試行してください。');
+    }, 15000);
+
+    var token = '';
+    try { token = liff.getAccessToken(); } catch(ex) {}
+
+    var data = {
+      date: document.getElementById('inputDate').value,
+      amount: amount,
+      store: document.getElementById('inputStore').value,
+      category: selectedCategory || 'その他',
+      description: document.getElementById('inputMemo').value,
+      liffToken: token,
+    };
+
+    // レシート画像
+    var fileInput = document.getElementById('inputFile');
+    if (fileInput.files[0]) {
+      data.receiptImage = document.getElementById('previewImg').src;
+    }
+
+    try {
+      var res = await fetch('/api/liff?action=expense', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (res.status === 401) {
+        clearTimeout(loadingTimeout);
+        overlay.remove();
+        submitBtn.disabled = false;
+        submitBtn.textContent = '再送信';
+        alert('認証に失敗しました。LINEから再度開いてください。');
+        return;
+      }
+
+      var result = await res.json();
+
+      clearTimeout(loadingTimeout);
+      overlay.remove();
+
+      if (result.status === 'ok') {
+        document.getElementById('expenseForm').style.display = 'none';
+        var resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML =
+          '<div class="check">&#x2705;</div>' +
+          '<h2>登録しました！</h2>' +
+          '<p class="detail">&yen;' + data.amount.toLocaleString() + ' ' + escHtml(data.store) + '</p>' +
+          '<p class="cat-label">' + escHtml(data.category) + '</p>' +
+          (result.monthTotal ? '<div class="month-total">今月累計: &yen;' + Number(result.monthTotal).toLocaleString() + '</div>' : '');
+
+        // LIFFからトークに結果送信
+        try {
+          if (liff.isInClient()) {
+            liff.sendMessages([{
+              type: 'text',
+              text: '\u{1f9fe} ' + data.store + ' \u00a5' + data.amount.toLocaleString() + ' (' + data.category + ')',
+            }]);
+          }
+        } catch(ex) {}
+
+        // 3秒後にLIFFを閉じる
+        setTimeout(function() {
+          try { if (liff.isInClient()) liff.closeWindow(); } catch(ex) {}
+        }, 3000);
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '再送信';
+        alert('エラー: ' + (result.error || '登録に失敗しました'));
+      }
+    } catch(err) {
+      clearTimeout(loadingTimeout);
+      overlay.remove();
+      submitBtn.disabled = false;
+      submitBtn.textContent = '再送信';
+      alert('通信エラーが発生しました。入力内容は保持されています。');
+    }
+  });
+
+  function escHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+})();
+</script>
+</body>
+</html>

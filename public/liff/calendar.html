@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>予定管理</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f5f7fa;
+  color: #1f2937;
+  min-height: 100vh;
+}
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
+header {
+  text-align: center;
+  padding: 20px 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 24px 20px;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #6b7280;
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+  margin-top: 18px;
+}
+label:first-child { margin-top: 0; }
+input[type="date"],
+input[type="time"],
+input[type="text"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #1f2937;
+  background: #f9fafb;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+input:focus {
+  border-color: #4f46e5;
+  background: #fff;
+}
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 24px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.submit-btn:active { transform: scale(0.98); background: #4338ca; }
+.submit-btn:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+/* 予定リスト */
+.event-list {
+  list-style: none;
+}
+.event-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.event-item:last-child { border-bottom: none; }
+.event-date-badge {
+  width: 48px;
+  height: 48px;
+  background: #f0f0ff;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.event-date-badge .day {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4f46e5;
+  line-height: 1.1;
+}
+.event-date-badge .dow {
+  font-size: 10px;
+  font-weight: 600;
+  color: #818cf8;
+}
+.event-info { flex: 1; min-width: 0; }
+.event-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.event-time {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+.empty-state {
+  text-align: center;
+  padding: 24px 0;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* トースト */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: #1f2937;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ローディング */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>&#x1f4c5; 予定</header>
+
+  <!-- 今後の予定一覧 -->
+  <div class="card">
+    <div class="section-title">&#x2500;&#x2500; 今後の予定 &#x2500;&#x2500;</div>
+    <ul class="event-list" id="eventList">
+      <li class="empty-state" id="eventLoading">読み込み中...</li>
+    </ul>
+  </div>
+
+  <!-- 予定追加 -->
+  <div class="card">
+    <div class="section-title">&#x2500;&#x2500; 予定追加 &#x2500;&#x2500;</div>
+    <form id="calendarForm">
+      <label>タイトル *</label>
+      <input type="text" id="inputTitle" placeholder="予定を入力" required />
+
+      <label>日付 *</label>
+      <input type="date" id="inputDate" required />
+
+      <label>時間（任意）</label>
+      <input type="time" id="inputTime" />
+
+      <button type="submit" class="submit-btn">追加する</button>
+    </form>
+  </div>
+</div>
+
+<script>
+(function() {
+  var liffToken = '';
+  var DOW = ['日','月','火','水','木','金','土'];
+
+  // --- LIFF初期化 ---
+  liff.init({ liffId: '2009645462-XlQtMO0U' }).then(function() {
+    if (!liff.isLoggedIn()) { liff.login(); return; }
+    try { liffToken = liff.getAccessToken(); } catch(ex) {}
+    loadEvents();
+  }).catch(function(err) {
+    console.error('LIFF init error', err);
+  });
+
+  // --- デフォルト日付 ---
+  var today = new Date();
+  var yyyy = today.getFullYear();
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var dd = String(today.getDate()).padStart(2, '0');
+  document.getElementById('inputDate').value = yyyy + '-' + mm + '-' + dd;
+
+  // --- 予定一覧取得 ---
+  function loadEvents() {
+    fetch('/api/liff?action=calendar&liffToken=' + encodeURIComponent(liffToken))
+      .then(function(res) {
+        if (res.status === 401) {
+          document.getElementById('eventList').innerHTML = '<li class="empty-state">認証に失敗しました。LINEから再度開いてください。</li>';
+          return null;
+        }
+        return res.json();
+      })
+      .then(function(data) {
+        if (!data) return;
+        var events = [];
+        if (data.data) {
+          events = data.data.events || data.data || [];
+        }
+        if (!Array.isArray(events)) events = [];
+        renderEvents(events);
+      })
+      .catch(function() {
+        document.getElementById('eventList').innerHTML = '<li class="empty-state">読み込みに失敗しました</li>';
+      });
+  }
+
+  // --- 予定描画 ---
+  function renderEvents(events) {
+    var list = document.getElementById('eventList');
+    if (events.length === 0) {
+      list.innerHTML = '<li class="empty-state">予定はありません</li>';
+      return;
+    }
+    list.innerHTML = '';
+    events.forEach(function(ev) {
+      var dt = toJST(ev.start || ev.date);
+      var li = document.createElement('li');
+      li.className = 'event-item';
+
+      var day = dt.getDate();
+      var dow = DOW[dt.getDay()];
+      var month = dt.getMonth() + 1;
+      var timeStr = formatTime(dt, ev.start);
+
+      li.innerHTML =
+        '<div class="event-date-badge">' +
+          '<span class="day">' + day + '</span>' +
+          '<span class="dow">' + month + '/' + dow + '</span>' +
+        '</div>' +
+        '<div class="event-info">' +
+          '<div class="event-title">' + escHtml(ev.title || ev.summary || '') + '</div>' +
+          '<div class="event-time">' + month + '/' + day + '(' + dow + ')' + (timeStr ? ' ' + timeStr : ' 終日') + '</div>' +
+        '</div>';
+
+      list.appendChild(li);
+    });
+  }
+
+  // --- 予定追加 ---
+  document.getElementById('calendarForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var title = document.getElementById('inputTitle').value.trim();
+    var dateVal = document.getElementById('inputDate').value;
+    if (!title || !dateVal) { showToast('タイトルと日付を入力してください'); return; }
+
+    var submitBtn = document.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中...';
+
+    var timeVal = document.getElementById('inputTime').value;
+    var startISO;
+    if (timeVal) {
+      startISO = dateVal + 'T' + timeVal + ':00+09:00';
+    } else {
+      startISO = dateVal + 'T00:00:00+09:00';
+    }
+
+    var data = {
+      title: title,
+      start: startISO,
+      liffToken: liffToken,
+    };
+
+    fetch('/api/liff?action=calendar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    .then(function(res) {
+      if (res.status === 401) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '追加する';
+        showToast('認証に失敗しました。LINEから再度開いてください。');
+        return null;
+      }
+      return res.json();
+    })
+    .then(function(result) {
+      if (!result) return;
+      submitBtn.disabled = false;
+      submitBtn.textContent = '追加する';
+      if (result.status === 'ok') {
+        showToast('予定を追加しました');
+        loadEvents();
+
+        // LIFFからトークに送信
+        var msgDate = formatMsgDate(dateVal, timeVal);
+        try {
+          if (liff.isInClient()) {
+            liff.sendMessages([{
+              type: 'text',
+              text: '\ud83d\udcc5 予定追加: ' + msgDate + ' ' + title,
+            }]);
+          }
+        } catch(ex) {}
+
+        document.getElementById('inputTitle').value = '';
+        document.getElementById('inputTime').value = '';
+
+        setTimeout(function() {
+          try { if (liff.isInClient()) liff.closeWindow(); } catch(ex) {}
+        }, 3000);
+      } else {
+        showToast('エラー: ' + (result.error || '追加に失敗しました'));
+      }
+    })
+    .catch(function() {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '再送信';
+      showToast('通信エラーが発生しました。入力内容は保持されています。');
+    });
+  });
+
+  // --- ユーティリティ ---
+  function toJST(isoStr) {
+    var d = new Date(isoStr);
+    // JST = UTC+9
+    return new Date(d.getTime() + (d.getTimezoneOffset() + 540) * 60000);
+  }
+
+  function formatTime(dt, isoStr) {
+    if (!isoStr) return '';
+    // 終日判定: 時間が00:00で、ISOに'T'がない場合は終日
+    if (isoStr.indexOf('T') === -1) return '';
+    var h = dt.getHours();
+    var m = dt.getMinutes();
+    if (h === 0 && m === 0 && isoStr.indexOf('T00:00') !== -1) return '';
+    return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+  }
+
+  function formatMsgDate(dateVal, timeVal) {
+    var parts = dateVal.split('-');
+    var m = parseInt(parts[1], 10);
+    var d = parseInt(parts[2], 10);
+    var result = m + '/' + d;
+    if (timeVal) result += ' ' + timeVal;
+    return result;
+  }
+
+  function showToast(msg) {
+    var existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+    var t = document.createElement('div');
+    t.className = 'toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() { t.classList.add('show'); });
+    });
+    setTimeout(function() {
+      t.classList.remove('show');
+      setTimeout(function() { t.remove(); }, 300);
+    }, 2500);
+  }
+
+  function escHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+})();
+</script>
+</body>
+</html>

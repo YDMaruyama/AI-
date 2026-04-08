@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>金庫</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #f5f7fa;
+  color: #1f2937;
+  min-height: 100vh;
+}
+.container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
+header {
+  text-align: center;
+  padding: 20px 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 24px 20px;
+}
+.balance-card {
+  text-align: center;
+  margin-bottom: 16px;
+}
+.balance-label {
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.balance-amount {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1f2937;
+}
+.balance-amount.loading { color: #d1d5db; }
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  margin-bottom: 6px;
+  margin-top: 18px;
+}
+input[type="text"],
+select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #1f2937;
+  background: #f9fafb;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+input:focus, select:focus {
+  border-color: #4f46e5;
+  background: #fff;
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+/* 入金/出金トグル */
+.toggle-wrap {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.toggle-btn {
+  flex: 1;
+  padding: 12px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  font-size: 16px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.toggle-btn:active { transform: scale(0.97); }
+.toggle-btn.active-in {
+  background: #10b981;
+  color: #fff;
+  border-color: #10b981;
+}
+.toggle-btn.active-out {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+
+/* 金額 */
+.amount-wrap {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.amount-wrap:focus-within {
+  border-color: #4f46e5;
+  background: #fff;
+}
+.amount-wrap .yen {
+  padding: 0 0 0 14px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #9ca3af;
+}
+.amount-wrap input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 14px 10px 6px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  outline: none;
+  width: 100%;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  margin-top: 24px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+.submit-btn:active { transform: scale(0.98); background: #4338ca; }
+.submit-btn:disabled {
+  background: #a5b4fc;
+  cursor: not-allowed;
+}
+
+/* 履歴 */
+.history-section {
+  margin-top: 20px;
+}
+.history-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #6b7280;
+  text-align: center;
+  padding: 8px 0;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 8px;
+}
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14px;
+}
+.history-item:last-child { border-bottom: none; }
+.history-desc { color: #374151; }
+.history-amount { font-weight: 700; }
+.history-amount.in { color: #10b981; }
+.history-amount.out { color: #ef4444; }
+.history-empty {
+  text-align: center;
+  padding: 16px 0;
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+/* 成功画面 */
+#result {
+  display: none;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+#result .check {
+  font-size: 64px;
+  animation: popIn 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+#result h2 {
+  margin-top: 12px;
+  font-size: 22px;
+  color: #1f2937;
+}
+#result .detail {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #374151;
+}
+#result .new-balance {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #f0f0ff;
+  border-radius: 10px;
+  display: inline-block;
+  font-size: 14px;
+  color: #4f46e5;
+  font-weight: 600;
+}
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.spinner {
+  width: 40px; height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>&#x1f510; 金庫</header>
+
+  <div class="balance-card card">
+    <div class="balance-label">&#x1f4b0; 現在残高</div>
+    <div class="balance-amount loading" id="balanceDisplay">---</div>
+  </div>
+
+  <form id="cashboxForm" class="card">
+    <div class="toggle-wrap">
+      <button type="button" class="toggle-btn active-in" id="btnIn" data-type="in">入金 &#x2b06;&#xfe0f;</button>
+      <button type="button" class="toggle-btn" id="btnOut" data-type="out">出金 &#x2b07;&#xfe0f;</button>
+    </div>
+
+    <label>金額</label>
+    <div class="amount-wrap">
+      <span class="yen">&yen;</span>
+      <input type="number" id="inputAmount" inputmode="numeric" placeholder="10000" autofocus />
+    </div>
+
+    <label>説明</label>
+    <input type="text" id="inputDescription" placeholder="売上、備品購入など" />
+
+    <label>カテゴリ</label>
+    <select id="inputCategory">
+      <option value="売上">売上</option>
+      <option value="仕入">仕入</option>
+      <option value="備品">備品</option>
+      <option value="交通費">交通費</option>
+      <option value="給与">給与</option>
+      <option value="雑費">雑費</option>
+      <option value="その他">その他</option>
+    </select>
+
+    <button type="submit" class="submit-btn">記録する</button>
+
+    <div class="history-section" id="historySection">
+      <div class="history-title">── 今日の履歴 ──</div>
+      <div id="historyList"><div class="history-empty">読み込み中...</div></div>
+    </div>
+  </form>
+
+  <div id="result"></div>
+</div>
+
+<script>
+(function() {
+  var txType = 'in';
+
+  // --- LIFF初期化 ---
+  liff.init({ liffId: '2009645462-u8xVzajB' }).then(function() {
+    if (!liff.isLoggedIn()) {
+      liff.login();
+      return;
+    }
+    loadCashboxData();
+  }).catch(function(err) {
+    console.error('LIFF init error', err);
+  });
+
+  // --- 入金/出金トグル ---
+  document.getElementById('btnIn').addEventListener('click', function() {
+    txType = 'in';
+    this.className = 'toggle-btn active-in';
+    document.getElementById('btnOut').className = 'toggle-btn';
+  });
+  document.getElementById('btnOut').addEventListener('click', function() {
+    txType = 'out';
+    this.className = 'toggle-btn active-out';
+    document.getElementById('btnIn').className = 'toggle-btn';
+  });
+
+  // --- データ読み込み ---
+  async function loadCashboxData() {
+    var token = '';
+    try { token = liff.getAccessToken(); } catch(ex) {}
+
+    try {
+      var res = await fetch('/api/liff?action=cashbox_balance&liffToken=' + encodeURIComponent(token));
+
+      if (res.status === 401) {
+        document.getElementById('balanceDisplay').textContent = '認証エラー';
+        document.getElementById('historyList').innerHTML = '<div class="history-empty">認証に失敗しました。LINEから再度開いてください。</div>';
+        return;
+      }
+
+      var data = await res.json();
+
+      if (data.error || data.status === 'error') {
+        document.getElementById('balanceDisplay').textContent = 'エラー';
+        return;
+      }
+
+      // 残高表示
+      var bal = document.getElementById('balanceDisplay');
+      var d = data.data || {};
+      bal.textContent = '\u00a5' + Number(d.balance || 0).toLocaleString();
+      bal.classList.remove('loading');
+
+      // 履歴表示
+      renderHistory(d.history || []);
+    } catch(err) {
+      document.getElementById('balanceDisplay').textContent = 'エラー';
+      document.getElementById('historyList').innerHTML = '<div class="history-empty">読み込みエラー</div>';
+    }
+  }
+
+  function renderHistory(items) {
+    if (items.length === 0) {
+      document.getElementById('historyList').innerHTML = '<div class="history-empty">今日の取引はありません</div>';
+      return;
+    }
+    var html = '';
+    items.forEach(function(item) {
+      var isIn = item.type === 'in' || item.type === 'deposit';
+      var sign = isIn ? '+' : '-';
+      var cls = isIn ? 'in' : 'out';
+      html += '<div class="history-item">' +
+        '<span class="history-desc">' + escHtml(item.description || item.category || '') + '</span>' +
+        '<span class="history-amount ' + cls + '">' + sign + '\u00a5' + Number(item.amount).toLocaleString() + '</span>' +
+        '</div>';
+    });
+    document.getElementById('historyList').innerHTML = html;
+  }
+
+  // --- フォーム送信 ---
+  document.getElementById('cashboxForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    var amount = Number(document.getElementById('inputAmount').value);
+    if (!amount || amount <= 0) {
+      alert('金額を入力してください');
+      return;
+    }
+
+    var submitBtn = document.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中...';
+
+    var overlay = document.createElement('div');
+    overlay.className = 'loading-overlay';
+    overlay.innerHTML = '<div class="spinner"></div>';
+    document.body.appendChild(overlay);
+
+    var loadingTimeout = setTimeout(function() {
+      overlay.remove();
+      submitBtn.disabled = false;
+      submitBtn.textContent = '再送信';
+      alert('通信に時間がかかっています。再試行してください。');
+    }, 15000);
+
+    var token = '';
+    try { token = liff.getAccessToken(); } catch(ex) {}
+
+    var data = {
+      type: txType,
+      amount: amount,
+      description: document.getElementById('inputDescription').value.trim(),
+      category: document.getElementById('inputCategory').value,
+      liffToken: token,
+    };
+
+    try {
+      var res = await fetch('/api/liff?action=cashbox', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (res.status === 401) {
+        clearTimeout(loadingTimeout);
+        overlay.remove();
+        submitBtn.disabled = false;
+        submitBtn.textContent = '再送信';
+        alert('認証に失敗しました。LINEから再度開いてください。');
+        return;
+      }
+
+      var result = await res.json();
+
+      clearTimeout(loadingTimeout);
+      overlay.remove();
+
+      if (result.status === 'ok') {
+        document.getElementById('cashboxForm').style.display = 'none';
+        var resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+
+        var sign = txType === 'in' ? '+' : '-';
+        var label = txType === 'in' ? '入金' : '出金';
+        resultDiv.innerHTML =
+          '<div class="check">&#x2705;</div>' +
+          '<h2>' + label + 'を記録しました！</h2>' +
+          '<p class="detail">' + sign + '\u00a5' + amount.toLocaleString() + ' ' + escHtml(data.description) + '</p>' +
+          (result.balance != null ? '<div class="new-balance">残高: \u00a5' + Number(result.balance).toLocaleString() + '</div>' : '');
+
+        try {
+          if (liff.isInClient()) {
+            liff.sendMessages([{
+              type: 'text',
+              text: '\u{1f510} 金庫 ' + label + ' ' + sign + '\u00a5' + amount.toLocaleString() + '（' + data.category + '）',
+            }]);
+          }
+        } catch(ex) {}
+
+        setTimeout(function() {
+          try { if (liff.isInClient()) liff.closeWindow(); } catch(ex) {}
+        }, 3000);
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '再送信';
+        alert('エラー: ' + (result.error || '記録に失敗しました'));
+      }
+    } catch(err) {
+      clearTimeout(loadingTimeout);
+      overlay.remove();
+      submitBtn.disabled = false;
+      submitBtn.textContent = '再送信';
+      alert('通信エラーが発生しました。入力内容は保持されています。');
+    }
+  });
+
+  function escHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s || '';
+    return d.innerHTML;
+  }
+})();
+</script>
+</body>
+</html>

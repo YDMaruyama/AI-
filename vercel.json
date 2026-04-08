@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "buildCommand": "",
+  "outputDirectory": "",
+  "crons": [
+    {
+      "path": "/api/cron/master",
+      "schedule": "30 23 * * *"
+    }
+  ],
+  "redirects": [
+    { "source": "/", "destination": "/admin", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/manifest.json", "destination": "/public/manifest.json" },
+    { "source": "/icon-192.png", "destination": "/public/icon-192.png" },
+    { "source": "/icon-512.png", "destination": "/public/icon-512.png" },
+    { "source": "/admin", "destination": "/public/admin.html" },
+    { "source": "/liff/expense", "destination": "/public/liff/expense.html" },
+    { "source": "/liff/report", "destination": "/public/liff/report.html" },
+    { "source": "/liff/attendance", "destination": "/public/liff/attendance.html" },
+    { "source": "/liff/cashbox", "destination": "/public/liff/cashbox.html" },
+    { "source": "/liff/task", "destination": "/public/liff/task.html" },
+    { "source": "/liff/calendar", "destination": "/public/liff/calendar.html" }
+  ]
+}
