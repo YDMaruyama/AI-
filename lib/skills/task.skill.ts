@@ -47,19 +47,51 @@ export const taskSkill = defineSkill({
       },
       execute: async (args, supabase, _userId) => {
         const status = args.status || 'all';
-        const assigneeName = (args.assignee_name || '').trim();
+        const rawAssignee = (args.assignee_name || '').trim();
+
+        // 役職→roleマッピング
+        const roleKeywords: Record<string, string> = {
+          社長: 'owner', 会長: 'owner', オーナー: 'owner',
+          管理者: 'manager', マネージャー: 'manager', 店長: 'manager',
+          スタッフ: 'staff', 職員: 'staff',
+        };
+
+        // 敬称・役職を除去した「核」の名前を抽出
+        const titleRegex = /(社長|会長|オーナー|管理者|マネージャー|店長|スタッフ|職員|さん|様|氏|くん|ちゃん)/g;
+        const coreName = rawAssignee.replace(titleRegex, '').trim();
+
+        // 役職キーワードがあれば role 検索もOR条件に
+        let matchedRole: string | null = null;
+        for (const [kw, r] of Object.entries(roleKeywords)) {
+          if (rawAssignee.includes(kw)) { matchedRole = r; break; }
+        }
 
         // 担当者名 → user_id 解決
         let assigneeIds: string[] | null = null;
-        if (assigneeName) {
-          const { data: matchedUsers } = await supabase
-            .from('users')
-            .select('id, display_name, role')
-            .or(`display_name.ilike.%${assigneeName}%,role.ilike.%${assigneeName}%`);
-          if (!matchedUsers || matchedUsers.length === 0) {
-            return `「${assigneeName}」に該当するユーザーが見つかりません。`;
+        if (rawAssignee) {
+          let userQuery = supabase.from('users').select('id, display_name, role');
+          if (coreName && matchedRole) {
+            userQuery = userQuery.or(`display_name.ilike.%${coreName}%,role.eq.${matchedRole}`);
+          } else if (coreName) {
+            userQuery = userQuery.ilike('display_name', `%${coreName}%`);
+          } else if (matchedRole) {
+            userQuery = userQuery.eq('role', matchedRole);
           }
-          assigneeIds = matchedUsers.map((u: any) => u.id);
+          const { data: matchedUsers } = await userQuery;
+
+          // coreName が指定されていれば、display_name に core が含まれるユーザーを優先
+          let candidates = matchedUsers || [];
+          if (coreName && candidates.length > 1) {
+            const narrowed = candidates.filter((u: any) =>
+              (u.display_name || '').includes(coreName)
+            );
+            if (narrowed.length > 0) candidates = narrowed;
+          }
+
+          if (candidates.length === 0) {
+            return `「${rawAssignee}」に該当するユーザーが見つかりません。`;
+          }
+          assigneeIds = candidates.map((u: any) => u.id);
         }
 
         let q = supabase
@@ -80,8 +112,8 @@ export const taskSkill = defineSkill({
 
         const { data } = await q;
         if (!data || data.length === 0) {
-          return assigneeName
-            ? `${assigneeName}さんの現在のタスクはありません。`
+          return rawAssignee
+            ? `${rawAssignee}の現在のタスクはありません。`
             : '現在のタスクはありません。';
         }
 
@@ -104,8 +136,8 @@ export const taskSkill = defineSkill({
           return `[${pri}/${st}] ${t.title}${due}${who}`;
         });
 
-        const header = assigneeName
-          ? `${assigneeName}さんのタスク (${data.length}件):`
+        const header = rawAssignee
+          ? `${rawAssignee}のタスク (${data.length}件):`
           : `タスク一覧 (${data.length}件):`;
         return `${header}\n${lines.join('\n')}`;
       },
