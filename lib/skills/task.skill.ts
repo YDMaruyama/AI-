@@ -13,11 +13,13 @@ export const taskSkill = defineSkill({
   intents: ['task'],
 
   routes: [
-    { pattern: /タスク|やること|TODO|todo/, intent: 'task', handler: showTasks },
+    // 短いコマンド系のみマッチ。人名や修飾語付き（「佐々木社長のタスク」等）は
+    // AI Agent (get_tasks) に流して assignee_name フィルタを使わせる。
+    { pattern: /^(タスク|やること|TODO|todo)$|^タスク一覧$|^TODO一覧$/i, intent: 'task', handler: showTasks },
   ],
 
   fastIntents: [
-    { pattern: /タスク|やること|TODO|todo/, intent: 'task' },
+    { pattern: /^(タスク|やること|TODO|todo)$|^タスク一覧$/i, intent: 'task' },
   ],
 
   intentDescriptions: {
