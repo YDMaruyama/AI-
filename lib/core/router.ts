@@ -62,24 +62,24 @@ const LEGACY_KEYWORD_ROUTES: KeywordRoute[] = [
     await lineReply(rt, '📝 メモとして保存しました！', tk);
   }},
 
-  // 出欠・案件・シフト
-  { pattern: /出欠|出席/, intent: 'attendance', handler: (u, _t, rt, s, tk) => showAttendance(u, rt, s, tk) },
-  { pattern: /案件|受注/, intent: 'order', handler: (u, _t, rt, s, tk) => showOrders(u, rt, s, tk) },
-  { pattern: /シフト/, intent: 'shift', handler: (u, _t, rt, s, tk) => showShift(u, rt, s, tk) },
+  // 出欠・案件・シフト（短いコマンドのみ。修飾付きはAIへ）
+  { pattern: /^(出欠|出席)$/, intent: 'attendance', handler: (u, _t, rt, s, tk) => showAttendance(u, rt, s, tk) },
+  { pattern: /^(案件|受注)$|^案件一覧$/, intent: 'order', handler: (u, _t, rt, s, tk) => showOrders(u, rt, s, tk) },
+  { pattern: /^シフト$/, intent: 'shift', handler: (u, _t, rt, s, tk) => showShift(u, rt, s, tk) },
 
   // 事故・ヒヤリハット
-  { pattern: /事故|ヒヤリ/, intent: 'incident', handler: (u, t, rt, s, tk, gk) => startIncident(u, rt, s, tk, gk, t) },
+  { pattern: /^(事故|ヒヤリ(ハット)?)$|^事故報告/, intent: 'incident', handler: (u, t, rt, s, tk, gk) => startIncident(u, rt, s, tk, gk, t) },
 
   // 見学・行政
-  { pattern: /見学|問い合わせ/, intent: 'inquiry', handler: (u, t, rt, s, tk, gk) => handleInquiry(u, t, rt, s, tk, gk) },
-  { pattern: /行政|書類/, intent: 'admin_doc', handler: (u, _t, rt, s, tk) => showAdminDocs(u, rt, s, tk) },
+  { pattern: /^(見学|問い合わせ)/, intent: 'inquiry', handler: (u, t, rt, s, tk, gk) => handleInquiry(u, t, rt, s, tk, gk) },
+  { pattern: /^(行政|書類)$/, intent: 'admin_doc', handler: (u, _t, rt, s, tk) => showAdminDocs(u, rt, s, tk) },
 
   // 議事録
   { pattern: /^議事録[:：]/, intent: 'meeting', handler: (u, t, rt, s, tk, gk) => saveMeetingNote(u, t, rt, s, tk, gk) },
-  { pattern: /会議|ミーティング|議事録|打ち合わせ|MTG/, intent: 'meeting', handler: (u, t, rt, s, tk, gk) => handleMeetingQuery(u, t, rt, s, tk, gk) },
+  { pattern: /^(会議|ミーティング|議事録|打ち合わせ|MTG)$/, intent: 'meeting', handler: (u, t, rt, s, tk, gk) => handleMeetingQuery(u, t, rt, s, tk, gk) },
 
   // スタッフ
-  { pattern: /スタッフ一覧|メンバー/, intent: 'staff', handler: (u, _t, rt, s, tk) => showStaffList(u, rt, s, tk) },
+  { pattern: /^(スタッフ一覧|メンバー)$/, intent: 'staff', handler: (u, _t, rt, s, tk) => showStaffList(u, rt, s, tk) },
 ];
 
 // スキルルートが先（優先）、レガシーが後
@@ -119,12 +119,12 @@ export async function detectIntent(text: string, geminiKey: string): Promise<Int
   }
 
   // レガシー高速パス（まだスキル化されていないもの）
-  if (/出欠|出席/.test(text)) return 'attendance';
-  if (/案件|受注/.test(text)) return 'order';
-  if (/シフト/.test(text)) return 'shift';
-  if (/スタッフ一覧|メンバー/.test(text)) return 'staff';
-  if (/事故|ヒヤリ/.test(text)) return 'incident';
-  if (/会議|ミーティング|議事録|打ち合わせ|MTG/.test(text)) return 'meeting';
+  if (/^(出欠|出席)$/.test(text)) return 'attendance';
+  if (/^(案件|受注)$|^案件一覧$/.test(text)) return 'order';
+  if (/^シフト$/.test(text)) return 'shift';
+  if (/^(スタッフ一覧|メンバー)$/.test(text)) return 'staff';
+  if (/^(事故|ヒヤリ(ハット)?)$/.test(text)) return 'incident';
+  if (/^(会議|ミーティング|議事録|打ち合わせ|MTG)$/.test(text)) return 'meeting';
   if (/覚えて|メモして|メモ$/.test(text)) return 'memo';
   // 質問形はgeneral
   if (/について|教えて|どう|何\?|何？|知りたい|詳しく/.test(text)) return 'general';

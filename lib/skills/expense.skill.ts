@@ -27,7 +27,8 @@ export const expenseSkill = defineSkill({
     // 削除系
     { pattern: /経費削除|削除確定/, intent: 'expense', handler: (u, t, rt, s, tk) => deleteExpense(u, rt, s, tk, t) },
     // 経費入力・レシート
-    { pattern: /レシート|経費入力|領収書入力/, intent: 'expense', handler: (u, t, rt, s, tk, gk) => startExpenseInput(u, rt, s, tk, gk, t) },
+    // 「経費入力」「レシート」等の短いコマンドのみ。「先月の経費」等は AI Agent (get_expenses) に流す
+    { pattern: /^レシート$|^経費入力$|^領収書入力$|^経費$/, intent: 'expense', handler: (u, t, rt, s, tk, gk) => startExpenseInput(u, rt, s, tk, gk, t) },
     // サマリー
     { pattern: /今月の経費|経費サマリー|経費一覧/, intent: 'expense_summary', handler: (u, t, rt, s, tk) => showExpenseSummary(u, t, rt, s, tk) },
     // エクスポート
@@ -45,7 +46,7 @@ export const expenseSkill = defineSkill({
     { pattern: /今月の経費|経費サマリー|経費一覧/, intent: 'expense_summary' },
     { pattern: /経費出力|経費エクスポート/, intent: 'expense_export' },
     { pattern: /領収書.*まとめ|経費.*報告|経費.*メール|領収書.*送/, intent: 'expense_email' },
-    { pattern: /経費|レシート|領収書|円使|買った/, intent: 'expense' },
+    { pattern: /^(経費|レシート|領収書)$|^経費入力$|^領収書入力$/, intent: 'expense' },
   ],
 
   intentDescriptions: {

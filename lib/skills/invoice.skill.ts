@@ -17,15 +17,15 @@ export const invoiceSkill = defineSkill({
     { pattern: /支払い?(完了|済み?|済)/, intent: 'invoice_paid', handler: (u, t, rt, s, tk) => markPaid(u, t, rt, s, tk) },
     { pattern: /請求書.*(検索|確認|見|教え|一覧)|未払い|支払い?期限/, intent: 'invoice_search', handler: (u, t, rt, s, tk, gk) => searchDocuments(u, t, rt, s, tk, gk) },
     { pattern: /請求(まとめ|サマリー)|今月の請求|先月の請求|請求書サマリー/, intent: 'invoice_summary', handler: (u, t, rt, s, tk) => showDocumentSummary(u, t, rt, s, tk) },
-    { pattern: /請求書|インボイス|電気代|ガス代|水道代|通信費/, intent: 'invoice_search', handler: (u, t, rt, s, tk, gk) => searchDocuments(u, t, rt, s, tk, gk) },
+    // 短いコマンドのみ。「電気代いくら？」等の自然文は AI Agent (get_documents) に流す
+    { pattern: /^(請求書|領収書|インボイス)$|^未払い$/, intent: 'invoice_search', handler: (u, t, rt, s, tk, gk) => searchDocuments(u, t, rt, s, tk, gk) },
   ],
 
   fastIntents: [
     { pattern: /^(請求書|領収書)(追加|登録|入力)/, intent: 'add_invoice' },
-    { pattern: /支払い?(完了|済み?|済)/, intent: 'invoice_paid' },
-    { pattern: /請求書.*(検索|確認|見|教え|一覧)|未払い|支払い?期限/, intent: 'invoice_search' },
-    { pattern: /請求(まとめ|サマリー)|今月の請求|先月の請求/, intent: 'invoice_summary' },
-    { pattern: /請求書|インボイス|電気代|ガス代|水道代|通信費/, intent: 'invoice_search' },
+    { pattern: /支払い?(完了|済み?|済)$/, intent: 'invoice_paid' },
+    { pattern: /^請求書.*(検索|一覧)$|^未払い$/, intent: 'invoice_search' },
+    { pattern: /^請求(まとめ|サマリー)$|^(今月|先月)の請求$/, intent: 'invoice_summary' },
   ],
 
   intentDescriptions: {

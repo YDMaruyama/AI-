@@ -15,12 +15,13 @@ export const calendarSkill = defineSkill({
   routes: [
     { pattern: /^予定(追加|登録)/, intent: 'add_calendar', handler: (u, t, rt, s, tk, gk) => addCalendarEvent(u, t, rt, s, tk, gk) },
     { pattern: /^予定削除/, intent: 'calendar', handler: (u, t, rt, s, tk) => deleteCalendarEvent(u, t, rt, s, tk) },
-    { pattern: /予定|カレンダー/, intent: 'calendar', handler: (u, _t, rt, s, tk) => showCalendar(u, rt, s, tk) },
+    // 短いコマンド形式のみ。「○○さんの予定」「来月の予定」等は AI Agent (get_calendar) に流す
+    { pattern: /^(予定|カレンダー|スケジュール)$|^(今日|明日|明後日|今週|来週)の?(予定|カレンダー|スケジュール)$/, intent: 'calendar', handler: (u, _t, rt, s, tk) => showCalendar(u, rt, s, tk) },
   ],
 
   fastIntents: [
-    { pattern: /予定追加|予定登録|予定入れ/, intent: 'add_calendar' },
-    { pattern: /予定|カレンダー|スケジュール/, intent: 'calendar' },
+    { pattern: /^予定(追加|登録|入れ)/, intent: 'add_calendar' },
+    { pattern: /^(予定|カレンダー|スケジュール)$|^(今日|明日|明後日|今週|来週)の?(予定|カレンダー|スケジュール)$/, intent: 'calendar' },
   ],
 
   intentDescriptions: {
