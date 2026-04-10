@@ -112,78 +112,77 @@ async function runMorningBriefing(supabase: any) {
   return { sent: sentCount, total: users.length };
 }
 
-// ── タスク3: タスクリマインド（全スタッフ個別通知） ──
+// ── タスク3: タスクリマインド（全ユーザーに個別タスク通知） ──
 async function runTaskReminders(supabase: any) {
   const token = env.LINE_CHANNEL_ACCESS_TOKEN;
   const now = new Date();
   const today = new Date(now.getTime() + 9 * 3600000).toISOString().split('T')[0];
-  const tomorrow = new Date(now.getTime() + 9 * 3600000 + 86400000).toISOString().split('T')[0];
 
-  // 未完了タスクで期限が今日以前 or 明日のものを取得
-  const { data: tasks } = await supabase
-    .from('tasks')
-    .select('title, priority, due_date, status, assignee_id')
-    .in('status', ['pending', 'in_progress'])
-    .not('assignee_id', 'is', null)
-    .lte('due_date', tomorrow)
-    .order('due_date', { ascending: true });
-
-  if (!tasks || tasks.length === 0) return { sent: 0, message: 'No tasks to remind' };
-
-  // 担当者IDでグルーピング
-  const byAssignee = new Map<string, any[]>();
-  for (const t of tasks) {
-    const list = byAssignee.get(t.assignee_id) || [];
-    list.push(t);
-    byAssignee.set(t.assignee_id, list);
-  }
-
-  // 各担当者のLINE IDを取得
-  const assigneeIds = [...byAssignee.keys()];
+  // アクティブな全ユーザーを取得
   const { data: users } = await supabase
     .from('users')
     .select('id, line_user_id, display_name')
-    .in('id', assigneeIds)
     .eq('is_active', true);
 
-  if (!users || users.length === 0) return { sent: 0, message: 'No active assignees' };
+  if (!users || users.length === 0) return { sent: 0, message: 'No active users' };
 
   let sentCount = 0;
   for (const user of users) {
     if (!user.line_user_id) continue;
-    const userTasks = byAssignee.get(user.id) || [];
-    if (userTasks.length === 0) continue;
 
-    const overdue = userTasks.filter((t: any) => t.due_date < today);
-    const dueToday = userTasks.filter((t: any) => t.due_date === today);
-    const dueTomorrow = userTasks.filter((t: any) => t.due_date === tomorrow);
+    // このユーザーの未完了タスクを全件取得
+    const { data: tasks } = await supabase
+      .from('tasks')
+      .select('title, priority, due_date, status')
+      .eq('assignee_id', user.id)
+      .in('status', ['pending', 'in_progress'])
+      .order('priority')
+      .order('due_date', { ascending: true })
+      .limit(20);
 
-    const lines: string[] = [`⏰ おはようございます、${user.display_name}さん！\n📋 タスクリマインド:`];
+    if (!tasks || tasks.length === 0) continue;
+
+    // 期限別に分類
+    const overdue = tasks.filter((t: any) => t.due_date && t.due_date < today);
+    const dueToday = tasks.filter((t: any) => t.due_date === today);
+    const upcoming = tasks.filter((t: any) => t.due_date && t.due_date > today);
+    const noDue = tasks.filter((t: any) => !t.due_date);
+
+    const lines: string[] = [`📋 ${user.display_name}さんのタスク（${tasks.length}件）`];
 
     if (overdue.length > 0) {
       lines.push(`\n🔴 期限切れ（${overdue.length}件）:`);
-      overdue.forEach((t: any) => {
-        const icon = t.priority === 'high' ? '‼️' : t.priority === 'medium' ? '❗' : '・';
-        lines.push(`  ${icon} ${t.title}（期限: ${t.due_date}）`);
-      });
+      for (const t of overdue) {
+        const p = t.priority === 'high' ? '‼️' : t.priority === 'medium' ? '❗' : '・';
+        lines.push(`  ${p} ${t.title}（${t.due_date}）`);
+      }
     }
     if (dueToday.length > 0) {
       lines.push(`\n🟡 今日期限（${dueToday.length}件）:`);
-      dueToday.forEach((t: any) => {
-        const icon = t.priority === 'high' ? '‼️' : t.priority === 'medium' ? '❗' : '・';
-        lines.push(`  ${icon} ${t.title}`);
-      });
+      for (const t of dueToday) {
+        const p = t.priority === 'high' ? '‼️' : t.priority === 'medium' ? '❗' : '・';
+        lines.push(`  ${p} ${t.title}`);
+      }
     }
-    if (dueTomorrow.length > 0) {
-      lines.push(`\n🔵 明日期限（${dueTomorrow.length}件）:`);
-      dueTomorrow.forEach((t: any) => lines.push(`  ・${t.title}`));
+    if (upcoming.length > 0) {
+      lines.push(`\n🔵 今後の期限（${upcoming.length}件）:`);
+      for (const t of upcoming) {
+        lines.push(`  ・${t.title}（${t.due_date}）`);
+      }
+    }
+    if (noDue.length > 0) {
+      lines.push(`\n📌 期限なし（${noDue.length}件）:`);
+      for (const t of noDue) {
+        const st = t.status === 'in_progress' ? '🔄' : '・';
+        lines.push(`  ${st} ${t.title}`);
+      }
     }
 
     const sent = await linePush(user.line_user_id, lines.join('\n'), token);
     if (sent) sentCount++;
   }
 
-  return { sent: sentCount, tasks: tasks.length };
+  return { sent: sentCount, users: users.length };
 }
 
 // ── ハンドラ ──────────────────────────────────────
