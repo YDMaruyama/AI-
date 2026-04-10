@@ -7,27 +7,60 @@ import { exportToSpreadsheet } from '../core/gas';
 import { extractJson } from '../core/gemini-utils';
 import { GEMINI_MODEL } from '../core/config';
 
-/** レシート画像からの自動読み取り */
+/** 画像を受信 → まず種類を判別し、レシート/領収書なら経費OCR、それ以外なら内容説明 */
 export async function handleReceiptImage(user: any, messageId: string, replyToken: string, supabase: any, token: string, geminiKey: string) {
   try {
     // LINE APIから画像をダウンロード
     const imageBuffer = await downloadLineContent(messageId, token);
     const base64Image = Buffer.from(imageBuffer).toString('base64');
 
-    // Geminiで画像解析
     const genAI = new GoogleGenerativeAI(geminiKey);
     const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
+    const imagePart = { inlineData: { mimeType: 'image/jpeg', data: base64Image } };
+
+    // ── Step 1: 画像分類 ──
+    const classifyResult = await model.generateContent({
+      contents: [{
+        role: 'user',
+        parts: [
+          imagePart,
+          { text: `この画像の種類を判定してください。以下のいずれか1つだけ返してください:
+- receipt（レシート・領収書・請求書・納品書など金額が記載された書類）
+- document（その他の書類・文書・名刺・チラシ等）
+- photo（風景・人物・物・スクリーンショット等の一般写真）
+
+1単語のみ返してください。` },
+        ],
+      }],
+    });
+    const imageType = classifyResult.response.text().trim().toLowerCase();
+
+    // ── レシート/領収書でなければ汎用応答 ──
+    if (!imageType.includes('receipt')) {
+      const descResult = await model.generateContent({
+        contents: [{
+          role: 'user',
+          parts: [
+            imagePart,
+            { text: '画像の内容を簡潔に日本語で説明してください。仕事に関連する情報があれば強調してください。2-3文以内で。' },
+          ],
+        }],
+      });
+      const description = descResult.response.text().trim();
+      await lineReply(replyToken,
+        `📷 画像を確認しました:\n${description}\n\n💡 レシートの場合は「レシート」と送ってから画像を送信してください。`,
+        token
+      );
+      return;
+    }
+
+    // ── Step 2: レシートOCR ──
     const result = await model.generateContent({
       contents: [{
         role: 'user',
         parts: [
-          {
-            inlineData: {
-              mimeType: 'image/jpeg',
-              data: base64Image,
-            },
-          },
+          imagePart,
           {
             text: `${EXPENSE_AGENT_PROMPT}
 
