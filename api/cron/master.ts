@@ -198,7 +198,6 @@ export default async function handler(req: any, res: any) {
 
   // 全タスクを並列実行（個別エラー隔離）
   const results = await Promise.all([
-    safeRun('morning-briefing', () => runMorningBriefing(supabase)),
     safeRun('task-reminders', () => runTaskReminders(supabase)),
     safeRun('daily-memory', () => runDailyMemory(supabase)),
   ]);
