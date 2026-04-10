@@ -148,35 +148,60 @@ async function runTaskReminders(supabase: any) {
     const upcoming = tasks.filter((t: any) => t.due_date && t.due_date > today);
     const noDue = tasks.filter((t: any) => !t.due_date);
 
-    const lines: string[] = [`📋 ${user.display_name}さんのタスク（${tasks.length}件）`];
+    // 日付を短い表示に変換（4/10 形式）
+    const shortDate = (d: string) => {
+      const [, m, day] = d.split('-');
+      return `${Number(m)}/${Number(day)}`;
+    };
 
+    const lines: string[] = [
+      `☀️ おはようございます！`,
+      `━━━━━━━━━━━━━━`,
+      `📋 ${user.display_name}さんのタスク`,
+      `　　全${tasks.length}件`,
+    ];
+
+    let num = 1;
     if (overdue.length > 0) {
-      lines.push(`\n🔴 期限切れ（${overdue.length}件）:`);
+      lines.push('', `🔴 期限切れ`);
+      lines.push('─────────');
       for (const t of overdue) {
-        const p = t.priority === 'high' ? '‼️' : t.priority === 'medium' ? '❗' : '・';
-        lines.push(`  ${p} ${t.title}（${t.due_date}）`);
+        const p = t.priority === 'high' ? '🔥' : '';
+        lines.push(`${num}. ${t.title} ${p}`);
+        lines.push(`　　⏰ ${shortDate(t.due_date)} 期限切れ`);
+        num++;
       }
     }
     if (dueToday.length > 0) {
-      lines.push(`\n🟡 今日期限（${dueToday.length}件）:`);
+      lines.push('', `🟡 今日やること`);
+      lines.push('─────────');
       for (const t of dueToday) {
-        const p = t.priority === 'high' ? '‼️' : t.priority === 'medium' ? '❗' : '・';
-        lines.push(`  ${p} ${t.title}`);
+        const p = t.priority === 'high' ? '🔥' : '';
+        lines.push(`${num}. ${t.title} ${p}`);
+        num++;
       }
     }
     if (upcoming.length > 0) {
-      lines.push(`\n🔵 今後の期限（${upcoming.length}件）:`);
+      lines.push('', `🔵 今後の予定`);
+      lines.push('─────────');
       for (const t of upcoming) {
-        lines.push(`  ・${t.title}（${t.due_date}）`);
+        lines.push(`${num}. ${t.title}`);
+        lines.push(`　　📅 〜${shortDate(t.due_date)}`);
+        num++;
       }
     }
     if (noDue.length > 0) {
-      lines.push(`\n📌 期限なし（${noDue.length}件）:`);
+      lines.push('', `📌 その他`);
+      lines.push('─────────');
       for (const t of noDue) {
-        const st = t.status === 'in_progress' ? '🔄' : '・';
-        lines.push(`  ${st} ${t.title}`);
+        const st = t.status === 'in_progress' ? '（進行中）' : '';
+        lines.push(`${num}. ${t.title} ${st}`);
+        num++;
       }
     }
+
+    lines.push('', '━━━━━━━━━━━━━━');
+    lines.push('💬 タスクの確認・更新はチャットで！');
 
     const sent = await linePush(user.line_user_id, lines.join('\n'), token);
     if (sent) sentCount++;
