@@ -1,12 +1,12 @@
 /**
  * 統合 Cron マスター
  * Vercel Hobby は cron 2個まで＋1日1回しか走らせられないため、
- * このエンドポイントを 1日1回呼び出し、UTC時刻で各タスクを内部分岐する。
+ * このエンドポイントを 1日1回呼び出し、全タスクをまとめて実行する。
  *
- * スケジュール:
- * - 毎日 13:00 UTC (= 22:00 JST): 日次記憶抽出 + 朝のブリーフィング前準備
- * - その後すぐ朝のブリーフィング送信もまとめて実行（朝の前日23:30 UTC送信から、
- *   1日1回統合運用に変更：22:00 JSTにブリーフィングデータ確定→push）
+ * スケジュール: 毎日 00:00 UTC (= 09:00 JST)
+ * - 朝のブリーフィング（owner/manager）
+ * - タスクリマインド（全スタッフ個別通知）
+ * - 日次記憶抽出（前日分）
  *
  * NOTE: タスクごとに try/catch で隔離。1つ失敗しても他は走る。
  */
@@ -112,6 +112,80 @@ async function runMorningBriefing(supabase: any) {
   return { sent: sentCount, total: users.length };
 }
 
+// ── タスク3: タスクリマインド（全スタッフ個別通知） ──
+async function runTaskReminders(supabase: any) {
+  const token = env.LINE_CHANNEL_ACCESS_TOKEN;
+  const now = new Date();
+  const today = new Date(now.getTime() + 9 * 3600000).toISOString().split('T')[0];
+  const tomorrow = new Date(now.getTime() + 9 * 3600000 + 86400000).toISOString().split('T')[0];
+
+  // 未完了タスクで期限が今日以前 or 明日のものを取得
+  const { data: tasks } = await supabase
+    .from('tasks')
+    .select('title, priority, due_date, status, assignee_id')
+    .in('status', ['pending', 'in_progress'])
+    .not('assignee_id', 'is', null)
+    .lte('due_date', tomorrow)
+    .order('due_date', { ascending: true });
+
+  if (!tasks || tasks.length === 0) return { sent: 0, message: 'No tasks to remind' };
+
+  // 担当者IDでグルーピング
+  const byAssignee = new Map<string, any[]>();
+  for (const t of tasks) {
+    const list = byAssignee.get(t.assignee_id) || [];
+    list.push(t);
+    byAssignee.set(t.assignee_id, list);
+  }
+
+  // 各担当者のLINE IDを取得
+  const assigneeIds = [...byAssignee.keys()];
+  const { data: users } = await supabase
+    .from('users')
+    .select('id, line_user_id, display_name')
+    .in('id', assigneeIds)
+    .eq('is_active', true);
+
+  if (!users || users.length === 0) return { sent: 0, message: 'No active assignees' };
+
+  let sentCount = 0;
+  for (const user of users) {
+    if (!user.line_user_id) continue;
+    const userTasks = byAssignee.get(user.id) || [];
+    if (userTasks.length === 0) continue;
+
+    const overdue = userTasks.filter((t: any) => t.due_date < today);
+    const dueToday = userTasks.filter((t: any) => t.due_date === today);
+    const dueTomorrow = userTasks.filter((t: any) => t.due_date === tomorrow);
+
+    const lines: string[] = [`⏰ おはようございます、${user.display_name}さん！\n📋 タスクリマインド:`];
+
+    if (overdue.length > 0) {
+      lines.push(`\n🔴 期限切れ（${overdue.length}件）:`);
+      overdue.forEach((t: any) => {
+        const icon = t.priority === 'high' ? '‼️' : t.priority === 'medium' ? '❗' : '・';
+        lines.push(`  ${icon} ${t.title}（期限: ${t.due_date}）`);
+      });
+    }
+    if (dueToday.length > 0) {
+      lines.push(`\n🟡 今日期限（${dueToday.length}件）:`);
+      dueToday.forEach((t: any) => {
+        const icon = t.priority === 'high' ? '‼️' : t.priority === 'medium' ? '❗' : '・';
+        lines.push(`  ${icon} ${t.title}`);
+      });
+    }
+    if (dueTomorrow.length > 0) {
+      lines.push(`\n🔵 明日期限（${dueTomorrow.length}件）:`);
+      dueTomorrow.forEach((t: any) => lines.push(`  ・${t.title}`));
+    }
+
+    const sent = await linePush(user.line_user_id, lines.join('\n'), token);
+    if (sent) sentCount++;
+  }
+
+  return { sent: sentCount, tasks: tasks.length };
+}
+
 // ── ハンドラ ──────────────────────────────────────
 export default async function handler(req: any, res: any) {
   const authHeader = req.headers['authorization'] || '';
@@ -125,8 +199,9 @@ export default async function handler(req: any, res: any) {
 
   // 全タスクを並列実行（個別エラー隔離）
   const results = await Promise.all([
-    safeRun('daily-memory', () => runDailyMemory(supabase)),
     safeRun('morning-briefing', () => runMorningBriefing(supabase)),
+    safeRun('task-reminders', () => runTaskReminders(supabase)),
+    safeRun('daily-memory', () => runDailyMemory(supabase)),
   ]);
 
   const hasError = results.some((r) => r.status === 'error');
