@@ -7,88 +7,68 @@ import { exportToSpreadsheet } from '../core/gas';
 import { extractJson } from '../core/gemini-utils';
 import { GEMINI_MODEL } from '../core/config';
 
-/** 画像を受信 → まず種類を判別し、レシート/領収書なら経費OCR、それ以外なら内容説明 */
+/** 画像を受信 → 1回のAPI呼出で分類+内容抽出を同時実行 */
 export async function handleReceiptImage(user: any, messageId: string, replyToken: string, supabase: any, token: string, geminiKey: string) {
   try {
-    // LINE APIから画像をダウンロード
     const imageBuffer = await downloadLineContent(messageId, token);
     const base64Image = Buffer.from(imageBuffer).toString('base64');
 
     const genAI = new GoogleGenerativeAI(geminiKey);
     const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
-
     const imagePart = { inlineData: { mimeType: 'image/jpeg', data: base64Image } };
 
-    // ── Step 1: 画像分類 ──
-    const classifyResult = await model.generateContent({
-      contents: [{
-        role: 'user',
-        parts: [
-          imagePart,
-          { text: `この画像の種類を判定してください。以下のいずれか1つだけ返してください:
-- receipt（レシート・領収書・請求書・納品書など金額が記載された書類）
-- document（その他の書類・文書・名刺・チラシ等）
-- photo（風景・人物・物・スクリーンショット等の一般写真）
-
-1単語のみ返してください。` },
-        ],
-      }],
-    });
-    const imageType = classifyResult.response.text().trim().toLowerCase();
-
-    // ── レシート/領収書でなければ汎用応答 ──
-    if (!imageType.includes('receipt')) {
-      const descResult = await model.generateContent({
-        contents: [{
-          role: 'user',
-          parts: [
-            imagePart,
-            { text: '画像の内容を簡潔に日本語で説明してください。仕事に関連する情報があれば強調してください。2-3文以内で。' },
-          ],
-        }],
-      });
-      const description = descResult.response.text().trim();
-      await lineReply(replyToken,
-        `📷 画像を確認しました:\n${description}\n\n💡 レシートの場合は「レシート」と送ってから画像を送信してください。`,
-        token
-      );
-      return;
-    }
-
-    // ── Step 2: レシートOCR ──
+    // ── 1回のAPIコールで分類＋内容抽出 ──
     const result = await model.generateContent({
       contents: [{
         role: 'user',
         parts: [
           imagePart,
-          {
-            text: `${EXPENSE_AGENT_PROMPT}
+          { text: `この画像を分析してJSON形式で返してください。
 
-この画像はレシートまたは領収書です。上記のカテゴリ分類ルールに従い、以下の情報をJSON形式で抽出してください。
-読み取れない項目はnullにしてください。
+まず画像の種類を判定:
+- "receipt": レシート・領収書・請求書・納品書（金額が記載された書類）
+- "photo": それ以外（風景・人物・物・スクリーンショット・書類・名刺等すべて）
 
+■ receiptの場合:
 {
+  "type": "receipt",
   "store_name": "店舗名",
   "date": "YYYY-MM-DD",
-  "amount": 数値（税込合計金額）,
+  "amount": 数値（税込合計）,
   "category": "交通費/消耗品/食費/通信費/水道光熱費/家賃/保険/修繕費/備品/外注費/会議費/接待交際費/研修費/その他",
-  "items": "主な品目の簡易リスト"
+  "items": "主な品目"
 }
 
-JSONのみ返してください。`
-          },
+■ photoの場合:
+{
+  "type": "photo",
+  "description": "画像の内容を日本語で2-3文で説明"
+}
+
+JSONのみ返してください。` },
         ],
       }],
     });
 
     const responseText = result.response.text();
-    let info: any;
+    let parsed: any;
     try {
-      info = extractJson(responseText);
+      parsed = extractJson(responseText);
     } catch {
-      await lineReply(replyToken, 'レシートの読み取りに失敗しました。\n手動で入力する場合は「レシート」と送ってください。', token);
+      // JSON解析失敗 → 画像の説明だけ返す
+      await lineReply(replyToken, `📷 画像を受け取りました。\n内容を読み取れませんでした。\n\nレシートの場合は、明るい場所で撮り直してみてください。`, token);
       return;
     }
+
+    // ── レシート以外 → 説明を返す ──
+    if (parsed.type !== 'receipt') {
+      const desc = parsed.description || '内容を確認しました。';
+      await lineReply(replyToken, `📷 ${desc}`, token);
+      return;
+    }
+
+    // ── レシート → 経費登録フロー ──
+    const info = parsed;
     const expenseDate = info.date || getToday();
     const amount = info.amount || 0;
     const storeName = info.store_name || '不明';
@@ -139,9 +119,9 @@ JSONのみ返してください。`
       token
     );
   } catch (e: any) {
-    console.error('Receipt OCR error:', e?.message);
+    console.error('Image handler error:', e?.message);
     await lineReply(replyToken,
-      'レシートの読み取りに失敗しました。\n手動で入力する場合は「レシート」と送ってください。',
+      '📷 画像の処理中にエラーが発生しました。\nもう一度送信してみてください。',
       token
     );
   }
