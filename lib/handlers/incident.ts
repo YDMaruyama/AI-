@@ -124,7 +124,7 @@ export async function continueIncident(user: any, text: string, replyToken: stri
     .eq('report_type', 'incident')
     .order('updated_at', { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   if (!draft) {
     await supabase.from('conversation_states').upsert({

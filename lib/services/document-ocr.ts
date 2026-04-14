@@ -113,7 +113,7 @@ export async function matchOrCreateVendor(
     .select('id')
     .eq('name', vendorName)
     .limit(1)
-    .single();
+    .maybeSingle();
   if (exact) return exact.id;
 
   // 2. 部分一致

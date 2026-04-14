@@ -32,7 +32,7 @@ export async function handleSharePostback(
     .from('users')
     .select('display_name, role')
     .eq('line_user_id', senderLineUserId)
-    .single();
+    .maybeSingle();
   const senderName = sender?.display_name || '不明';
 
   // 共有先を取得

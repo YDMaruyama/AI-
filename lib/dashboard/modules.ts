@@ -82,7 +82,7 @@ export const loadCalendar = (supabase: SupabaseClient) =>
 // ── Cashbox ───────────────────────────────────────
 export const loadCashboxBalance = (supabase: SupabaseClient) =>
   safeQuery('cashboxBalance', async () => {
-    const { data } = await supabase.from('cashbox_balance').select('*').single();
+    const { data } = await supabase.from('cashbox_balance').select('*').maybeSingle();
     return data || {};
   }, {} as any);
 

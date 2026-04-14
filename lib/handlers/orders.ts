@@ -14,16 +14,23 @@ export async function showOrders(user: any, replyToken: string, supabase: any, t
     return;
   }
 
+  // 全案件の進捗を並列取得（N+1 → 1+N並列）
+  const progressResults = await Promise.all(
+    orders.map((o: any) =>
+      supabase
+        .from('order_progress')
+        .select('completed_quantity, order_id')
+        .eq('order_id', o.id)
+        .order('recorded_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+    )
+  );
+
   const lines: string[] = [];
-  for (const o of orders) {
-    // 進捗取得
-    const { data: progress } = await supabase
-      .from('order_progress')
-      .select('completed_quantity')
-      .eq('order_id', o.id)
-      .order('recorded_at', { ascending: false })
-      .limit(1)
-      .single();
+  for (let i = 0; i < orders.length; i++) {
+    const o = orders[i];
+    const progress = progressResults[i]?.data;
 
     let progressStr = '';
     if (o.total_quantity && progress?.completed_quantity != null) {

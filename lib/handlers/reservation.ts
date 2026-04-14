@@ -108,7 +108,7 @@ JSON形式:
         .select('id')
         .ilike('name', `%${info.customer_name}%`)
         .limit(1)
-        .single();
+        .maybeSingle();
       if (existing) {
         customerId = existing.id;
       } else {
@@ -116,7 +116,7 @@ JSON形式:
           .from('salon_customers')
           .insert({ name: info.customer_name })
           .select('id')
-          .single();
+          .maybeSingle();
         customerId = newCustomer?.id;
       }
     }

@@ -325,7 +325,7 @@ async function getAdminDocDeadlines(supabase: any, today: string): Promise<strin
         .select('status')
         .eq('document_id', doc.id)
         .eq('target_period', period)
-        .single();
+        .maybeSingle();
 
       if (record?.status === 'submitted') continue; // 提出済みはスキップ
 
@@ -405,7 +405,7 @@ export async function recordPatternOutcome(
       .from('patterns')
       .select('hit_count, miss_count')
       .eq('id', patternId)
-      .single();
+      .maybeSingle();
     if (!data) return;
 
     const newHit = (data.hit_count || 0) + (hit ? 1 : 0);

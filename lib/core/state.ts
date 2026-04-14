@@ -14,7 +14,7 @@ export async function getConversationState(supabase: any, userId: string): Promi
     .from('conversation_states')
     .select('*')
     .eq('user_id', userId)
-    .single();
+    .maybeSingle();
 
   if (!data) return { state: 'idle', context: {} };
 

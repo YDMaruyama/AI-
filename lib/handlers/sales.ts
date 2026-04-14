@@ -51,7 +51,7 @@ async function showTodaySales(user: any, replyToken: string, supabase: any, toke
     .from('daily_sales')
     .select('*')
     .eq('sales_date', today)
-    .single();
+    .maybeSingle();
 
   if (!sale) {
     await lineReply(replyToken,

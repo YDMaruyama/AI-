@@ -60,7 +60,7 @@ export async function handleCashbox(user: any, text: string, replyToken: string,
 
 /** 残高表示 */
 async function showBalance(user: any, replyToken: string, supabase: any, token: string) {
-  const { data: balanceData } = await supabase.from('cashbox_balance').select('*').single();
+  const { data: balanceData } = await supabase.from('cashbox_balance').select('*').maybeSingle();
   const balance = balanceData?.current_balance || 0;
   const todayIn = balanceData?.today_in || 0;
   const todayOut = balanceData?.today_out || 0;
@@ -148,7 +148,7 @@ async function showMonthlySummary(user: any, replyToken: string, supabase: any, 
     .sort((a, b) => b[1] - a[1])
     .map(([cat, amt]) => `  ${cat}: ¥${amt.toLocaleString()}`);
 
-  const { data: bal } = await supabase.from('cashbox_balance').select('current_balance').single();
+  const { data: bal } = await supabase.from('cashbox_balance').select('current_balance').maybeSingle();
 
   let msg = `🔐 金庫 ${today.substring(0, 7)} 月次サマリー\n\n`;
   msg += `💰 現在残高: ¥${Number(bal?.current_balance || 0).toLocaleString()}\n`;
@@ -173,7 +173,7 @@ async function adjustBalance(user: any, text: string, replyToken: string, supaba
   }
 
   const actualBalance = parseInt(numMatch[0].replace(/,/g, ''), 10);
-  const { data: bal } = await supabase.from('cashbox_balance').select('current_balance').single();
+  const { data: bal } = await supabase.from('cashbox_balance').select('current_balance').maybeSingle();
   const currentBalance = Number(bal?.current_balance || 0);
   const diff = actualBalance - currentBalance;
 

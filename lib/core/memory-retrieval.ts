@@ -61,7 +61,7 @@ export async function buildMemoryContext(
         .from('user_profiles')
         .select('personality_summary, ai_notes, frequent_topics, work_patterns')
         .eq('user_id', userId)
-        .single(),
+        .maybeSingle(),
       // 2a. 知識ベース検索（タグマッチ）
       keywords.length > 0
         ? supabase

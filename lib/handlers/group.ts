@@ -89,7 +89,7 @@ export async function handleGroupMessage(
       .from('users')
       .select('id, display_name')
       .eq('line_user_id', lineUserId)
-      .single();
+      .maybeSingle();
     if (user) {
       displayName = user.display_name;
       userId = user.id;
@@ -143,7 +143,7 @@ export async function handleGroupMessage(
       try {
         // ユーザーオブジェクトを構築（AI Agent用）
         const user = userId
-          ? (await supabase.from('users').select('*').eq('id', userId).single()).data
+          ? (await supabase.from('users').select('*').eq('id', userId).maybeSingle()).data
           : { id: 'group', display_name: displayName, role: 'staff' };
 
         if (user) {
@@ -213,7 +213,7 @@ async function getOrCreateGroup(lineGroupId: string, supabase: any, token: strin
     .from('groups')
     .select('*')
     .eq('line_group_id', lineGroupId)
-    .single();
+    .maybeSingle();
 
   if (existing) return existing;
 
@@ -237,7 +237,7 @@ async function getOrCreateGroup(lineGroupId: string, supabase: any, token: strin
       is_active: true,
     })
     .select()
-    .single();
+    .maybeSingle();
 
   logger.info('group', `New group registered: ${groupName}`, { lineGroupId });
   return newGroup;

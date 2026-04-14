@@ -206,7 +206,7 @@ export async function continueExpenseInput(user: any, text: string, replyToken: 
     .from('conversation_states')
     .select('context')
     .eq('user_id', user.id)
-    .single();
+    .maybeSingle();
 
   const ctx = stateRow?.context || { step: 0, data: {} };
   const step = ctx.step || 0;
@@ -629,7 +629,7 @@ function parseExpenseDate(text: string): string | null {
 
 /** レシートOCR確認フローハンドラー */
 export async function handleReceiptConfirmation(user: any, text: string, replyToken: string, supabase: any, token: string, geminiKey: string) {
-  const { data: stateData } = await supabase.from('conversation_states').select('context').eq('user_id', user.id).single();
+  const { data: stateData } = await supabase.from('conversation_states').select('context').eq('user_id', user.id).maybeSingle();
   const receiptData = stateData?.context?.receipt_data;
 
   if (!receiptData) {

@@ -6,6 +6,6 @@ export async function getOwnerLineUserId(supabase: any): Promise<string | null> 
     .eq('role', 'owner')
     .eq('is_active', true)
     .limit(1)
-    .single();
+    .maybeSingle();
   return data?.line_user_id || null;
 }

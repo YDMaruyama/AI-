@@ -117,7 +117,7 @@ export async function continueReport(user: any, text: string, replyToken: string
     .eq('report_type', 'daily')
     .order('updated_at', { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
 
   if (!draft) {
     await supabase.from('conversation_states').upsert({
@@ -231,7 +231,7 @@ export async function confirmReport(user: any, text: string, replyToken: string,
       .eq('report_type', 'daily')
       .order('updated_at', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
     if (!draft || draftErr) {
       await supabase.from('conversation_states').upsert({
@@ -321,7 +321,7 @@ JSONのみ出力し、他の文言は不要です。`,
       .select('collected_data')
       .eq('user_id', user.id)
       .eq('report_type', 'daily')
-      .single();
+      .maybeSingle();
 
     const prevData = draft?.collected_data || {};
     let prevSummary = '';

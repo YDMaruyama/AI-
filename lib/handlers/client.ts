@@ -104,7 +104,7 @@ async function addClient(user: any, text: string, replyToken: string, supabase: 
     .select('id')
     .eq('name', name)
     .eq('status', 'active')
-    .single();
+    .maybeSingle();
 
   if (existing) {
     await lineReply(replyToken, `「${name}」さんは既に登録されています。`, token);

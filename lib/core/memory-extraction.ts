@@ -80,7 +80,7 @@ export async function extractDailyInsights(
     .from('user_profiles')
     .select('personality_summary, ai_notes')
     .eq('user_id', user.id)
-    .single();
+    .maybeSingle();
 
   // 既存の知識タイトル
   const { data: existingKb } = await supabase

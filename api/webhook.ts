@@ -188,20 +188,22 @@ export default async function handler(req: any, res: any) {
         continue;
       }
 
-      // --- 音声メッセージ ---
+      // --- 音声メッセージ → テキスト変換後、通常ルートに合流 ---
       if (msgType === 'audio') {
         try {
           const transcribedText = await handleVoiceMessage(user, event.message.id, replyToken, supabase, token, geminiKey);
           if (!transcribedText) {
-            await lineReply(replyToken, '音声を認識できませんでした。もう一度お試しください。', token);
+            await lineReply(replyToken, '🎤 聞き取れませんでした。もう少しはっきり話すか、テキストで送ってください。', token);
             continue;
           }
-          await lineReply(replyToken, `🎤 音声認識:\n「${transcribedText}」`, token);
-          const intent = await detectIntent(transcribedText, geminiKey);
-          await routeVoiceIntent(intent, user, transcribedText, lineUserId, supabase, token, geminiKey);
+          // 音声をテキストに変換後、テキストメッセージと同じルートで処理
+          await linePush(user.line_user_id, `🎤「${transcribedText}」`, token);
+          const { state, timeoutWarning } = await getConversationState(supabase, user.id);
+          if (timeoutWarning) await linePush(user.line_user_id, timeoutWarning, token);
+          await routeMessage(user, transcribedText, state, replyToken, supabase, token, geminiKey);
         } catch (e: any) {
           logger.error('webhook', 'Voice handler error', { error: e?.message });
-          try { await lineReply(replyToken, '音声の認識に失敗しました。テキストで入力してください。', token); } catch {}
+          try { await lineReply(replyToken, '🎤 音声の認識に失敗しました。テキストで送ってください。', token); } catch {}
         }
         continue;
       }
@@ -230,13 +232,13 @@ export default async function handler(req: any, res: any) {
       } catch (handlerError: any) {
         logger.error('webhook', 'Handler error', { error: handlerError?.message || String(handlerError) });
         const errMsg = handlerError?.message || String(handlerError);
-        let userErrMsg = '⚠ 処理中にエラーが発生しました。もう一度お試しください。';
+        let userErrMsg = '⚠ うまく処理できませんでした。\n別の言い方で試すか、しばらく後にもう一度お試しください。';
         if (/gemini|ai|generative|model|token/i.test(errMsg)) {
-          userErrMsg = '⚠ AI応答でエラーが発生しました。少し時間をおいて再度お試しください。';
+          userErrMsg = '⚠ AI応答が一時的に利用できません。\n30秒ほど待ってから再度お試しください。';
         } else if (/supabase|db|database|postgres|relation/i.test(errMsg)) {
-          userErrMsg = '⚠ データベースエラーが発生しました。管理者に連絡してください。';
+          userErrMsg = '⚠ データの取得に失敗しました。\nしばらく後にお試しください。続く場合は管理者に連絡してください。';
         } else if (/timeout|ECONNREFUSED|fetch/i.test(errMsg)) {
-          userErrMsg = '⚠ 外部サービスに接続できませんでした。しばらく後にお試しください。';
+          userErrMsg = '⚠ サーバーに接続できませんでした。\nネットワークを確認して再度お試しください。';
         }
         try { await lineReply(replyToken, userErrMsg, token); } catch {}
       }
