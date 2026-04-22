@@ -5,8 +5,7 @@
  */
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import { GEMINI_MODEL } from './config';
-import { SHARED_PERSONALITY } from './personality';
-import { CONTEXT_TEMPLATE } from './personality';
+import { SHARED_PERSONALITY, CONTEXT_TEMPLATE, WELFARE_KNOWLEDGE, SALON_KNOWLEDGE, GLOBAL_KNOWLEDGE, ANALYSIS_KNOWLEDGE } from './personality';
 import { getToday, roleName } from './utils';
 import { stripMarkdown } from './gemini';
 import { logger } from './logger';
@@ -258,9 +257,26 @@ export async function aiAgentResponse(
     tools: [{ functionDeclarations: DB_TOOLS as any }],
   });
 
+  // 質問内容に応じて必要な専門知識を選択的に注入（トークン節約）
+  const domainKnowledge: string[] = [];
+  const lowerText = text.toLowerCase();
+  if (/利用者|日報|支援|加算|行政|A型|B型|工賃|国保連|処遇改善/.test(text)) {
+    domainKnowledge.push(WELFARE_KNOWLEDGE);
+  }
+  if (/サロン|予約|施術|リピート|客単価|キャンセル|よもぎ|ハーブ|リンパ|デトックス|SALT/.test(text)) {
+    domainKnowledge.push(SALON_KNOWLEDGE);
+  }
+  if (/ドバイ|海外|シーラン|プロジェクト|マイルストーン|排毒|サウナ|ホテル/.test(text)) {
+    domainKnowledge.push(GLOBAL_KNOWLEDGE);
+  }
+  if (/経費|売上|分析|異常|KPI|前月比|前年比|推移|傾向/.test(text)) {
+    domainKnowledge.push(ANALYSIS_KNOWLEDGE);
+  }
+
   const systemPrompt = `${SHARED_PERSONALITY}
 
 ${CONTEXT_TEMPLATE(user.display_name, roleName(user.role), getToday())}
+${domainKnowledge.length > 0 ? domainKnowledge.join('\n') : ''}
 
 【ツール活用ルール】
 - 質問に答えるために必要なデータは、必ずツールで検索してから回答する
@@ -268,11 +284,13 @@ ${CONTEXT_TEMPLATE(user.display_name, roleName(user.role), getToday())}
 - 複数の事業にまたがる質問には、複数ツールを組み合わせて回答する
 - データが見つからない場合は「該当する情報が見つかりませんでした」と正直に伝える
 - 数字を聞かれたら合計・平均・比較等を計算して提示する
+- 専門知識がある分野は、データ+知識を組み合わせて実用的なアドバイスをする
 
 【回答の優先度】
 1. 期限切れ・緊急事項があれば最初に警告
 2. 質問への直接回答（数字・ファクト）
-3. 関連する補足情報（あれば簡潔に）`;
+3. 専門知識に基づく判断・提案（あれば）
+4. 関連する補足情報（あれば簡潔に）`;
 
   try {
     // 0. 直近の会話履歴を取得（コンテキスト強化）
@@ -281,14 +299,13 @@ ${CONTEXT_TEMPLATE(user.display_name, roleName(user.role), getToday())}
       .select('role, content')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
-      .limit(6);
+      .limit(10);
     const recentHistory: any[] = [];
     if (recentMsgs && recentMsgs.length > 0) {
-      // 古い順に並べ替えてGemini形式に変換
       for (const m of [...recentMsgs].reverse()) {
         recentHistory.push({
           role: m.role === 'user' ? 'user' : 'model',
-          parts: [{ text: m.content.substring(0, 300) }], // トークン節約
+          parts: [{ text: m.content.substring(0, 1000) }],
         });
       }
     }
