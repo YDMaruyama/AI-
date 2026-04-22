@@ -5,7 +5,7 @@
  */
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import { GEMINI_MODEL } from './config';
-import { SHARED_PERSONALITY, CONTEXT_TEMPLATE, WELFARE_KNOWLEDGE, SALON_KNOWLEDGE, GLOBAL_KNOWLEDGE, ANALYSIS_KNOWLEDGE } from './personality';
+import { SHARED_PERSONALITY, CONTEXT_TEMPLATE, SALON_KNOWLEDGE, GLOBAL_KNOWLEDGE, ANALYSIS_KNOWLEDGE } from './personality';
 import { getToday, roleName } from './utils';
 import { stripMarkdown } from './gemini';
 import { logger } from './logger';
@@ -260,9 +260,6 @@ export async function aiAgentResponse(
   // 質問内容に応じて必要な専門知識を選択的に注入（トークン節約）
   const domainKnowledge: string[] = [];
   const lowerText = text.toLowerCase();
-  if (/利用者|日報|支援|加算|行政|A型|B型|工賃|国保連|処遇改善/.test(text)) {
-    domainKnowledge.push(WELFARE_KNOWLEDGE);
-  }
   if (/サロン|予約|施術|リピート|客単価|キャンセル|よもぎ|ハーブ|リンパ|デトックス|SALT/.test(text)) {
     domainKnowledge.push(SALON_KNOWLEDGE);
   }
