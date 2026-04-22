@@ -5,6 +5,7 @@ import { defineSkill } from './_define';
 import { SchemaType } from '@google/generative-ai';
 import { searchDocuments, showDocumentSummary, addDocument, markPaid } from '../handlers/invoice';
 import { getToday } from '../core/utils';
+import { stripHonorifics } from '../core/text-utils';
 
 export const invoiceSkill = defineSkill({
   id: 'invoice',
@@ -50,7 +51,8 @@ export const invoiceSkill = defineSkill({
         },
       },
       execute: async (args, supabase, _userId) => {
-        const vendor = args.vendor || '';
+        const rawVendor = args.vendor || '';
+        const vendor = rawVendor ? stripHonorifics(rawVendor) : '';
         const status = args.status || 'all';
         const period = args.period || 'all';
         const today = getToday();

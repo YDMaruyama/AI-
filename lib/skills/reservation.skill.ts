@@ -5,6 +5,7 @@ import { defineSkill } from './_define';
 import { SchemaType } from '@google/generative-ai';
 import { showReservations, addReservation, showMenus, showCustomer } from '../handlers/reservation';
 import { getToday } from '../core/utils';
+import { stripHonorifics } from '../core/text-utils';
 
 export const reservationSkill = defineSkill({
   id: 'reservation',
@@ -108,7 +109,8 @@ export const reservationSkill = defineSkill({
         },
       },
       execute: async (args, supabase, _userId) => {
-        const name = args.name || '';
+        const rawName = args.name || '';
+        const name = rawName ? stripHonorifics(rawName) : '';
 
         let q = supabase
           .from('salon_customers')

@@ -5,6 +5,7 @@ import { defineSkill } from './_define';
 import { SchemaType } from '@google/generative-ai';
 import { showTasks } from '../handlers/tasks';
 import { getToday } from '../core/utils';
+import { parseNameQuery } from '../core/text-utils';
 
 export const taskSkill = defineSkill({
   id: 'task',
@@ -48,23 +49,7 @@ export const taskSkill = defineSkill({
       execute: async (args, supabase, _userId) => {
         const status = args.status || 'all';
         const rawAssignee = (args.assignee_name || '').trim();
-
-        // 役職→roleマッピング
-        const roleKeywords: Record<string, string> = {
-          社長: 'owner', 会長: 'owner', オーナー: 'owner',
-          管理者: 'manager', マネージャー: 'manager', 店長: 'manager',
-          スタッフ: 'staff', 職員: 'staff',
-        };
-
-        // 敬称・役職を除去した「核」の名前を抽出
-        const titleRegex = /(社長|会長|オーナー|管理者|マネージャー|店長|スタッフ|職員|さん|様|氏|くん|ちゃん)/g;
-        const coreName = rawAssignee.replace(titleRegex, '').trim();
-
-        // 役職キーワードがあれば role 検索もOR条件に
-        let matchedRole: string | null = null;
-        for (const [kw, r] of Object.entries(roleKeywords)) {
-          if (rawAssignee.includes(kw)) { matchedRole = r; break; }
-        }
+        const { coreName, role: matchedRole } = parseNameQuery(rawAssignee);
 
         // 担当者名 → user_id 解決
         let assigneeIds: string[] | null = null;
