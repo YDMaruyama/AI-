@@ -132,7 +132,7 @@ export async function deleteCalendarEvent(user: any, text: string, replyToken: s
     .limit(5);
 
   if (!events || events.length === 0) {
-    await lineReply(replyToken, `「${keyword}」に一致する予定が見つかりません。`, token);
+    await lineReply(replyToken, `「${keyword}」に一致する予定が見つかりません。\n\n「予定」で今後の予定一覧を確認できます。`, token);
     return;
   }
 

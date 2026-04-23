@@ -51,7 +51,7 @@ export const reportSkill = defineSkill({
           .from('daily_reports')
           .select('user_id, summary, content, report_date')
           .eq('report_date', date);
-        if (!data || data.length === 0) return `${date} の日報はありません。`;
+        if (!data || data.length === 0) return `${date} の日報はありません。「日報」で今日の日報を作成できます。`;
         return `${date} の日報（${data.length}件）:\n` + data.map((r: any) =>
           `- ${r.content?.substring(0, 150) || r.summary || '(内容なし)'}`
         ).join('\n');

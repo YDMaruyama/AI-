@@ -8,6 +8,7 @@ import { extractJson } from '../core/gemini-utils';
 import { getToday, getNowJST } from '../core/utils';
 import { logger } from '../core/logger';
 import { extractDocumentFromText, saveDocument, matchOrCreateVendor } from '../services/document-ocr';
+import { stripHonorifics } from '../core/text-utils';
 
 /**
  * 請求書検索（自然言語対応）
@@ -26,7 +27,7 @@ export async function searchDocuments(user: any, text: string, replyToken: strin
     query = query.eq('payment_status', 'unpaid');
     const { data: docs } = await query.limit(10);
     if (!docs || docs.length === 0) {
-      await lineReply(replyToken, '未払いの請求書はありません。', token);
+      await lineReply(replyToken, '✅ 未払いの請求書はありません。\n\n写真を送るか「請求書追加 〇〇」で登録できます。', token);
       return;
     }
     const lines = docs.map((d: any) => {
@@ -57,7 +58,7 @@ export async function searchDocuments(user: any, text: string, replyToken: strin
   // 会社名で直接検索
   if (!vendorSearch) {
     const cleaned = text.replace(/請求書|請求|領収書|の|は|を|検索|確認|見せて|教えて|いくら|\?|？/g, '').trim();
-    if (cleaned.length >= 2) vendorSearch = cleaned;
+    if (cleaned.length >= 2) vendorSearch = stripHonorifics(cleaned);
   }
 
   // 月指定の検索
@@ -220,7 +221,7 @@ export async function addDocument(user: any, text: string, replyToken: string, s
  * 「支払い完了 東京電力」
  */
 export async function markPaid(user: any, text: string, replyToken: string, supabase: any, token: string) {
-  const cleaned = text.replace(/支払い?(完了|済み?|済)\s*/, '').trim();
+  const cleaned = stripHonorifics(text.replace(/支払い?(完了|済み?|済)\s*/, '').trim());
 
   // 直近の未払い請求書から検索
   let query = supabase.from('documents')

@@ -10,7 +10,7 @@ export async function showOrders(user: any, replyToken: string, supabase: any, t
     .limit(10);
 
   if (!orders || orders.length === 0) {
-    await lineReply(replyToken, '現在進行中の案件はありません。', token);
+    await lineReply(replyToken, '現在進行中の案件はありません。\n\n「案件追加 〇〇」で新規案件を登録できます。', token);
     return;
   }
 

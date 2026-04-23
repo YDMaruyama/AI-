@@ -50,7 +50,7 @@ export const calendarSkill = defineSkill({
           .gte('start_time', today)
           .order('start_time', { ascending: true })
           .limit(10);
-        if (!data || data.length === 0) return `今後${days}日間の予定はありません。`;
+        if (!data || data.length === 0) return `今後${days}日間の予定はありません。「予定追加 〇〇」で新しい予定を登録できます。`;
         const lines = data.map((e: any) => {
           const utc = new Date(e.start_time);
           const jst = new Date(utc.getTime() + 9 * 60 * 60 * 1000);

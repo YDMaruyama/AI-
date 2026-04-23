@@ -74,7 +74,7 @@ export const taskSkill = defineSkill({
           }
 
           if (candidates.length === 0) {
-            return `「${rawAssignee}」に該当するユーザーが見つかりません。`;
+            return `「${rawAssignee}」に該当するユーザーが見つかりません。名前を確認するか、assigneeを省略して全員のタスクを検索してください。`;
           }
           assigneeIds = candidates.map((u: any) => u.id);
         }
@@ -98,8 +98,8 @@ export const taskSkill = defineSkill({
         const { data } = await q;
         if (!data || data.length === 0) {
           return rawAssignee
-            ? `${rawAssignee}の現在のタスクはありません。`
-            : '現在のタスクはありません。';
+            ? `${rawAssignee}の現在のタスクはありません。「タスク追加 〇〇」で新規作成できます。`
+            : '現在のタスクはありません。「タスク追加 〇〇」で新規作成できます。';
         }
 
         // 担当者名を引くためのマップ作成

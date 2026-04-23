@@ -14,6 +14,7 @@ import {
   handleReceiptConfirmation,
 } from '../handlers/expense';
 import { getToday } from '../core/utils';
+import { parseFlexiblePeriod } from '../core/text-utils';
 
 export const expenseSkill = defineSkill({
   id: 'expense',
@@ -67,38 +68,15 @@ export const expenseSkill = defineSkill({
         properties: {
           period: {
             type: SchemaType.STRING,
-            description: '期間: today, this_month, last_month。省略でthis_month',
+            description: '期間: today, this_month, last_month, 先々月, 3月, 先週, 今週 等。自然言語OK。省略でthis_month',
           },
         },
       },
       execute: async (args, supabase, userId) => {
         const period = args.period || 'this_month';
         const today = getToday();
-        const [y, m, d] = today.split('-').map(Number);
-
-        let fromDate: string;
-        let toDate: string;
-        let label: string;
-
-        if (period === 'today') {
-          fromDate = today;
-          toDate = `${y}-${String(m).padStart(2, '0')}-${String(d + 1).padStart(2, '0')}`;
-          label = `${m}/${d}`;
-        } else if (period === 'last_month') {
-          let targetMonth = m - 1;
-          let targetYear = y;
-          if (targetMonth <= 0) { targetMonth = 12; targetYear--; }
-          fromDate = `${targetYear}-${String(targetMonth).padStart(2, '0')}-01`;
-          toDate = `${y}-${String(m).padStart(2, '0')}-01`;
-          label = `${targetMonth}月`;
-        } else {
-          // this_month
-          fromDate = `${y}-${String(m).padStart(2, '0')}-01`;
-          const nextMonth = m + 1 > 12 ? 1 : m + 1;
-          const nextYear = m + 1 > 12 ? y + 1 : y;
-          toDate = `${nextYear}-${String(nextMonth).padStart(2, '0')}-01`;
-          label = `${m}月`;
-        }
+        const parsed = parseFlexiblePeriod(period, today) || parseFlexiblePeriod('this_month', today)!;
+        const { fromDate, toDate, label } = parsed;
 
         const { data } = await supabase
           .from('expenses')
@@ -108,7 +86,7 @@ export const expenseSkill = defineSkill({
           .lt('expense_date', toDate)
           .order('expense_date', { ascending: true });
 
-        if (!data || data.length === 0) return `${label}の経費はありません。`;
+        if (!data || data.length === 0) return `${label}の経費はありません。「経費入力」またはレシート写真で登録できます。`;
 
         const total = data.reduce((s: number, e: any) => s + Number(e.amount || 0), 0);
         let result = `${label}の経費: ${data.length}件 合計¥${total.toLocaleString()}\n`;

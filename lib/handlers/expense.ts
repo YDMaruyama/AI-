@@ -70,10 +70,15 @@ JSONのみ返してください。` },
     // ── レシート → 経費登録フロー ──
     const info = parsed;
     const expenseDate = info.date || getToday();
-    const amount = info.amount || 0;
-    const storeName = info.store_name || '不明';
+    const amount = Number(info.amount) || 0;
+    const storeName = (info.store_name || '不明').substring(0, 100);
     const category = info.category || 'その他';
-    const description = Array.isArray(info.items) ? info.items.join(', ') : (info.items || '');
+    const description = Array.isArray(info.items) ? info.items.join(', ').substring(0, 200) : ((info.items || '') as string).substring(0, 200);
+
+    if (amount <= 0) {
+      await lineReply(replyToken, '⚠️ レシートの金額を読み取れませんでした。\n\n「経費入力 コンビニ 500円」のように手入力してください。', token);
+      return;
+    }
 
     // 重複チェック（同日・同店舗・同金額が直近5分以内にあれば警告）
     const { data: duplicate } = await supabase
@@ -403,7 +408,7 @@ export async function exportExpenses(user: any, replyToken: string, supabase: an
   const { data: expenses } = await query;
 
   if (!expenses || expenses.length === 0) {
-    await lineReply(replyToken, `${month + 1}月の経費データがありません。`, token);
+    await lineReply(replyToken, `${month + 1}月の経費データがありません。\n\n「経費入力」またはレシート写真を送って登録できます。`, token);
     return;
   }
 
@@ -457,7 +462,7 @@ export async function editExpense(user: any, text: string, replyToken: string, s
     .limit(5);
 
   if (!recent || recent.length === 0) {
-    await lineReply(replyToken, '修正できる経費がありません。', token);
+    await lineReply(replyToken, '修正できる経費がありません。\n\nまず「経費入力」で経費を登録してください。', token);
     return;
   }
 
@@ -570,7 +575,7 @@ export async function deleteExpense(user: any, replyToken: string, supabase: any
     .limit(1);
 
   if (!recent || recent.length === 0) {
-    await lineReply(replyToken, '削除できる経費がありません。', token);
+    await lineReply(replyToken, '削除できる経費がありません。\n\nまず「経費入力」で経費を登録してください。', token);
     return;
   }
 

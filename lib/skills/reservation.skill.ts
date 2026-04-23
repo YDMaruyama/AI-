@@ -62,7 +62,7 @@ export const reservationSkill = defineSkill({
 
         if (!reservations || reservations.length === 0) {
           const label = targetDate === today ? '今日' : targetDate;
-          return `${label}の予約はありません。`;
+          return `${label}の予約はありません。「予約追加 〇〇さん 14:00 メニュー名」で登録できます。`;
         }
 
         const lines = reservations.map((r: any) => {
@@ -125,7 +125,7 @@ export const reservationSkill = defineSkill({
         const { data: customers } = await q;
 
         if (!customers || customers.length === 0) {
-          return name ? `「${name}」に該当する顧客が見つかりません。` : '顧客データがありません。';
+          return name ? `「${name}」に該当する顧客が見つかりません。名前を確認するか「顧客」で一覧を表示できます。` : '顧客データがありません。予約を追加すると自動で顧客登録されます。';
         }
 
         const lines = customers.map((c: any) => {

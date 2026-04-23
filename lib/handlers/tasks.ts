@@ -17,7 +17,7 @@ export async function showTasks(user: any, _text: string, replyToken: string, su
   const { data: tasks, error } = await query;
 
   if (error || !tasks || tasks.length === 0) {
-    await lineReply(replyToken, '現在のタスクはありません。', token);
+    await lineReply(replyToken, '✅ 現在のタスクはありません。\n\n「タスク追加 〇〇」で新しいタスクを作成できます。', token);
     return;
   }
 

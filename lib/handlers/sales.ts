@@ -82,6 +82,14 @@ async function showTodaySales(user: any, replyToken: string, supabase: any, toke
 
 /** クイック売上登録（金額のみ） */
 async function quickSalesRecord(user: any, amount: number, replyToken: string, supabase: any, token: string) {
+  if (isNaN(amount) || amount <= 0) {
+    await lineReply(replyToken, '正しい金額を入力してください（1円以上）。\n例: 「売上 50000」', token);
+    return;
+  }
+  if (amount > 100_000_000) {
+    await lineReply(replyToken, '金額が大きすぎます。金額を確認してください。', token);
+    return;
+  }
   const today = getToday();
 
   const { error } = await supabase
@@ -135,6 +143,10 @@ JSONのみ返してください。`;
     const info = extractJson(jsonStr);
 
     if (!info.total_amount || info.total_amount <= 0) throw new Error('invalid amount');
+    if (info.total_amount > 100_000_000) {
+      await lineReply(replyToken, '金額が大きすぎます。金額を確認してください。', token);
+      return;
+    }
 
     const today = getToday();
     const { error } = await supabase
@@ -182,7 +194,7 @@ async function showMonthlySales(user: any, replyToken: string, supabase: any, to
     .order('sales_date', { ascending: true });
 
   if (!sales || sales.length === 0) {
-    await lineReply(replyToken, '今月の売上データがありません。', token);
+    await lineReply(replyToken, '今月の売上データがありません。\n\n「売上入力」で登録できます。', token);
     return;
   }
 
@@ -237,7 +249,7 @@ async function exportSales(user: any, replyToken: string, supabase: any, token: 
     .order('sales_date', { ascending: true });
 
   if (!sales || sales.length === 0) {
-    await lineReply(replyToken, `${month}月の売上データがありません。`, token);
+    await lineReply(replyToken, `${month}月の売上データがありません。\n\n「売上入力」で登録できます。`, token);
     return;
   }
 

@@ -7,6 +7,7 @@ import { geminiGenerate, stripMarkdown } from '../core/gemini';
 import { extractJson } from '../core/gemini-utils';
 import { getToday } from '../core/utils';
 import { logger } from '../core/logger';
+import { stripHonorifics } from '../core/text-utils';
 
 /** 今日の予約一覧を表示 */
 export async function showReservations(user: any, text: string, replyToken: string, supabase: any, token: string) {
@@ -37,7 +38,7 @@ export async function showReservations(user: any, text: string, replyToken: stri
 
   if (!reservations || reservations.length === 0) {
     const label = targetDate === today ? '今日' : targetDate;
-    await lineReply(replyToken, `📅 ${label}の予約はありません。`, token);
+    await lineReply(replyToken, `📅 ${label}の予約はありません。\n\n「予約追加 山田さん 14:00 カット」で登録できます。`, token);
     return;
   }
 
@@ -124,6 +125,15 @@ JSON形式:
     // 開始・終了時刻を計算
     const timeStr = info.time || '10:00';
     const dateStr = info.date || today;
+    // 日付・時間の形式チェック
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+      await lineReply(replyToken, '日付の形式が正しくありません。\n例: 「予約追加 山田さん 14:00 カット」', token);
+      return;
+    }
+    if (!/^\d{2}:\d{2}$/.test(timeStr)) {
+      await lineReply(replyToken, '時間の形式が正しくありません。\n例: 「予約追加 山田さん 14:00 カット」', token);
+      return;
+    }
     const startTime = `${dateStr}T${timeStr}:00+09:00`;
     const endDate = new Date(new Date(startTime).getTime() + durationMin * 60000);
     const endTimeJST = `${dateStr}T${String(endDate.getUTCHours() + 9).padStart(2, '0')}:${String(endDate.getUTCMinutes()).padStart(2, '0')}:00+09:00`;
@@ -201,7 +211,7 @@ export async function showCustomer(user: any, text: string, replyToken: string, 
       .limit(10);
 
     if (!recent || recent.length === 0) {
-      await lineReply(replyToken, '顧客データがありません。', token);
+      await lineReply(replyToken, '顧客データがありません。\n\n予約を追加すると自動で顧客登録されます。', token);
       return;
     }
 
@@ -218,11 +228,11 @@ export async function showCustomer(user: any, text: string, replyToken: string, 
   const { data: customers } = await supabase
     .from('salon_customers')
     .select('*')
-    .ilike('name', `%${nameMatch}%`)
+    .ilike('name', `%${stripHonorifics(nameMatch)}%`)
     .limit(5);
 
   if (!customers || customers.length === 0) {
-    await lineReply(replyToken, `「${nameMatch}」に該当する顧客が見つかりません。`, token);
+    await lineReply(replyToken, `「${nameMatch}」に該当する顧客が見つかりません。\n\n「顧客」で最近の顧客一覧を確認できます。`, token);
     return;
   }
 

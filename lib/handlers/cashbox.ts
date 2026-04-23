@@ -104,7 +104,7 @@ async function showHistory(user: any, replyToken: string, supabase: any, token: 
     .limit(15);
 
   if (!history || history.length === 0) {
-    await lineReply(replyToken, '金庫の取引履歴がありません。', token);
+    await lineReply(replyToken, '金庫の取引履歴がありません。\n\n「金庫入金 1000」「金庫出金 500」で記録できます。', token);
     return;
   }
 
@@ -128,7 +128,7 @@ async function showMonthlySummary(user: any, replyToken: string, supabase: any, 
     .order('transaction_date', { ascending: true });
 
   if (!txs || txs.length === 0) {
-    await lineReply(replyToken, '今月の金庫取引はありません。', token);
+    await lineReply(replyToken, '今月の金庫取引はありません。\n\n「金庫入金 1000」「金庫出金 500」で記録できます。', token);
     return;
   }
 
@@ -173,6 +173,14 @@ async function adjustBalance(user: any, text: string, replyToken: string, supaba
   }
 
   const actualBalance = parseInt(numMatch[0].replace(/,/g, ''), 10);
+  if (isNaN(actualBalance) || actualBalance < 0) {
+    await lineReply(replyToken, '正しい金額を入力してください（0円以上）。', token);
+    return;
+  }
+  if (actualBalance > 100_000_000) {
+    await lineReply(replyToken, '金額が大きすぎます。金額を確認してください。', token);
+    return;
+  }
   const { data: bal } = await supabase.from('cashbox_balance').select('current_balance').maybeSingle();
   const currentBalance = Number(bal?.current_balance || 0);
   const diff = actualBalance - currentBalance;
@@ -211,6 +219,14 @@ async function quickTransaction(user: any, type: 'in' | 'out', text: string, rep
   }
 
   const amount = parseInt(numMatch[0].replace(/,/g, ''), 10);
+  if (isNaN(amount) || amount <= 0) {
+    await lineReply(replyToken, '正しい金額を入力してください（1円以上）。', token);
+    return;
+  }
+  if (amount > 100_000_000) {
+    await lineReply(replyToken, '金額が大きすぎます。金額を確認してください。', token);
+    return;
+  }
   const desc = text.replace(/[\d,]+/, '').replace(/円/g, '').trim() || (type === 'in' ? '入金' : '出金');
 
   // DB関数でトランザクション安全に挿入

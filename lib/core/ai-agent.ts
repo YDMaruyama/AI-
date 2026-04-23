@@ -6,6 +6,7 @@
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import { GEMINI_MODEL } from './config';
 import { SHARED_PERSONALITY, CONTEXT_TEMPLATE, SALON_KNOWLEDGE, GLOBAL_KNOWLEDGE, ANALYSIS_KNOWLEDGE } from './personality';
+import { stripHonorifics } from './text-utils';
 import { getToday, roleName } from './utils';
 import { stripMarkdown } from './gemini';
 import { logger } from './logger';
@@ -104,7 +105,7 @@ async function executeTool(name: string, args: any, supabase: any, userId: strin
     // レガシーswitch（まだスキル化されていないもの）
     switch (name) {
       case 'search_knowledge': {
-        const q = args.query || '';
+        const q = stripHonorifics(args.query || '');
         const data = await query(supabase
           .from('knowledge_base')
           .select('title, content, category, created_at')
@@ -112,27 +113,27 @@ async function executeTool(name: string, args: any, supabase: any, userId: strin
           .or(`content.ilike.%${q}%,title.ilike.%${q}%`)
           .order('created_at', { ascending: false })
           .limit(5));
-        if (data.length === 0) return '該当する情報はありません。';
+        if (data.length === 0) return '該当する情報はありません。別のキーワードで検索するか、知識ベースに情報を追加する必要があるかもしれません。';
         return data.map((k: any) => `[${k.category}] ${k.title}: ${k.content}`).join('\n');
       }
       case 'search_conversations': {
-        const q = args.query || '';
+        const q = stripHonorifics(args.query || '');
         const { data } = await supabase
           .from('conversation_messages')
           .select('role, content, created_at')
           .ilike('content', `%${q}%`)
           .order('created_at', { ascending: false })
           .limit(10);
-        if (!data || data.length === 0) return '該当する会話はありません。';
+        if (!data || data.length === 0) return '該当する会話はありません。別のキーワードで検索してみてください。';
         return data.map((m: any) => `${m.role === 'user' ? 'U' : 'A'}(${(m.created_at || '').substring(0, 10)}): ${(m.content || '').substring(0, 100)}`).join('\n');
       }
       case 'get_staff': {
         const { data } = await supabase.from('users').select('display_name, role, job_description, is_active, last_message_at').eq('is_active', true);
-        if (!data || data.length === 0) return 'スタッフ情報はありません。';
+        if (!data || data.length === 0) return 'スタッフ情報はありません。まだスタッフが登録されていない可能性があります。';
         return data.map((u: any) => `${u.display_name}（${roleName(u.role)}）${u.job_description ? ' - ' + u.job_description : ''}`).join('\n');
       }
       case 'get_projects': {
-        const query = args.query || '';
+        const query = stripHonorifics(args.query || '');
         const statusFilter = args.status || '';
         let q = supabase
           .from('projects')
@@ -150,7 +151,7 @@ async function executeTool(name: string, args: any, supabase: any, userId: strin
         }
 
         const { data } = await q.limit(10);
-        if (!data || data.length === 0) return '該当するプロジェクトはありません。';
+        if (!data || data.length === 0) return '該当するプロジェクトはありません。検索キーワードを変えるか、ステータスフィルタを外して再検索してください。';
 
         return data.map((p: any) => {
           let line = `【${p.status}/${p.priority}】${p.title}`;
@@ -164,7 +165,7 @@ async function executeTool(name: string, args: any, supabase: any, userId: strin
         }).join('\n\n');
       }
       case 'get_project_detail': {
-        const title = args.project_title || '';
+        const title = stripHonorifics(args.project_title || '');
         const { data: projects } = await supabase
           .from('projects')
           .select('id, title, description, status, priority, category, next_action, target_date, stakeholders, notion_url')
@@ -214,7 +215,7 @@ async function executeTool(name: string, args: any, supabase: any, userId: strin
         return result;
       }
       case 'get_project_tasks': {
-        const query = args.query || '';
+        const query = stripHonorifics(args.query || '');
         const statusFilter = args.status || '';
         let q = supabase
           .from('project_tasks')
@@ -233,7 +234,7 @@ async function executeTool(name: string, args: any, supabase: any, userId: strin
         }
 
         const { data } = await q;
-        if (!data || data.length === 0) return '該当するタスクはありません。';
+        if (!data || data.length === 0) return '該当するタスクはありません。「タスク追加 〇〇」で新しいタスクを作成できます。';
         return data.map((t: any) =>
           `[${t.status}/${t.priority}] ${t.title}${t.assignee ? ' 担当:' + t.assignee : ''}${t.due_date ? ' 期限:' + t.due_date : ''}`
         ).join('\n');

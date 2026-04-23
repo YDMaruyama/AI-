@@ -5,7 +5,7 @@ import { defineSkill } from './_define';
 import { SchemaType } from '@google/generative-ai';
 import { searchDocuments, showDocumentSummary, addDocument, markPaid } from '../handlers/invoice';
 import { getToday } from '../core/utils';
-import { stripHonorifics } from '../core/text-utils';
+import { stripHonorifics, parseFlexiblePeriod } from '../core/text-utils';
 
 export const invoiceSkill = defineSkill({
   id: 'invoice',
@@ -47,7 +47,7 @@ export const invoiceSkill = defineSkill({
         properties: {
           vendor: { type: SchemaType.STRING, description: '業者名・会社名（部分一致）。電気→電力、ガス→ガス等のキーワードでもOK' },
           status: { type: SchemaType.STRING, description: '支払状態: unpaid, paid, overdue, all。省略で全件' },
-          period: { type: SchemaType.STRING, description: 'this_month, last_month, all。省略でall' },
+          period: { type: SchemaType.STRING, description: '期間: today, this_month, last_month, 先々月, 3月, 先週, 今週 等。自然言語OK。省略でall' },
         },
       },
       execute: async (args, supabase, _userId) => {
@@ -66,15 +66,14 @@ export const invoiceSkill = defineSkill({
           q = q.ilike('vendor_name', `%${mapped}%`);
         }
         if (status !== 'all') q = q.eq('payment_status', status);
-        if (period === 'this_month') {
-          q = q.gte('document_date', today.substring(0, 7) + '-01');
-        } else if (period === 'last_month') {
-          const [y, m] = today.split('-').map(Number);
-          const from = m === 1 ? `${y - 1}-12-01` : `${y}-${String(m - 1).padStart(2, '0')}-01`;
-          q = q.gte('document_date', from).lt('document_date', today.substring(0, 7) + '-01');
+        if (period && period !== 'all') {
+          const parsed = parseFlexiblePeriod(period, today);
+          if (parsed) {
+            q = q.gte('document_date', parsed.fromDate).lt('document_date', parsed.toDate);
+          }
         }
         const { data } = await q;
-        if (!data || data.length === 0) return '該当する請求書・領収書はありません。';
+        if (!data || data.length === 0) return '該当する請求書・領収書はありません。写真を送るか「請求書追加 〇〇」で登録できます。';
         const total = data.reduce((s: number, d: any) => s + Number(d.amount_total || 0), 0);
         const unpaid = data.filter((d: any) => d.payment_status === 'unpaid' || d.payment_status === 'overdue');
         const unpaidTotal = unpaid.reduce((s: number, d: any) => s + Number(d.amount_total || 0), 0);
@@ -93,22 +92,20 @@ export const invoiceSkill = defineSkill({
       parameters: {
         type: SchemaType.OBJECT,
         properties: {
-          period: { type: SchemaType.STRING, description: 'this_month or last_month。省略でthis_month' },
+          period: { type: SchemaType.STRING, description: '期間: today, this_month, last_month, 先々月, 3月 等。自然言語OK。省略でthis_month' },
         },
       },
       execute: async (args, supabase, _userId) => {
         const period = args.period || 'this_month';
         const today = getToday();
-        const [y, m] = today.split('-').map(Number);
-        let targetYear = y, targetMonth = m;
-        if (period === 'last_month') {
-          targetMonth = m - 1;
-          if (targetMonth <= 0) { targetMonth = 12; targetYear--; }
-        }
+        const parsed = parseFlexiblePeriod(period, today) || parseFlexiblePeriod('this_month', today)!;
+        const { fromDate, toDate, label } = parsed;
+        // fromDateから年月を抽出してfiscal_year/fiscal_monthでクエリ
+        const [targetYear, targetMonth] = fromDate.split('-').map(Number);
         const { data } = await supabase.from('documents')
           .select('vendor_name, amount_total, payment_status, expense_category')
           .eq('fiscal_year', targetYear).eq('fiscal_month', targetMonth);
-        if (!data || data.length === 0) return `${targetMonth}月の請求書・領収書はありません。`;
+        if (!data || data.length === 0) return `${label}の請求書・領収書はありません。写真を送るか「請求書追加 〇〇」で登録できます。`;
         let grandTotal = 0, unpaidTotal = 0, paidTotal = 0;
         const byCat: Record<string, number> = {};
         for (const d of data) {
@@ -118,7 +115,7 @@ export const invoiceSkill = defineSkill({
           const cat = d.expense_category || 'その他';
           byCat[cat] = (byCat[cat] || 0) + amt;
         }
-        let result = `${targetMonth}月サマリー: ${data.length}件 合計¥${grandTotal.toLocaleString()}\n`;
+        let result = `${label}サマリー: ${data.length}件 合計¥${grandTotal.toLocaleString()}\n`;
         result += `  支払済: ¥${paidTotal.toLocaleString()} / 未払い: ¥${unpaidTotal.toLocaleString()}\n`;
         result += 'カテゴリ別:\n';
         result += Object.entries(byCat).sort((a, b) => b[1] - a[1])

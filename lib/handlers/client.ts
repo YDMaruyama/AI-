@@ -2,6 +2,7 @@ import { lineReply } from '../core/line';
 import { getToday } from '../core/utils';
 import { geminiGenerate } from '../core/gemini';
 import { handleError } from '../core/error';
+import { stripHonorifics } from '../core/text-utils';
 
 /**
  * 利用者管理（管理者・社長のみ）
@@ -149,7 +150,7 @@ async function showAttendanceRate(user: any, text: string, replyToken: string, s
     .from('clients')
     .select('*')
     .eq('status', 'active')
-    .ilike('name', `%${searchName}%`);
+    .ilike('name', `%${stripHonorifics(searchName)}%`);
 
   if (!clients || clients.length === 0) {
     await lineReply(replyToken, `「${searchName}」に該当する利用者が見つかりません。`, token);
@@ -193,7 +194,7 @@ async function showAttendanceRate(user: any, text: string, replyToken: string, s
 
 /** 支援計画の期限確認 */
 async function showSupportPlan(user: any, text: string, replyToken: string, supabase: any, token: string) {
-  const searchName = text.replace(/支援計画\s*/, '').replace(/さん|くん|ちゃん/g, '').trim();
+  const searchName = stripHonorifics(text.replace(/支援計画\s*/, '').trim());
 
   // 特定の利用者名がある場合
   if (searchName) {
