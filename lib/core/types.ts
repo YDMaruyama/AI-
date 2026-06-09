@@ -22,8 +22,7 @@ export type StateName =
   | 'writing_report'
   | 'confirming_report'
   | 'writing_incident'
-  | 'writing_expense'
-  | 'confirming_receipt';
+  | 'writing_expense';
 
 export interface ConversationState {
   user_id: string;

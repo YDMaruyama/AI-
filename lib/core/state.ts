@@ -5,7 +5,6 @@ const STATE_LABELS: Record<string, string> = {
   confirming_report: '日報確認',
   writing_expense: '経費入力',
   writing_incident: '事故報告',
-  confirming_receipt: 'レシート確認',
 };
 
 /** 状態を取得（30分以上経過→リセット、20分経過→警告フラグ付き） */
