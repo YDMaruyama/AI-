@@ -7,7 +7,7 @@ import { exportToSpreadsheet } from '../core/gas';
 import { extractJson } from '../core/gemini-utils';
 import { GEMINI_MODEL } from '../core/config';
 
-/** 画像を受信 → 1回のAPI呼出で分類+内容抽出を同時実行 */
+/** 画像を受信 → レシートなら確認なしで即経費登録、それ以外はサイレント */
 export async function handleReceiptImage(user: any, messageId: string, replyToken: string, supabase: any, token: string, geminiKey: string) {
   try {
     const imageBuffer = await downloadLineContent(messageId, token);
@@ -17,19 +17,15 @@ export async function handleReceiptImage(user: any, messageId: string, replyToke
     const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
     const imagePart = { inlineData: { mimeType: 'image/jpeg', data: base64Image } };
 
-    // ── 1回のAPIコールで分類＋内容抽出 ──
+    // ── 1回のAPIコールでレシート判定＋内容抽出 ──
     const result = await model.generateContent({
       contents: [{
         role: 'user',
         parts: [
           imagePart,
-          { text: `この画像を分析してJSON形式で返してください。
+          { text: `この画像がレシート・領収書・請求書・納品書（金額が記載された書類）かどうかを判定し、JSON形式で返してください。
 
-まず画像の種類を判定:
-- "receipt": レシート・領収書・請求書・納品書（金額が記載された書類）
-- "photo": それ以外（風景・人物・物・スクリーンショット・書類・名刺等すべて）
-
-■ receiptの場合:
+■ レシート類の場合:
 {
   "type": "receipt",
   "store_name": "店舗名",
@@ -39,11 +35,8 @@ export async function handleReceiptImage(user: any, messageId: string, replyToke
   "items": "主な品目"
 }
 
-■ photoの場合:
-{
-  "type": "photo",
-  "description": "画像の内容を日本語で2-3文で説明"
-}
+■ それ以外（風景・人物・物・スクリーンショット・名刺等すべて）の場合:
+{ "type": "photo" }
 
 JSONのみ返してください。` },
         ],
@@ -55,17 +48,12 @@ JSONのみ返してください。` },
     try {
       parsed = extractJson(responseText);
     } catch {
-      // JSON解析失敗 → 画像の説明だけ返す
-      await lineReply(replyToken, `📷 画像を受け取りました。\n内容を読み取れませんでした。\n\nレシートの場合は、明るい場所で撮り直してみてください。`, token);
+      // 解析できない画像はサイレント（レシート以外には反応しない）
       return;
     }
 
-    // ── レシート以外 → 説明を返す ──
-    if (parsed.type !== 'receipt') {
-      const desc = parsed.description || '内容を確認しました。';
-      await lineReply(replyToken, `📷 ${desc}`, token);
-      return;
-    }
+    // ── レシート以外 → 何も返さない ──
+    if (parsed.type !== 'receipt') return;
 
     // ── レシート → 経費登録フロー ──
     const info = parsed;
@@ -102,25 +90,38 @@ JSONのみ返してください。` },
       return;
     }
 
-    // 確認フローへ（即時登録せずstate保存して確認を求める）
-    await supabase.from('conversation_states').upsert({
+    // ── 確認を省いて即登録 ──
+    await supabase.from('expenses').insert({
       user_id: user.id,
-      state: 'confirming_receipt',
-      context: {
-        receipt_data: { date: expenseDate, store: storeName, amount, category, description },
-      },
-      updated_at: new Date().toISOString(),
+      expense_date: expenseDate,
+      store_name: storeName,
+      amount,
+      category,
+      description,
+      status: 'pending',
     });
 
+    // 念のため会話状態をidleに戻す
+    await supabase.from('conversation_states').upsert({
+      user_id: user.id, state: 'idle', context: {}, updated_at: new Date().toISOString(),
+    });
+
+    // 今月の累計
+    const monthStart = expenseDate.substring(0, 7) + '-01';
+    const { data: monthExpenses } = await supabase
+      .from('expenses').select('amount').eq('user_id', user.id).gte('expense_date', monthStart);
+    const monthTotal = (monthExpenses || []).reduce((s: number, e: any) => s + Number(e.amount), 0);
+    const monthCount = (monthExpenses || []).length;
+
     await lineReplyWithQuickReply(replyToken,
-      `🧾 レシート読み取り結果:\n\n` +
+      `🧾 経費を登録しました！\n\n` +
       `📅 ${expenseDate}\n` +
       `🏪 ${storeName}\n` +
       `💰 ¥${Number(amount).toLocaleString()}\n` +
       `📁 ${category}\n` +
-      `📝 ${description}\n\n` +
-      `この内容で登録しますか？`,
-      ['OK', '修正', 'キャンセル'],
+      (description ? `📝 ${description}\n` : '') +
+      `\n📊 今月の累計: ¥${monthTotal.toLocaleString()}（${monthCount}件）`,
+      ['経費修正', '経費削除', '今月の経費'],
       token
     );
   } catch (e: any) {
