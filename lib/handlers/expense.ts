@@ -68,7 +68,8 @@ JSONのみ返してください。` },
       return;
     }
 
-    // 重複チェック（同日・同店舗・同金額が直近5分以内にあれば警告）
+    // 重複チェック（同日・同店舗・同金額が登録済みなら警告）
+    // 確認ステップ廃止により再送がそのまま二重登録になるため、時間制限なしで照合
     const { data: duplicate } = await supabase
       .from('expenses')
       .select('id')
@@ -76,7 +77,6 @@ JSONのみ返してください。` },
       .eq('expense_date', expenseDate)
       .eq('store_name', storeName)
       .eq('amount', amount)
-      .gte('created_at', new Date(Date.now() - 5 * 60 * 1000).toISOString())
       .limit(1);
 
     if (duplicate && duplicate.length > 0) {
@@ -91,7 +91,7 @@ JSONのみ返してください。` },
     }
 
     // ── 確認を省いて即登録 ──
-    await supabase.from('expenses').insert({
+    const { error: insertError } = await supabase.from('expenses').insert({
       user_id: user.id,
       expense_date: expenseDate,
       store_name: storeName,
@@ -100,16 +100,25 @@ JSONのみ返してください。` },
       description,
       status: 'pending',
     });
+    if (insertError) {
+      console.error('Expense insert error:', insertError.message);
+      await lineReply(replyToken,
+        '⚠ 経費の登録に失敗しました。\nもう一度写真を送るか、「経費入力 コンビニ 500円」のように手入力してください。',
+        token
+      );
+      return;
+    }
 
     // 念のため会話状態をidleに戻す
     await supabase.from('conversation_states').upsert({
       user_id: user.id, state: 'idle', context: {}, updated_at: new Date().toISOString(),
     });
 
-    // 今月の累計
-    const monthStart = expenseDate.substring(0, 7) + '-01';
+    // 月累計（レシートの日付が属する月で集計）
     const { data: monthExpenses } = await supabase
-      .from('expenses').select('amount').eq('user_id', user.id).gte('expense_date', monthStart);
+      .from('expenses').select('amount').eq('user_id', user.id)
+      .gte('expense_date', getMonthStart(expenseDate))
+      .lt('expense_date', getNextMonthStart(expenseDate));
     const monthTotal = (monthExpenses || []).reduce((s: number, e: any) => s + Number(e.amount), 0);
     const monthCount = (monthExpenses || []).length;
 
