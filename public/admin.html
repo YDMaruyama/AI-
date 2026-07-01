@@ -306,7 +306,6 @@ select:focus{outline:none;border-color:var(--accent)}
       <div class="tab" data-tab="calendar" data-more="1" style="display:none">カレンダー</div>
       <div class="tab" data-tab="attendance" data-more="1" style="display:none">出欠管理</div>
       <div class="tab" data-tab="sales" data-more="1" style="display:none">📊 売上</div>
-      <div class="tab" data-tab="cashbox" data-more="1" style="display:none">🔐 金庫</div>
       <div class="tab" data-tab="analytics" data-more="1" style="display:none">📊 分析</div>
       <div class="tab" data-tab="reservations" data-more="1" style="display:none">💆 予約管理</div>
       <div class="tab" data-tab="invoices" data-more="1" style="display:none">📄 請求書</div>
@@ -317,7 +316,6 @@ select:focus{outline:none;border-color:var(--accent)}
           <div class="tab-dd-item" data-tab="calendar">カレンダー</div>
           <div class="tab-dd-item" data-tab="attendance">出欠管理</div>
           <div class="tab-dd-item" data-tab="sales">📊 売上</div>
-          <div class="tab-dd-item" data-tab="cashbox">🔐 金庫</div>
           <div class="tab-dd-item" data-tab="analytics">📊 分析</div>
           <div class="tab-dd-item" data-tab="reservations">💆 予約管理</div>
           <div class="tab-dd-item" data-tab="invoices">📄 請求書</div>
@@ -335,7 +333,6 @@ select:focus{outline:none;border-color:var(--accent)}
         <div class="s-card" onclick="switchTab('expenses')"><div class="icon">💰</div><div class="label">今月の経費</div><div class="value" id="statExpenses">-</div></div>
         <div class="s-card" onclick="switchTab('orders')"><div class="icon">📦</div><div class="label">進行中案件</div><div class="value" id="statOrders">-</div></div>
         <div class="s-card" onclick="switchTab('calendar')"><div class="icon">📅</div><div class="label">今週の予定</div><div class="value" id="statEvents">-</div></div>
-        <div class="s-card" onclick="switchTab('cashbox')"><div class="icon">🔐</div><div class="label">金庫残高</div><div class="value" id="statCashbox">-</div><div class="sub" id="statCashboxSub"></div></div>
         <div class="s-card" onclick="switchTab('sales')"><div class="icon">📊</div><div class="label">今日の売上</div><div class="value" id="statSales">-</div></div>
       </div>
 
@@ -580,29 +577,6 @@ select:focus{outline:none;border-color:var(--accent)}
       </div>
     </div>
 
-    <!-- Tab: Cashbox -->
-    <div class="tab-content" id="tab-cashbox">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
-        <h3 style="font-size:.95rem;margin:0">金庫 入出金履歴（今月）</h3>
-        <div style="display:flex;gap:.5rem">
-          <button class="btn btn-sm btn-success" onclick="exportCashboxSpreadsheet()">スプシ出力</button>
-          <button class="btn btn-sm" style="background:#e74c3c;color:#fff" onclick="exportCashboxEmail()">メール送信</button>
-        </div>
-      </div>
-      <div style="background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;display:flex;gap:2rem;flex-wrap:wrap">
-        <div><div style="font-size:.8rem;opacity:.8">現在残高</div><div style="font-size:2rem;font-weight:800" id="cashboxCurrentBalance">-</div></div>
-        <div><div style="font-size:.8rem;opacity:.8">今月入金</div><div style="font-size:1.3rem;font-weight:700" id="cashboxMonthIn">-</div></div>
-        <div><div style="font-size:.8rem;opacity:.8">今月出金</div><div style="font-size:1.3rem;font-weight:700" id="cashboxMonthOut">-</div></div>
-        <div><div style="font-size:.8rem;opacity:.8">取引件数</div><div style="font-size:1.3rem;font-weight:700" id="cashboxTxCount">-</div></div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>日付</th><th>種別</th><th>金額</th><th>説明</th><th>カテゴリ</th><th>残高</th></tr></thead>
-          <tbody id="cashboxBody"></tbody>
-        </table>
-      </div>
-    </div>
-
     <!-- Tab: Reservations -->
     <div class="tab-content" id="tab-reservations">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
@@ -708,8 +682,8 @@ let currentRole = '';
 // ---- Role Access Control ----
 // Tab visibility per role
 const TAB_ACCESS = {
-  owner:   ['home','staff','reports','tasks','expenses','orders','calendar','attendance','sales','cashbox','analytics','reservations','invoices'],
-  manager: ['home','staff','reports','tasks','expenses','orders','calendar','attendance','sales','cashbox','analytics','reservations','invoices'],
+  owner:   ['home','staff','reports','tasks','expenses','orders','calendar','attendance','sales','analytics','reservations','invoices'],
+  manager: ['home','staff','reports','tasks','expenses','orders','calendar','attendance','sales','analytics','reservations','invoices'],
   staff:   ['home','reports','tasks','expenses','orders','calendar','reservations']
 };
 // Feature permissions
@@ -871,15 +845,7 @@ async function loadDashboard() {
   document.getElementById('statExpenses').textContent = yen(s.monthlyExpenses);
   document.getElementById('statOrders').textContent = s.activeOrders || 0;
   document.getElementById('statEvents').textContent = s.upcomingEvents || 0;
-  document.getElementById('statCashbox').textContent = yen(s.cashbox_balance);
   document.getElementById('statSales').textContent = yen(s.today_sales);
-
-  // Cashbox warning
-  var cashboxSub = document.getElementById('statCashboxSub');
-  if (cashboxSub) {
-    var bal = s.cashbox_balance || 0;
-    cashboxSub.innerHTML = bal < 10000 ? '<span style="color:#dc2626;font-size:.7rem">⚠ 残高少</span>' : '';
-  }
 
   // Render HOME quick actions
   renderHomeQuickActions(s, data);
@@ -894,7 +860,6 @@ async function loadDashboard() {
   renderProjects(data.projects || [], data.milestones || [], data.projectTasks || []);
   renderCalendar(data.calendar || data.events || []);
   renderAttendance(data.attendance || []);
-  renderCashbox(data.cashbox || [], data.stats || {});
   renderSales(data.sales || [], data.stats || {});
   populateAssignees(data.users || []);
   if (data.analytics) renderAnalytics(data.analytics, data.users || []);
@@ -2018,92 +1983,6 @@ function renderAttendance(att) {
   }).join('');
 }
 
-// ---- Render: Cashbox ----
-var _cashboxData = [];
-function getCashboxColor(balance) {
-  if (balance >= 10000) return {bg:'linear-gradient(135deg,#059669,#10b981)', text:'#fff'};
-  if (balance >= 5000) return {bg:'linear-gradient(135deg,#ca8a04,#f59e0b)', text:'#fff'};
-  return {bg:'linear-gradient(135deg,#dc2626,#ef4444)', text:'#fff'};
-}
-function renderCashbox(cashbox, stats) {
-  _cashboxData = cashbox;
-  var balance = stats.cashbox_balance || 0;
-  document.getElementById('cashboxCurrentBalance').textContent = yen(balance);
-  // #8 Dynamic color for cashbox balance card
-  var cbCard = document.getElementById('cashboxCurrentBalance').closest('div[style*="linear-gradient"]');
-  if (cbCard) {
-    var c = getCashboxColor(balance);
-    cbCard.style.background = c.bg;
-  }
-  // Dashboard card color
-  var dashCbVal = document.getElementById('statCashbox');
-  if (dashCbVal) {
-    dashCbVal.style.color = balance >= 10000 ? 'var(--green)' : balance >= 5000 ? 'var(--yellow)' : 'var(--red)';
-  }
-  var dashCbEl = document.getElementById('statCashboxSub');
-  if (dashCbEl) {
-    if (balance < 5000) { dashCbEl.textContent = '\u26a0 \u6b8b\u9ad8\u5c11'; dashCbEl.style.color = 'var(--red)'; }
-    else dashCbEl.textContent = '';
-  }
-
-  var totalIn = 0, totalOut = 0;
-  (cashbox || []).forEach(function(tx) {
-    if (tx.type === 'in') totalIn += Number(tx.amount || 0);
-    if (tx.type === 'out') totalOut += Number(tx.amount || 0);
-  });
-  document.getElementById('cashboxMonthIn').textContent = yen(totalIn);
-  document.getElementById('cashboxMonthOut').textContent = yen(totalOut);
-  document.getElementById('cashboxTxCount').textContent = (cashbox || []).length + '件';
-
-  var tbody = document.getElementById('cashboxBody');
-  if (!cashbox || !cashbox.length) {
-    tbody.innerHTML = '<tr><td colspan="6" class="empty">今月の金庫取引がありません</td></tr>';
-    return;
-  }
-  var typeLabels = {in:'入金', out:'出金', adjust:'調整'};
-  var typeColors = {in:'green', out:'red', adjust:'blue'};
-  tbody.innerHTML = cashbox.map(function(tx) {
-    var sign = tx.type === 'in' ? '+' : tx.type === 'out' ? '-' : '';
-    return '<tr>' +
-      '<td>' + fmtDate(tx.transaction_date) + '</td>' +
-      '<td>' + badge(typeLabels[tx.type] || tx.type, typeColors[tx.type] || 'blue') + '</td>' +
-      '<td style="text-align:right;font-weight:600">' + sign + yen(tx.amount) + '</td>' +
-      '<td>' + esc(tx.description || '-') + '</td>' +
-      '<td>' + esc(tx.category || '-') + '</td>' +
-      '<td style="text-align:right">' + yen(tx.balance_after) + '</td>' +
-    '</tr>';
-  }).join('');
-}
-
-async function exportCashboxSpreadsheet() {
-  if (!_cashboxData.length) return alert('金庫データがありません');
-  var csv = '日付,種別,金額,説明,カテゴリ,残高\n';
-  var typeLabels = {in:'入金', out:'出金', adjust:'調整'};
-  _cashboxData.forEach(function(tx) {
-    csv += (tx.transaction_date||'') + ',' + (typeLabels[tx.type]||tx.type) + ',' + (tx.amount||0) + ',' + ((tx.description||'').replace(/,/g,'/')) + ',' + (tx.category||'') + ',' + (tx.balance_after||'') + '\n';
-  });
-  try {
-    var res = await apiFetch('/expenses?action=cashbox_export', {method:'POST', headers:jsonHeaders(), body:JSON.stringify({csv:csv, type:'cashbox'})});
-    if (res && res.url) { window.open(res.url, '_blank'); alert('金庫帳簿のスプレッドシートを作成しました'); }
-    else alert('作成に失敗しました');
-  } catch(e) { alert('エラー: ' + e.message); }
-}
-
-async function exportCashboxEmail() {
-  if (!_cashboxData.length) return alert('金庫データがありません');
-  if (!confirm('salt.nbase@gmail.com に金庫帳簿をメール送信しますか？')) return;
-  var csv = '日付,種別,金額,説明,カテゴリ,残高\n';
-  var typeLabels = {in:'入金', out:'出金', adjust:'調整'};
-  _cashboxData.forEach(function(tx) {
-    csv += (tx.transaction_date||'') + ',' + (typeLabels[tx.type]||tx.type) + ',' + (tx.amount||0) + ',' + ((tx.description||'').replace(/,/g,'/')) + ',' + (tx.category||'') + ',' + (tx.balance_after||'') + '\n';
-  });
-  try {
-    var res = await apiFetch('/expenses?action=cashbox_email', {method:'POST', headers:jsonHeaders(), body:JSON.stringify({csv:csv, type:'cashbox'})});
-    if (res && res.emailSent) alert('メール送信しました！\nスプレッドシート: ' + res.url);
-    else alert('送信に失敗しました');
-  } catch(e) { alert('エラー: ' + e.message); }
-}
-
 // ---- Render: Sales ----
 var _salesData = [];
 function renderSales(sales, stats) {
@@ -2146,7 +2025,7 @@ async function exportSalesSpreadsheet() {
     csv += (s.sales_date||'') + ',' + (s.total_amount||0) + ',' + (s.cash_amount||0) + ',' + (s.card_amount||0) + ',' + (s.other_amount||0) + ',' + (s.customer_count||0) + ',' + ((s.note||'').replace(/,/g,'/')) + '\n';
   });
   try {
-    var res = await apiFetch('/expenses?action=cashbox_export', {method:'POST', headers:jsonHeaders(), body:JSON.stringify({csv:csv, type:'sales'})});
+    var res = await apiFetch('/expenses?action=export', {method:'POST', headers:jsonHeaders(), body:JSON.stringify({csv:csv, type:'sales'})});
     if (res && res.url) { window.open(res.url, '_blank'); alert('売上データのスプレッドシートを作成しました'); }
     else alert('作成に失敗しました');
   } catch(e) { alert('エラー: ' + e.message); }
@@ -2307,7 +2186,6 @@ function switchTab(tabName) {
   if (tabName === 'tasks') loadTasksData();
   if (tabName === 'expenses') loadExpenses();
   if (tabName === 'invoices') loadInvoices();
-  if (tabName === 'cashbox' && dashData.cashbox) renderCashbox(dashData.cashbox, dashData.stats || {});
   if (tabName === 'analytics' && dashData.analytics) renderAnalytics(dashData.analytics, dashData.users || []);
   if (tabName === 'reservations') renderReservations(dashData.reservations || [], dashData.salonMenus || [], [], dashData.rsvStats || {});
 
@@ -2346,7 +2224,7 @@ applyRoleUI = function() {
   _origApplyRoleUI();
   // Also hide/show dropdown items based on role
   var allowedTabs = TAB_ACCESS[currentRole] || [];
-  var moreTabs = ['calendar','attendance','sales','cashbox','analytics','reservations','invoices'];
+  var moreTabs = ['calendar','attendance','sales','analytics','reservations','invoices'];
   var anyMoreVisible = false;
   document.querySelectorAll('.tab-dd-item').forEach(function(item) {
     if (allowedTabs.indexOf(item.dataset.tab) === -1) {

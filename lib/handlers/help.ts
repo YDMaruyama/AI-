@@ -15,7 +15,6 @@ export async function showHelp(user: any, replyToken: string, token: string) {
   msg += '【その他】\n';
   msg += '💰 今月の経費 → 経費サマリー\n';
   msg += '📊 売上 → 売上管理\n';
-  msg += '🔐 金庫 → 金庫残高\n';
 
   if (isOwner || isManager) {
     msg += '\n【管理者向け】\n';

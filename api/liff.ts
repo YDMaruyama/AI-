@@ -8,8 +8,8 @@ import { getToday, getMonthStart, getMonthTotal } from '../lib/core/utils';
 
 /**
  * 統合LIFF API（全LIFF画面からのリクエストを1エンドポイントで処理）
- * POST /api/liff?action=expense|report|attendance|cashbox|task|calendar|sales
- * GET  /api/liff?action=clients|cashbox_balance|tasks|calendar|sales
+ * POST /api/liff?action=expense|report|attendance|task|calendar|sales
+ * GET  /api/liff?action=clients|tasks|calendar|sales
  */
 export default async function handler(req: any, res: any) {
   setCors(req, res);
@@ -28,12 +28,6 @@ export default async function handler(req: any, res: any) {
       if (action === 'clients') {
         const { data } = await supabase.from('clients').select('id, name, furigana').eq('status', 'active').order('furigana');
         return res.status(200).json({ status: 'ok', data: data || [] });
-      }
-
-      if (action === 'cashbox_balance') {
-        const { data: bal } = await supabase.from('cashbox_balance').select('*').single();
-        const { data: history } = await supabase.from('cashbox').select('*').eq('transaction_date', getToday()).order('created_at', { ascending: false });
-        return res.status(200).json({ status: 'ok', data: { balance: bal?.current_balance || 0, today_in: bal?.today_in || 0, today_out: bal?.today_out || 0, history: history || [] } });
       }
 
       if (action === 'tasks') {
@@ -128,28 +122,6 @@ export default async function handler(req: any, res: any) {
           if (error) logger.warn('liff', `Attendance upsert failed: ${error.message}`);
         }
         return res.status(200).json({ status: 'ok', count: records.length });
-      }
-
-      // --- 金庫入出金 ---
-      if (action === 'cashbox') {
-        const amount = Number(body.amount);
-        if (!amount || amount <= 0) return res.status(400).json({ status: 'error', error: '金額は正の数で入力してください' });
-        if (!['in', 'out', 'adjust'].includes(body.type)) return res.status(400).json({ status: 'error', error: 'type must be in/out/adjust' });
-        const { data, error } = await supabase.rpc('insert_cashbox_transaction', {
-          p_date: getToday(), p_type: body.type, p_amount: amount,
-          p_description: body.description || '', p_category: body.category || 'その他', p_recorded_by: user.id,
-        });
-        if (error) {
-          const { data: bal } = await supabase.from('cashbox_balance').select('current_balance').single();
-          const cur = Number(bal?.current_balance || 0);
-          const newBal = body.type === 'in' ? cur + amount : cur - amount;
-          await supabase.from('cashbox').insert({
-            transaction_date: getToday(), type: body.type, amount,
-            description: body.description, category: body.category, balance_after: newBal, recorded_by: user.id,
-          });
-          return res.status(200).json({ status: 'ok', balance: newBal });
-        }
-        return res.status(200).json({ status: 'ok', balance: data?.[0]?.balance_after ?? 0 });
       }
 
       // --- タスク更新 ---

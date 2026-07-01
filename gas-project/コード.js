@@ -319,15 +319,6 @@ function monthlyReport() {
     byCategory[cat] = (byCategory[cat] || 0) + amt;
   });
 
-  // 金庫の入出金
-  var cashbox = supabaseQuery('cashbox_transactions',
-    'date=gte.' + range.start + '&date=lte.' + range.end + '&select=amount,type');
-  var cashIn = 0, cashOut = 0;
-  (cashbox || []).forEach(function(c) {
-    if (c.type === 'in' || c.type === 'deposit') cashIn += (c.amount || 0);
-    else cashOut += (c.amount || 0);
-  });
-
   // 出席率
   var attendance = supabaseQuery('attendance',
     'date=gte.' + range.start + '&date=lte.' + range.end + '&select=id,status');
@@ -352,8 +343,7 @@ function monthlyReport() {
     });
   }
 
-  summaryText += '■ 金庫: 入金 ¥' + cashIn.toLocaleString() + ' / 出金 ¥' + cashOut.toLocaleString() + '\n'
-    + '■ スタッフ数: ' + staffCount + '名\n';
+  summaryText += '■ スタッフ数: ' + staffCount + '名\n';
 
   // --- Gemini API で要約生成 ---
   var aiSummary = '';
@@ -394,8 +384,6 @@ function monthlyReport() {
     ['タスク完了率', taskRate + '%', doneTasks + '/' + totalTasks + '件'],
     ['出席率', attendanceRate + '%', presentCount + '/' + totalAttendance + '回'],
     ['経費合計', expenseTotal, ''],
-    ['金庫入金', cashIn, ''],
-    ['金庫出金', cashOut, ''],
     ['スタッフ数', staffCount, '名']
   ];
   summaryRows.forEach(function(row, i) {
@@ -458,7 +446,6 @@ function monthlyReport() {
     + '<tr><td style="padding:8px 0;color:#6b7280">タスク完了率</td><td style="padding:8px 0;font-weight:600">' + taskRate + '%</td></tr>'
     + '<tr><td style="padding:8px 0;color:#6b7280">出席率</td><td style="padding:8px 0;font-weight:600">' + attendanceRate + '%</td></tr>'
     + '<tr><td style="padding:8px 0;color:#6b7280">経費合計</td><td style="padding:8px 0;font-weight:700;color:#4f46e5">&yen;' + expenseTotal.toLocaleString() + '</td></tr>'
-    + '<tr><td style="padding:8px 0;color:#6b7280">金庫</td><td style="padding:8px 0">入金 &yen;' + cashIn.toLocaleString() + ' / 出金 &yen;' + cashOut.toLocaleString() + '</td></tr>'
     + '</table>';
   if (aiSummary) {
     emailHtml += '<div style="background:#f5f3ff;padding:16px;border-radius:8px;margin-bottom:16px">'

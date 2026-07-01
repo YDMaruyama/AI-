@@ -86,12 +86,15 @@ export default async function handler(req: any, res: any) {
       const msgType = event.message?.type;
       if (msgType !== 'text' && msgType !== 'image' && msgType !== 'audio') continue;
 
-      // --- グループメッセージ → グループハンドラーに委譲 ---
-      if (event.source?.type === 'group' && msgType === 'text') {
-        try {
-          await handleGroupMessage(event, supabase, token, geminiKey);
-        } catch (e: any) {
-          logger.error('webhook', 'Group handler error', { error: e?.message });
+      // --- グループメッセージ → テキストのみグループハンドラーに委譲 ---
+      // 画像・音声はサイレント（グループの写真をレシートとして自動登録しない）
+      if (event.source?.type === 'group') {
+        if (msgType === 'text') {
+          try {
+            await handleGroupMessage(event, supabase, token, geminiKey);
+          } catch (e: any) {
+            logger.error('webhook', 'Group handler error', { error: e?.message });
+          }
         }
         continue;
       }

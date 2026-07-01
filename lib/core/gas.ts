@@ -1,6 +1,6 @@
 /**
  * GAS (Google Apps Script) スプレッドシート出力ヘルパー
- * expense, cashbox, sales の4箇所で重複していたGAS連携を統一
+ * expense, sales 等のGAS連携を統一
  */
 import { env } from './config';
 

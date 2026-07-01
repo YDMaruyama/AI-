@@ -19,7 +19,6 @@
     { "source": "/liff/expense", "destination": "/public/liff/expense.html" },
     { "source": "/liff/report", "destination": "/public/liff/report.html" },
     { "source": "/liff/attendance", "destination": "/public/liff/attendance.html" },
-    { "source": "/liff/cashbox", "destination": "/public/liff/cashbox.html" },
     { "source": "/liff/task", "destination": "/public/liff/task.html" },
     { "source": "/liff/calendar", "destination": "/public/liff/calendar.html" }
   ]

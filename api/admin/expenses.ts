@@ -180,13 +180,12 @@ async function handler(req: VercelRequest, res: VercelResponse, supabase: Supaba
   // POST: スプシ作成 / メール送信（GAS経由）
   if (req.method === 'POST') {
     const queryAction = req.query.action as string;
-    const isCashbox = queryAction === 'cashbox_export' || queryAction === 'cashbox_email';
-    const sendEmail = queryAction === 'email' || queryAction === 'cashbox_email';
-    const { csv } = req.body || {};
+    const sendEmail = queryAction === 'email';
+    const { csv, type } = req.body || {};
     if (!csv) return res.status(400).json({ error: 'csv is required' });
 
     const now = getNowJST();
-    const label = isCashbox ? '金庫帳簿' : '経費一覧';
+    const label = type === 'sales' ? '売上一覧' : '経費一覧';
     const title = `${label}_${now.getUTCFullYear()}年${now.getUTCMonth() + 1}月`;
 
     const result = await exportToSpreadsheet({ title, csv, sendEmail });
