@@ -28,6 +28,19 @@ async function safeRun(name: string, fn: () => Promise<any>) {
   }
 }
 
+// ── タスク0: キープアライブ（Supabase無料プランの自動停止防止＋cron実行監視） ──
+// 単一行 system_heartbeat.last_run_at を毎回更新する。
+// - DBへの確実な書き込みで7日無操作による自動停止を防ぐ
+// - last_run_at を見れば cron が実際に走っているか検証できる
+async function runKeepAlive(supabase: any) {
+  const now = new Date().toISOString();
+  const { error } = await supabase
+    .from('system_heartbeat')
+    .upsert({ id: 1, last_run_at: now, source: 'cron-master' }, { onConflict: 'id' });
+  if (error) throw new Error(error.message);
+  return { last_run_at: now };
+}
+
 // ── タスク1: 日次記憶抽出 ─────────────────────────
 async function runDailyMemory(supabase: any) {
   const geminiKey = env.GEMINI_API_KEY;
@@ -188,6 +201,7 @@ export default async function handler(req: any, res: any) {
 
   // 全タスクを並列実行（個別エラー隔離）
   const results = await Promise.all([
+    safeRun('keepalive', () => runKeepAlive(supabase)),
     safeRun('task-reminders', () => runTaskReminders(supabase)),
     safeRun('daily-memory', () => runDailyMemory(supabase)),
   ]);

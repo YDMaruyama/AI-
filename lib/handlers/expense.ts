@@ -68,7 +68,8 @@ JSONのみ返してください。` },
       return;
     }
 
-    // 重複チェック（同日・同店舗・同金額が直近5分以内にあれば警告）
+    // 重複チェック（同日・同店舗・同金額が登録済みなら警告）
+    // 確認ステップ廃止により再送がそのまま二重登録になるため、時間制限なしで照合
     const { data: duplicate } = await supabase
       .from('expenses')
       .select('id')
@@ -76,7 +77,6 @@ JSONのみ返してください。` },
       .eq('expense_date', expenseDate)
       .eq('store_name', storeName)
       .eq('amount', amount)
-      .gte('created_at', new Date(Date.now() - 5 * 60 * 1000).toISOString())
       .limit(1);
 
     if (duplicate && duplicate.length > 0) {
@@ -91,7 +91,7 @@ JSONのみ返してください。` },
     }
 
     // ── 確認を省いて即登録 ──
-    await supabase.from('expenses').insert({
+    const { error: insertError } = await supabase.from('expenses').insert({
       user_id: user.id,
       expense_date: expenseDate,
       store_name: storeName,
@@ -100,16 +100,25 @@ JSONのみ返してください。` },
       description,
       status: 'pending',
     });
+    if (insertError) {
+      console.error('Expense insert error:', insertError.message);
+      await lineReply(replyToken,
+        '⚠ 経費の登録に失敗しました。\nもう一度写真を送るか、「経費入力 コンビニ 500円」のように手入力してください。',
+        token
+      );
+      return;
+    }
 
     // 念のため会話状態をidleに戻す
     await supabase.from('conversation_states').upsert({
       user_id: user.id, state: 'idle', context: {}, updated_at: new Date().toISOString(),
     });
 
-    // 今月の累計
-    const monthStart = expenseDate.substring(0, 7) + '-01';
+    // 月累計（レシートの日付が属する月で集計）
     const { data: monthExpenses } = await supabase
-      .from('expenses').select('amount').eq('user_id', user.id).gte('expense_date', monthStart);
+      .from('expenses').select('amount').eq('user_id', user.id)
+      .gte('expense_date', getMonthStart(expenseDate))
+      .lt('expense_date', getNextMonthStart(expenseDate));
     const monthTotal = (monthExpenses || []).reduce((s: number, e: any) => s + Number(e.amount), 0);
     const monthCount = (monthExpenses || []).length;
 
@@ -631,52 +640,4 @@ function parseExpenseDate(text: string): string | null {
   if (m3) return `${yyyy}-${m3[1].padStart(2, '0')}-${m3[2].padStart(2, '0')}`;
 
   return null;
-}
-
-/** レシートOCR確認フローハンドラー */
-export async function handleReceiptConfirmation(user: any, text: string, replyToken: string, supabase: any, token: string, geminiKey: string) {
-  const { data: stateData } = await supabase.from('conversation_states').select('context').eq('user_id', user.id).maybeSingle();
-  const receiptData = stateData?.context?.receipt_data;
-
-  if (!receiptData) {
-    await supabase.from('conversation_states').upsert({ user_id: user.id, state: 'idle', context: {}, updated_at: new Date().toISOString() });
-    await lineReply(replyToken, 'レシートデータが見つかりません。もう一度写真を送ってください。', token);
-    return;
-  }
-
-  if (text === 'OK' || text === 'ok' || text === 'はい') {
-    // 経費登録
-    await supabase.from('expenses').insert({
-      user_id: user.id, expense_date: receiptData.date, store_name: receiptData.store,
-      amount: receiptData.amount, category: receiptData.category, description: receiptData.description, status: 'pending',
-    });
-
-    // 今月の累計
-    const monthStart = receiptData.date.substring(0, 7) + '-01';
-    const { data: monthExpenses } = await supabase
-      .from('expenses').select('amount').eq('user_id', user.id).gte('expense_date', monthStart);
-    const monthTotal = (monthExpenses || []).reduce((s: number, e: any) => s + Number(e.amount), 0);
-    const monthCount = (monthExpenses || []).length;
-
-    await supabase.from('conversation_states').upsert({ user_id: user.id, state: 'idle', context: {} });
-    await lineReplyWithQuickReply(replyToken,
-      `🧾 経費を登録しました！\n\n` +
-      `📅 ${receiptData.date}\n🏪 ${receiptData.store}\n💰 ¥${Number(receiptData.amount).toLocaleString()}\n📁 ${receiptData.category}\n\n` +
-      `📊 今月の累計: ¥${monthTotal.toLocaleString()}（${monthCount}件）`,
-      ['経費修正', '経費削除', '今月の経費'],
-      token
-    );
-  } else if (text === '修正') {
-    // 手動入力フローに移行（日付は保持）
-    await supabase.from('conversation_states').upsert({
-      user_id: user.id, state: 'writing_expense',
-      context: { step: 0, data: { date: receiptData.date } },
-      updated_at: new Date().toISOString(),
-    });
-    await lineReply(replyToken, `レシートの日付は ${receiptData.date} です。\n\n🏪 お店の名前を入力してください。`, token);
-  } else {
-    // キャンセル
-    await supabase.from('conversation_states').upsert({ user_id: user.id, state: 'idle', context: {} });
-    await lineReply(replyToken, 'レシート読み取りをキャンセルしました。', token);
-  }
 }

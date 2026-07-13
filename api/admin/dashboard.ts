@@ -7,7 +7,7 @@ import {
   loadUsers, loadReports, loadTasks, loadAllTaskStats,
   loadExpenses, loadExpenses6m, loadExpensesByCategory,
   loadOrders, loadAttendance, loadCalendar,
-  loadCashboxBalance, loadCashbox, loadReports30d, loadSales,
+  loadReports30d, loadSales,
   loadProjects, loadMilestones, loadProjectTasks,
   loadReservations, loadSalonMenus, loadSalonStats,
 } from '../../lib/dashboard/modules';
@@ -97,14 +97,14 @@ async function handler(req: VercelRequest, res: VercelResponse, supabase: Supaba
   // 各モジュールを並列実行（safeQuery で隔離済み: 1つ失敗しても他に影響しない）
   const [
     usersR, reportsR, tasksR, expensesR, ordersR, attendanceR,
-    calendarR, cashboxBalanceR, cashboxR,
+    calendarR,
     expenses6mR, expensesCatR, reports30dR, allTasksR, salesR,
     projectsR, milestonesR, projectTasksR,
     reservationsR, salonMenusR, salonStatsR,
   ] = await Promise.all([
     loadUsers(supabase), loadReports(supabase), loadTasks(supabase),
     loadExpenses(supabase), loadOrders(supabase), loadAttendance(supabase),
-    loadCalendar(supabase), loadCashboxBalance(supabase), loadCashbox(supabase),
+    loadCalendar(supabase),
     loadExpenses6m(supabase), loadExpensesByCategory(supabase),
     loadReports30d(supabase), loadAllTaskStats(supabase), loadSales(supabase),
     loadProjects(supabase), loadMilestones(supabase), loadProjectTasks(supabase),
@@ -118,8 +118,6 @@ async function handler(req: VercelRequest, res: VercelResponse, supabase: Supaba
   const orders = ordersR.data;
   const attendance = attendanceR.data;
   const calendar = calendarR.data;
-  const cashboxBalance = cashboxBalanceR.data;
-  const cashbox = cashboxR.data;
   const sales = salesR.data;
   const projects = projectsR.data;
   const milestones = milestonesR.data;
@@ -138,7 +136,6 @@ async function handler(req: VercelRequest, res: VercelResponse, supabase: Supaba
   const moduleResults: Record<string, { error: string | null }> = {
     users: usersR, reports: reportsR, tasks: tasksR, expenses: expensesR,
     orders: ordersR, attendance: attendanceR, calendar: calendarR,
-    cashboxBalance: cashboxBalanceR, cashbox: cashboxR,
     expenses6m: expenses6mR, expensesCat: expensesCatR, reports30d: reports30dR,
     allTasks: allTasksR, sales: salesR, projects: projectsR,
     milestones: milestonesR, projectTasks: projectTasksR,
@@ -217,7 +214,6 @@ async function handler(req: VercelRequest, res: VercelResponse, supabase: Supaba
       total: activeStaff.length,
     },
     upcomingEvents: calendar.length,
-    cashbox_balance: Number(cashboxBalance?.current_balance || 0),
     today_sales: Number(sales.find((s: any) => s.sales_date === today)?.total_amount || 0),
     monthly_sales: sales.reduce((sum: number, s: any) => sum + Number(s.total_amount || 0), 0),
   };
@@ -232,7 +228,6 @@ async function handler(req: VercelRequest, res: VercelResponse, supabase: Supaba
     expenses,
     orders,
     calendar,
-    cashbox,
     sales,
     projects,
     milestones,

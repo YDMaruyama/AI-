@@ -11,7 +11,6 @@ import {
   exportAndEmailExpenses,
   editExpense,
   deleteExpense,
-  handleReceiptConfirmation,
 } from '../handlers/expense';
 import { getToday } from '../core/utils';
 import { parseFlexiblePeriod } from '../core/text-utils';
@@ -40,7 +39,6 @@ export const expenseSkill = defineSkill({
 
   states: [
     { stateName: 'writing_expense', handler: (u, t, rt, s, tk, gk) => continueExpenseInput(u, t, rt, s, tk, gk) },
-    { stateName: 'confirming_receipt', handler: (u, t, rt, s, tk, gk) => handleReceiptConfirmation(u, t, rt, s, tk, gk) },
   ],
 
   fastIntents: [

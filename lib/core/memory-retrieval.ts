@@ -14,7 +14,6 @@ const KEYWORD_MAP: Record<string, string[]> = {
   予定: ['calendar', '予定', 'スケジュール'],
   出欠: ['attendance', '出欠', '出席'],
   案件: ['order', '案件', '受注', '納品'],
-  金庫: ['cashbox', '金庫', '残高', '入金', '出金'],
   利用者: ['client', '利用者', '支援'],
   事故: ['incident', '事故', 'ヒヤリ'],
   売上: ['sales', '売上'],

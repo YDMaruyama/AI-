@@ -20,13 +20,6 @@ export const ExpenseInputSchema = z.object({
   description: z.string().optional(),
 });
 
-// ── 金庫 ──
-export const CashboxTransactionSchema = z.object({
-  type: z.enum(['in', 'out', 'adjust']),
-  amount: PositiveNumber,
-  description: z.string().min(1, '説明は必須'),
-});
-
 // ── タスク ──
 export const TaskInputSchema = z.object({
   title: z.string().min(1, 'タイトルは必須'),

@@ -22,8 +22,7 @@ export type StateName =
   | 'writing_report'
   | 'confirming_report'
   | 'writing_incident'
-  | 'writing_expense'
-  | 'confirming_receipt';
+  | 'writing_expense';
 
 export interface ConversationState {
   user_id: string;
@@ -39,7 +38,7 @@ export type IntentType =
   | 'calendar' | 'add_calendar'
   | 'incident' | 'inquiry' | 'admin_doc'
   | 'meeting' | 'memo' | 'staff'
-  | 'sales' | 'client' | 'cashbox'
+  | 'sales' | 'client'
   | 'expense' | 'expense_summary' | 'expense_export' | 'expense_email'
   | 'reservation' | 'add_reservation' | 'menu' | 'customer'
   | 'invoice' | 'invoice_search' | 'invoice_summary' | 'add_invoice' | 'invoice_paid'
@@ -86,16 +85,6 @@ export interface Task {
   assignee_id?: string;
   due_date?: string;
   source?: string;
-  created_at: string;
-}
-
-export interface CashboxTransaction {
-  id: string;
-  user_id: string;
-  type: 'in' | 'out' | 'adjust';
-  amount: number;
-  description: string;
-  balance_after: number;
   created_at: string;
 }
 

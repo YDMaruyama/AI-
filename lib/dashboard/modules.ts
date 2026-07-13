@@ -79,20 +79,6 @@ export const loadCalendar = (supabase: SupabaseClient) =>
     return data || [];
   }, [] as any[]);
 
-// ── Cashbox ───────────────────────────────────────
-export const loadCashboxBalance = (supabase: SupabaseClient) =>
-  safeQuery('cashboxBalance', async () => {
-    const { data } = await supabase.from('cashbox_balance').select('*').maybeSingle();
-    return data || {};
-  }, {} as any);
-
-export const loadCashbox = (supabase: SupabaseClient) =>
-  safeQuery('cashbox', async () => {
-    const monthStart = getMonthStart();
-    const { data } = await supabase.from('cashbox').select('*').gte('transaction_date', monthStart).order('transaction_date', { ascending: false });
-    return data || [];
-  }, [] as any[]);
-
 // ── Reports analytics ─────────────────────────────
 export const loadReports30d = (supabase: SupabaseClient) =>
   safeQuery('reports30d', async () => {

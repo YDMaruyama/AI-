@@ -88,7 +88,7 @@ export function roleName(role: string): string {
   return 'スタッフ';
 }
 
-/** 月間合計（expenses/cashboxなど汎用） */
+/** 月間合計（expenses等の汎用集計） */
 export async function getMonthTotal(
   supabase: any,
   table: string,

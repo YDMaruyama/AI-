@@ -86,12 +86,15 @@ export default async function handler(req: any, res: any) {
       const msgType = event.message?.type;
       if (msgType !== 'text' && msgType !== 'image' && msgType !== 'audio') continue;
 
-      // --- グループメッセージ → グループハンドラーに委譲 ---
-      if (event.source?.type === 'group' && msgType === 'text') {
-        try {
-          await handleGroupMessage(event, supabase, token, geminiKey);
-        } catch (e: any) {
-          logger.error('webhook', 'Group handler error', { error: e?.message });
+      // --- グループメッセージ → テキストのみグループハンドラーに委譲 ---
+      // 画像・音声はサイレント（グループの写真をレシートとして自動登録しない）
+      if (event.source?.type === 'group') {
+        if (msgType === 'text') {
+          try {
+            await handleGroupMessage(event, supabase, token, geminiKey);
+          } catch (e: any) {
+            logger.error('webhook', 'Group handler error', { error: e?.message });
+          }
         }
         continue;
       }
@@ -108,8 +111,21 @@ export default async function handler(req: any, res: any) {
       }).catch(e => logger.warn('webhook', 'Loading indicator failed', { error: e?.message }));
 
       // --- ユーザー検索 ---
-      const { data: user } = await supabase
-        .from('users').select('*').eq('line_user_id', lineUserId).single();
+      // maybeSingle: 0件なら data=null/error=null（正当な新規）、
+      // DB一時エラーや重複行なら error が入る → その場合は新規登録フローに落とさない
+      const { data: user, error: userLookupError } = await supabase
+        .from('users').select('*').eq('line_user_id', lineUserId).maybeSingle();
+
+      if (userLookupError) {
+        // 検索自体が失敗した既存ユーザーを新規扱いで再登録してしまうのを防ぐ
+        logger.error('webhook', 'User lookup failed (not treating as new user)', {
+          error: userLookupError.message, lineUserId,
+        });
+        try {
+          await lineReply(replyToken, '⚠ 一時的にサーバーへ接続できませんでした。\n少し待ってからもう一度お試しください。', token);
+        } catch {}
+        continue;
+      }
 
       // --- 初回ユーザー登録 ---
       if (!user) {

@@ -102,7 +102,7 @@ INTENT_MAP.set('general', (u, t, rt, s, tk, gk) => aiResponse(u, t, rt, s, tk, g
 // ── breakPattern: スキル + レガシーキーワードで動的生成 ──
 const breakKeywordSet = new Set([
   '日報', 'タスク', '出欠', '案件', 'シフト', '予定', '事故',
-  '見学', '行政', '経費', '金庫', '売上', '利用者', '会議',
+  '見学', '行政', '経費', '売上', '利用者', '会議',
   'スタッフ', 'ヘルプ', '予約', 'メニュー', '顧客',
   ...skillRegistry.getBreakKeywords(),
 ]);

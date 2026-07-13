@@ -2,7 +2,7 @@
  * 共有ボタン（Postback）のハンドラー
  * postback data形式: "share:{target}:{type}:{content_id}"
  *   target: owner | manager | all
- *   type: report | task | expense | incident | inquiry | calendar | cashbox
+ *   type: report | task | expense | incident | inquiry | calendar | sales
  *   content_id: DBのレコードID（省略可）
  */
 import { lineReply, linePush } from './line';
@@ -56,11 +56,11 @@ export async function handleSharePostback(
   // メッセージタイプに応じたアイコン
   const icons: Record<string, string> = {
     report: '📋', task: '✅', expense: '🧾', incident: '🚨',
-    inquiry: '📞', calendar: '📅', cashbox: '🔐', sales: '📊',
+    inquiry: '📞', calendar: '📅', sales: '📊',
   };
   const labels: Record<string, string> = {
     report: '日報', task: 'タスク', expense: '経費', incident: '事故報告',
-    inquiry: '見学対応', calendar: '予定', cashbox: '金庫', sales: '売上',
+    inquiry: '見学対応', calendar: '予定', sales: '売上',
   };
 
   const icon = icons[type] || '📤';
