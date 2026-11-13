@@ -1,7 +1,7 @@
 import React from 'react';
 import {interpolate} from 'remotion';
 import {fadeUp, useReveal} from '../../components/scene-context';
-import {Arrow, CornerTag, NoteStrip, SvgPill, SvgText} from '../../components/ui';
+import {Arrow, CornerTag, EvidenceBadge, EvidenceKind, NoteStrip, SvgPill, SvgText} from '../../components/ui';
 import {COLORS} from '../../theme';
 
 /**
@@ -15,16 +15,23 @@ import {COLORS} from '../../theme';
  *  - block     受容体の働きを妨げる
  *  - synth     ホルモンを作る過程を変える
  *  - transport 運搬や分解を変える
- * steps.act でその場面の動き、steps.note で補足を表示する。
+ * steps.act でその場面の動き、steps.note で補足、steps.caveat で補足の 2 行目（留保）を表示する。
+ * steps.travel（normal のみ）：ホルモンが血液で運ばれる動きを先に見せ、受容体の手前で待たせる（受容体へ収まるのは steps.act）。
+ * steps.label：動きの説明ラベルを出す段階（省略時は steps.act の少し後）。
+ * noteEvidence を渡すと、補足の 1 行目に根拠の種類のバッジ（形とラベル）を添える。
  */
 export type HormoneMode = 'normal' | 'overview' | 'mimic' | 'block' | 'synth' | 'transport';
 
 const GL = {cx: 250, cy: 300, rx: 150, ry: 170};
 const VES = {x0: 400, x1: 1130, y: 300, h: 100};
-const CELL = {x: 1160, y: 110, w: 540, h: 380};
+const CELL = {x: 1160, y: 110, w: 540, h: 350};
 const REC = {x: 1160, y: 300};
 const NUC = {x: 1470, y: 300, r: 62};
 const HORMONE_R = 18;
+/** 血液中の「運ぶたんぱく質」（模式）の位置 */
+const CARRIERS = [690, 930];
+/** 動きの説明ラベルの高さ（補足帯と重ならない位置） */
+const ACT_Y = 500;
 
 const Hormone: React.FC<{x: number; y: number; opacity?: number}> = ({x, y, opacity = 1}) => (
   <circle cx={x} cy={y} r={HORMONE_R} fill={COLORS.green} stroke={COLORS.surface} strokeWidth={3} opacity={opacity} />
@@ -42,6 +49,16 @@ const Blocker: React.FC<{x: number; y: number; opacity?: number}> = ({x, y, opac
 );
 const Diamond: React.FC<{x: number; y: number; opacity?: number}> = ({x, y, opacity = 1}) => (
   <polygon points={`${x},${y - 20} ${x + 20},${y} ${x},${y + 20} ${x - 20},${y}`} fill={COLORS.slate} stroke={COLORS.surface} strokeWidth={3} opacity={opacity} />
+);
+
+/** 凡例の 1 項目（図と同じ形を小さく描く。色だけで区別しない） */
+const LegendItem: React.FC<{shape: React.ReactNode; children: React.ReactNode}> = ({shape, children}) => (
+  <span style={{display: 'inline-flex', alignItems: 'center', gap: 8}}>
+    <svg width={30} height={30} viewBox="0 0 36 36" style={{overflow: 'visible'}}>
+      {shape}
+    </svg>
+    {children}
+  </span>
 );
 
 /** 受容体（細胞膜のくぼみ） */
@@ -99,18 +116,25 @@ const Marker: React.FC<{n: number; x: number; y: number; label: string; appear: 
 
 export const HormoneSignal: React.FC<{
   mode?: HormoneMode;
-  steps?: {act?: number; note?: number; markers?: number[]};
+  steps?: {act?: number; travel?: number; label?: number; note?: number; caveat?: number; markers?: number[]};
   note?: string;
   noteLabel?: string;
+  /** 補足の 1 行目に添える根拠の種類 */
+  noteEvidence?: {kind: EvidenceKind; label?: string};
+  /** 補足の 2 行目（留保） */
+  caveat?: string;
   /** 鍵と鍵穴の比喩であることを示すタグ */
   showMetaphor?: boolean;
   metaphorStep?: number;
-}> = ({mode = 'normal', steps = {}, note, noteLabel = '補足', showMetaphor = false, metaphorStep = 2}) => {
+}> = ({mode = 'normal', steps = {}, note, noteLabel = '補足', noteEvidence, caveat, showMetaphor = false, metaphorStep = 2}) => {
   const actStep = steps.act ?? 1;
   const base = useReveal(0, {duration: 0.8});
   const act = useReveal(actStep, {duration: 2.0});
-  const actLabel = useReveal(actStep, {delay: 1.6});
+  const actLabel = useReveal(steps.label ?? actStep, {delay: steps.label !== undefined ? 0.3 : 1.6});
+  const travelP = useReveal(steps.travel ?? 0, {delay: 1.0, duration: 2.6});
+  const hasTravel = steps.travel !== undefined;
   const noteP = useReveal(steps.note ?? 99);
+  const caveatP = useReveal(steps.caveat ?? 99);
   const metaphor = useReveal(metaphorStep);
   const markerSteps = steps.markers ?? [1, 2, 3, 4];
   const m1 = useReveal(markerSteps[0]);
@@ -122,7 +146,10 @@ export const HormoneSignal: React.FC<{
 
   // ホルモンが作られて受容体へ届くまでの動き
   const travel = (p: number, from = GL.cx + 60, to = REC.x - 34) => from + (to - from) * p;
-  const hormoneX = travel(interpolate(act, [0, 0.85], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}));
+  const bindP = interpolate(act, [0, 0.85], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const WAIT_X = REC.x - 150;
+  const hormoneX = hasTravel ? travel(travelP, GL.cx + 60, WAIT_X) + (REC.x - 34 - WAIT_X) * bindP : travel(bindP);
+  const hormoneVisible = hasTravel ? travelP > 0 || act > 0 : act > 0;
 
   const isNormalBound = mode === 'normal' && act > 0.85;
   const responseLevel = mode === 'normal' ? 3 : mode === 'mimic' ? 3 : mode === 'block' ? 1 : mode === 'synth' ? 3 : mode === 'transport' ? 3 : 3;
@@ -130,13 +157,15 @@ export const HormoneSignal: React.FC<{
     mode === 'normal' ? interpolate(act, [0.85, 1], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) :
     mode === 'mimic' ? interpolate(act, [0.85, 1], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) :
     mode === 'block' ? interpolate(act, [0.85, 1], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) :
-    mode === 'overview' ? base * 0.9 : base * 0.9;
+    base * 0.9;
+  /** 受容体→反応の矢印の描画進行度（背景として描く場面でも矢じりまで描く） */
+  const signalP = mode === 'normal' || mode === 'mimic' || mode === 'block' ? responseAppear : base;
 
   const actText: Record<HormoneMode, string> = {
     normal: '',
     overview: '',
-    mimic: '本来とは異なるタイミング・強さの信号',
-    block: 'ホルモンがあっても、伝わる信号が変わる',
+    mimic: '必要なタイミング・強さとは異なる信号',
+    block: 'ホルモンが十分あっても、伝わる信号が変わる',
     synth: '作られる量が変わる',
     transport: '作用する場所や時間が変わる',
   };
@@ -153,9 +182,21 @@ export const HormoneSignal: React.FC<{
           {/* 血液 */}
           <rect x={VES.x0} y={VES.y - VES.h / 2} width={VES.x1 - VES.x0} height={VES.h} rx={VES.h / 2} fill="#EFD6D2" stroke="#C49690" strokeWidth={4} />
           <SvgText x={(VES.x0 + VES.x1) / 2} y={VES.y + VES.h / 2 + 38} size={30} weight={500} color={COLORS.inkSoft}>血液で運ばれる</SvgText>
-          {/* 運ぶたんぱく質（模式） */}
-          {[620, 880].map((x) => (
-            <rect key={x} x={x - 34} y={VES.y - 20} width={68} height={40} rx={20} fill="none" stroke="#B9817A" strokeWidth={3.5} strokeDasharray="6 5" />
+          {/* 運ぶたんぱく質（模式）：ラベルを付ける transport の場面だけに描く（他の場面の点線と混同させない） */}
+          {(mode === 'transport' ? CARRIERS : []).map((x) => (
+            <rect
+              key={x}
+              x={x - 34}
+              y={VES.y - 20}
+              width={68}
+              height={40}
+              rx={20}
+              fill="none"
+              stroke="#B9817A"
+              strokeWidth={3.5}
+              strokeDasharray="6 5"
+              opacity={interpolate(act, [0.2, 0.45], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}
+            />
           ))}
           {/* 受け取る細胞 */}
           <rect x={CELL.x} y={CELL.y} width={CELL.w} height={CELL.h} rx={70} fill={COLORS.greenSoft} stroke={COLORS.green} strokeWidth={4} />
@@ -165,12 +206,12 @@ export const HormoneSignal: React.FC<{
           <Receptor glow={isNormalBound ? 1 : 0} />
           <SvgText x={REC.x + 22} y={REC.y - 62} size={28} weight={700} color={COLORS.inkSoft} anchor="start">受容体</SvgText>
           {/* 受容体から核への信号 */}
-          <Arrow from={[REC.x + 10, REC.y]} to={[NUC.x - NUC.r - 12, NUC.y]} p={responseAppear} color={mode === 'mimic' ? COLORS.gold : COLORS.green} width={5} dashed={mode === 'block'} />
+          <Arrow from={[REC.x + 10, REC.y]} to={[NUC.x - NUC.r - 12, NUC.y]} p={signalP} color={mode === 'mimic' ? COLORS.gold : COLORS.green} width={5} dashed={mode === 'block'} />
           <Response level={responseLevel} appear={responseAppear} changed={mode === 'mimic' || mode === 'block'} />
         </g>
 
         {/* --- 場面ごとの動き --- */}
-        {mode === 'normal' ? <Hormone x={hormoneX} y={VES.y} opacity={act > 0 ? 1 : 0} /> : null}
+        {mode === 'normal' ? <Hormone x={hormoneX} y={VES.y} opacity={hormoneVisible ? 1 : 0} /> : null}
 
         {mode === 'mimic' ? (
           <>
@@ -204,18 +245,27 @@ export const HormoneSignal: React.FC<{
             <Diamond x={GL.cx + 70} y={interpolate(act, [0, 0.35], [60, GL.cy - 40], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} opacity={act > 0 ? 1 : 0} />
             {/* 作られる量の変化：通常の位置に薄い丸、実際に出てくる丸は少ない */}
             {[0, 1, 2].map((i) => (
-              <circle key={i} cx={470 + i * 70} cy={VES.y} r={HORMONE_R} fill="none" stroke={COLORS.green} strokeWidth={3} strokeDasharray="5 5" opacity={act > 0.4 ? 0.7 : 0} />
+              <circle key={i} cx={470 + i * 60} cy={VES.y} r={HORMONE_R} fill="none" stroke={COLORS.green} strokeWidth={3} strokeDasharray="5 5" opacity={act > 0.4 ? 0.7 : 0} />
             ))}
             <Hormone x={interpolate(act, [0.4, 0.9], [GL.cx + 60, 470], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} y={VES.y} opacity={act > 0.4 ? 1 : 0} />
+            <SvgText x={530} y={212} size={28} weight={700} color={COLORS.green} opacity={interpolate(act, [0.4, 0.6], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}>
+              点線＝本来の量
+            </SvgText>
           </>
         ) : null}
 
         {mode === 'transport' ? (
           <>
-            <Diamond x={interpolate(act, [0, 0.4], [880, 880], {})} y={interpolate(act, [0, 0.4], [150, VES.y - 44], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} opacity={act > 0 ? 1 : 0} />
-            <Hormone x={interpolate(act, [0.3, 0.9], [GL.cx + 60, 700], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} y={VES.y} opacity={act > 0.3 ? 1 : 0} />
-            <Hormone x={820} y={VES.y} opacity={act > 0.5 ? 0.45 : 0} />
-            <path d="M800 280 l40 40 M840 280 l-40 40" stroke={COLORS.slate} strokeWidth={5} strokeLinecap="round" opacity={act > 0.6 ? 1 : 0} />
+            <Diamond x={CARRIERS[1]} y={interpolate(act, [0, 0.4], [150, VES.y - 44], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} opacity={act > 0 ? 1 : 0} />
+            <Hormone x={interpolate(act, [0.3, 0.9], [GL.cx + 60, CARRIERS[0]], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} y={VES.y} opacity={act > 0.3 ? 1 : 0} />
+            <Hormone x={1060} y={VES.y} opacity={act > 0.5 ? 0.45 : 0} />
+            <path d="M1040 280 l40 40 M1080 280 l-40 40" stroke={COLORS.slate} strokeWidth={5} strokeLinecap="round" opacity={act > 0.6 ? 1 : 0} />
+            <SvgText x={CARRIERS[0]} y={212} size={28} weight={700} color="#9A6A63" opacity={interpolate(act, [0.3, 0.5], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}>
+              運ぶたんぱく質
+            </SvgText>
+            <SvgText x={1060} y={212} size={28} weight={700} color={COLORS.slate} opacity={interpolate(act, [0.6, 0.8], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}>
+              分解
+            </SvgText>
           </>
         ) : null}
 
@@ -231,16 +281,16 @@ export const HormoneSignal: React.FC<{
 
         {/* 動きの説明ラベル */}
         {actText[mode] ? (
-          <SvgPill x={1430} y={528} text={actText[mode]} size={28} fill={COLORS.surface} color={COLORS.ink} stroke={COLORS.gold} opacity={actLabel} />
+          <SvgPill x={1430} y={ACT_Y} text={actText[mode]} size={28} fill={COLORS.surface} color={COLORS.ink} stroke={COLORS.gold} opacity={actLabel} />
         ) : null}
       </svg>
 
       {/* 形の凡例（色だけで区別しない） */}
-      <div style={{...fadeUp(base), position: 'absolute', left: 0, top: 0, display: 'flex', gap: 22, fontSize: 26, color: COLORS.inkSoft, fontWeight: 500}}>
-        <span>● ホルモン</span>
-        {mode === 'mimic' ? <span>⬡ 似た働きの物質</span> : null}
-        {mode === 'block' ? <span>■ 妨げる物質</span> : null}
-        {mode === 'synth' || mode === 'transport' ? <span>◆ 作用する物質</span> : null}
+      <div style={{...fadeUp(base), position: 'absolute', left: 0, top: 0, display: 'flex', alignItems: 'center', gap: 28, fontSize: 28, color: COLORS.inkSoft, fontWeight: 500}}>
+        <LegendItem shape={<Hormone x={18} y={18} />}>ホルモン</LegendItem>
+        {mode === 'mimic' ? <LegendItem shape={<Mimic x={18} y={18} />}>似た働きの物質</LegendItem> : null}
+        {mode === 'block' ? <LegendItem shape={<Blocker x={18} y={18} />}>妨げる物質</LegendItem> : null}
+        {mode === 'synth' || mode === 'transport' ? <LegendItem shape={<Diamond x={18} y={18} />}>作用する物質</LegendItem> : null}
       </div>
       <div style={{position: 'absolute', right: 0, top: 0}}>
         <CornerTag appear={base}>模式図</CornerTag>
@@ -272,7 +322,7 @@ export const HormoneSignal: React.FC<{
                 padding: '8px 20px',
               }}
             >
-              <span style={{width: 40, height: 40, borderRadius: 20, background: COLORS.gold, color: COLORS.surface, fontSize: 26, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{x.n}</span>
+              <span style={{width: 42, height: 42, borderRadius: 21, background: COLORS.gold, color: COLORS.surface, fontSize: 28, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{x.n}</span>
               <span style={{fontSize: 32, fontWeight: 700, color: COLORS.ink, whiteSpace: 'nowrap'}}>{x.t}</span>
             </div>
           ))}
@@ -281,7 +331,11 @@ export const HormoneSignal: React.FC<{
       {note ? (
         <div style={{position: 'absolute', left: 0, right: 0, bottom: 0}}>
           <NoteStrip appear={noteP} label={noteLabel}>
-            {note}
+            <div style={{display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap'}}>
+              <span>{note}</span>
+              {noteEvidence ? <EvidenceBadge kind={noteEvidence.kind} label={noteEvidence.label} size={28} /> : null}
+            </div>
+            {caveat ? <div style={{opacity: caveatP, marginTop: 4}}>{caveat}</div> : null}
           </NoteStrip>
         </div>
       ) : null}
