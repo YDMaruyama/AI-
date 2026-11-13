@@ -19,7 +19,7 @@ const ENV = [
   {x: 260, label: '土壌'},
   {x: 420, label: '生物'},
 ];
-const PROC_X = [640, 900, 1160, 1420];
+const PROC_X = [750, 1010, 1270, 1530];
 const PROC_LABEL = ['加工', '輸送', '包装', '調理'];
 const PR = 76;
 
@@ -66,7 +66,7 @@ export const FoodRoutes: React.FC<{steps?: Steps}> = ({steps = {env: 1, process:
           <Arrow from={[260, 298]} to={[260, 372]} p={envArrows} dashed color={COLORS.gold} width={4} />
           <Arrow from={[410, 298]} to={[306, 392]} p={envArrows} dashed color={COLORS.gold} width={4} />
           <g opacity={envLabel}>
-            <SvgText x={440} y={350} size={30} weight={700} color={COLORS.gold} anchor="start">
+            <SvgText x={440} y={336} size={30} weight={700} color={COLORS.gold} anchor="start">
               入ることがある
             </SvgText>
           </g>

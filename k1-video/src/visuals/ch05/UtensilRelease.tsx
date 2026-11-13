@@ -6,7 +6,7 @@ import {COLORS} from '../../theme';
 import {Panel, Shard} from './parts';
 
 /**
- * 食品に触れる容器や器具から粒子が離れる（研究で示されていること）と、
+ * 食品に触れる容器や器具から粒子が離れることを示す研究もある（左）と、
  * 測定の難しさ（測定中の混入・プラスチック以外を数える問題）を左右に分けて示す。
  * 下の区別帯：報告された個数 ≠ 家庭での摂取量
  */
@@ -33,7 +33,7 @@ export const UtensilRelease: React.FC<{steps?: Steps}> = ({steps = {release: 1, 
     <div style={{position: 'absolute', inset: 0}}>
       <div style={{position: 'absolute', left: 0, right: 0, top: 0, display: 'flex', justifyContent: 'space-between'}}>
         {/* 左：容器や器具から粒子が離れる */}
-        <Panel title="研究で示されていること" tag="粒子" tone="slate" width={PANEL_W} height={PANEL_H} appear={base} focus={leftFocus}>
+        <Panel title="離れることを示す研究もある" tag="粒子" tone="slate" width={PANEL_W} height={PANEL_H} appear={base} focus={leftFocus}>
           <svg width={780} height={460} viewBox="0 0 780 460" style={{display: 'block', marginTop: 4}}>
             {/* 表面（容器・器具の断面） */}
             <rect x={20} y={SURF_Y} width={740} height={70} rx={10} fill={COLORS.slateSoft} stroke={COLORS.slate} strokeWidth={4} />

@@ -108,7 +108,7 @@ export const CapsuleExposure: React.FC<{steps?: Steps}> = ({steps = {both: 1, sc
           padding: '18px 30px',
         }}
       >
-        <div style={{fontSize: 34, fontWeight: 700, color: COLORS.ink, marginBottom: 6}}>吸入による影響を考えるのに必要な情報</div>
+        <div style={{fontSize: 34, fontWeight: 700, color: COLORS.ink, marginBottom: 6}}>吸入による影響を考えるには、次のような情報が必要</div>
         {NEEDS.map((n) => (
           <div key={n.text} style={{display: 'flex', alignItems: 'center', gap: 18, padding: '5px 0'}}>
             <div style={{color: COLORS.green, display: 'flex'}}>

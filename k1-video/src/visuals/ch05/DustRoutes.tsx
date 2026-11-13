@@ -137,7 +137,7 @@ export const DustRoutes: React.FC<{steps?: Steps}> = ({steps = {inhale: 1, hand:
           boxSizing: 'border-box',
         }}
       >
-        <div style={{flexShrink: 0, fontSize: 26, fontWeight: 700, color: COLORS.surface, background: COLORS.slate, borderRadius: 8, padding: '4px 14px', letterSpacing: '0.08em'}}>屋外</div>
+        <div style={{flexShrink: 0, fontSize: 28, fontWeight: 700, color: COLORS.surface, background: COLORS.slate, borderRadius: 8, padding: '4px 14px', letterSpacing: '0.08em'}}>屋外</div>
         <div style={{color: COLORS.slate, display: 'flex'}}>
           <Icon name="tire" size={52} />
         </div>
