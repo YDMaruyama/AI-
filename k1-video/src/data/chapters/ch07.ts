@@ -70,7 +70,7 @@ export const ch07: Chapter = {
         rowSteps: {use: 1, contact: 2, effect: 3, distinct: 4},
       },
       lines: [
-        {text: 'ここでは、三つの物質を、同じ四つの観点で整理していきます。', src: ['L'], step: 0},
+        {text: 'ここでは、三つの物質を、同じ四つの観点で整理します。', src: ['L'], step: 0},
         {
           text: '何に使われてきたかという用途、どこで接するかという接点、研究されている作用、そして区別すべき点です。',
           src: ['L'],
@@ -139,7 +139,7 @@ export const ch07: Chapter = {
             mode: 'active',
             items: [
               {type: 'badge', badge: 'experiment', text: 'エストロゲン受容体などへの作用を確認', step: 1},
-              {type: 'badge', badge: 'assessment', badgeLabel: '評価', text: '生殖・発達・代謝・免疫などへの影響', step: 2},
+              {type: 'badge', badge: 'assessment', badgeLabel: '評価', text: '生殖・発達・代謝・免疫などへの影響を評価', step: 2},
               {type: 'badge', badge: 'assessment', badgeLabel: '評価', text: '食品からの摂取の評価は、機関によって異なる', step: 3},
               {type: 'badge', badge: 'assessment', badgeLabel: '管理', text: '欧州：免疫系への影響などを重視し、管理を強化', step: 4},
               {type: 'caveat', text: '「缶詰を一度食べると免疫が壊れる」は不正確', step: 5},
@@ -216,14 +216,14 @@ export const ch07: Chapter = {
                   {text: '化粧品', icon: 'face'},
                 ],
                 tail: 'にも使われてきた',
-                step: 2,
+                step: 3,
               },
             ],
           },
           contact: {
             mode: 'active',
             items: [
-              {text: '一部の軟質塩化ビニル製品・床材・食品に接触する材料など', step: 3},
+              {text: '一部の軟質塩化ビニル製品・床材・食品に接触する材料など', step: 2},
               {
                 text: '製品から移った成分を、',
                 chips: [
@@ -242,12 +242,12 @@ export const ch07: Chapter = {
       lines: [
         {text: '二つ目は、フタル酸エステルです。', src: ['L4'], step: 0},
         {text: 'フタル酸エステルは、主に樹脂を柔らかくする可塑剤などに用いられる物質群です。', src: ['L4'], step: 1},
-        {text: '物質によっては、香料や化粧品にも使われてきました。', src: ['L4'], step: 2},
-        {text: '一部の軟質塩化ビニル製品、床材、食品に接触する材料などが関係します。', src: ['L4'], step: 3},
+        {text: '一部の軟質塩化ビニル製品、床材、食品に接触する材料などが関係します。', src: ['L4'], step: 2},
+        {text: '物質によっては、香料や化粧品にも使われてきました。', src: ['L4'], step: 3},
         {text: '製品から移った成分を、食品やほこりなどを通じて取り込むことがあります。', src: ['L4'], step: 4},
       ],
       board:
-        '共通レイアウト。左に「フタル酸エステル／物質群」と、形の異なる4つの記号（DEHP・DBP・BBP・DEP など）の模式図。右の「用途」「接点（曝露源）」を順に表示。香料・化粧品、食品・ほこりはアイコン付きチップ。',
+        '共通レイアウト。左に「フタル酸エステル／物質群」と、形の異なる4つの記号（DEHP・DBP・BBP・DEP など）の模式図。原文の順に、用途（可塑剤など）→接点（一部の軟質塩化ビニル製品・床材・食品に接触する材料など）→用途（物質によっては香料・化粧品にも）→接点（製品から移った成分を食品・ほこりなどを通じて）と表示し、話している項目と行だけを強調。香料・化粧品、食品・ほこりはアイコン付きチップ。',
     },
     {
       id: 'c07-s07',
@@ -256,15 +256,15 @@ export const ch07: Chapter = {
       visual: 'ch07/SubstanceProfile',
       props: {
         identity: ID.pht,
-        highlight: {members: ['DEHP', 'DBP', 'BBP'], step: 1},
+        highlight: {members: ['DEHP', 'DBP', 'BBP'], step: 1, until: 3},
         rows: {
           use: {mode: 'summary', text: SUM.pht.use},
           contact: {mode: 'summary', text: SUM.pht.contact},
           effect: {
             mode: 'active',
             items: [
-              {type: 'badge', badge: 'animal', text: 'DEHP・DBP・BBPなど：\n胎仔のテストステロン産生、生殖器の発達への影響', step: 1},
-              {type: 'badge', badge: 'assessment', badgeLabel: '規制評価', text: 'こうした動物実験は、規制評価にも使われている', step: 2},
+              {type: 'badge', badge: 'animal', text: 'DEHP・DBP・BBPなどで調査：\n胎仔のテストステロン産生、生殖器の発達への影響', step: 1},
+              {type: 'badge', badge: 'assessment', badgeLabel: '規制評価', text: '動物実験の結果は、規制評価にも使われている', step: 2},
               {type: 'badge', badge: 'human', text: '生殖に関連する指標との関連を調べる研究', step: 3},
               {type: 'caveat', text: '個人の不妊や症状を、特定の製品のせいとは判断できない', step: 4},
             ],
@@ -278,12 +278,12 @@ export const ch07: Chapter = {
           src: ['L5'],
           step: 1,
         },
-        {text: 'こうした動物実験は、規制評価にも使われています。', src: ['L5'], step: 2},
+        {text: 'その結果は、規制評価にも使われています。', src: ['L5'], step: 2},
         {text: '人でも、生殖に関連する指標との関連を調べる研究があります。', src: ['L5'], step: 3},
         {text: 'ただし、個人の不妊や症状を、特定の製品のせいだと判断することはできません。', src: ['L5'], step: 4},
       ],
       board:
-        '同じレイアウトで「研究される作用」を展開。左の模式図で DEHP・DBP・BBP を塗りで強調。根拠の種類を形とラベルで区別：［動物実験］□、［規制評価］盾、［人での関連］△。最後に同じ行の中に「ただし：個人の不妊や症状を、特定の製品のせいとは判断できない」。',
+        '同じレイアウトで「研究される作用」を展開。左の模式図で DEHP・DBP・BBP を塗りで強調（人での研究の行で強調を解く。人の研究は3物質に限った話ではないため）。根拠の種類を形とラベルで区別：［動物実験］□、［規制評価］盾、［人での関連］△。最後に同じ行の中に「ただし：個人の不妊や症状を、特定の製品のせいとは判断できない」。',
     },
     {
       id: 'c07-s08',
@@ -292,7 +292,7 @@ export const ch07: Chapter = {
       visual: 'ch07/SubstanceProfile',
       props: {
         identity: ID.pht,
-        highlight: {members: ['DEP', 'DEHP'], step: 2},
+        highlight: {members: ['DEP', 'DEHP'], step: 2, until: 3},
         rows: {
           use: {mode: 'summary', text: SUM.pht.use},
           contact: {mode: 'summary', text: SUM.pht.contact},
@@ -302,7 +302,7 @@ export const ch07: Chapter = {
             items: [
               {text: '同じ物質群でも、作用は同一ではない', step: 1},
               {type: 'ne', left: 'DEP（香料に使われることがある）', right: 'DEHP', sub: 'DEPについての知見を、DEHPと同じものとして扱わない', step: 2},
-              {type: 'ne', left: 'PET（名称に「テレフタレート」）', right: 'フタル酸系可塑剤', sub: '可塑剤が加えられている、という意味ではない', subStep: 4, step: 3},
+              {type: 'ne', left: 'PET（名称に「テレフタレート」）', right: 'フタル酸系可塑剤', sub: '名称は、フタル酸系可塑剤が加えられているという意味ではない', subStep: 4, step: 3},
             ],
           },
         },
@@ -314,7 +314,7 @@ export const ch07: Chapter = {
         {text: 'しかし、これは、軟質樹脂に使うフタル酸系可塑剤が加えられている、という意味ではありません。', src: ['L6'], step: 4},
       ],
       board:
-        '同じレイアウトで「区別すべき点」を展開。①同じ物質群でも作用は同一ではない。②「DEP（香料に使われることがある）≠ DEHP」—左の模式図で DEP と DEHP を強調（形が異なる）。③「PET（名称に『テレフタレート』）≠ フタル酸系可塑剤」と「可塑剤が加えられている、という意味ではない」。',
+        '同じレイアウトで「区別すべき点」を展開。①同じ物質群でも作用は同一ではない。②「DEP（香料に使われることがある）≠ DEHP」—左の模式図で DEP と DEHP を強調（形が異なる。③で強調を解く）。③「PET（名称に『テレフタレート』）≠ フタル酸系可塑剤」と「名称は、フタル酸系可塑剤が加えられているという意味ではない」。',
     },
 
     /* ---------------------------------------------------------------- */
@@ -328,7 +328,7 @@ export const ch07: Chapter = {
       props: {
         identity: ID.pfas,
         kindStep: 1,
-        highlight: {members: ['PFOA', 'PFOS'], step: 3, callout: '分解されにくさ・\n体内から排出される\nまでの長さが問題に'},
+        highlight: {members: ['PFOA', 'PFOS'], step: 3, until: 4, callout: '分解されにくさ・\n体内から排出される\nまでの長さが問題に'},
         rows: {
           use: {mode: 'active', weight: 0.8, items: [{text: '撥水・撥油加工、泡消火薬剤、工業用途など', step: 2}]},
           contact: {
@@ -360,7 +360,7 @@ export const ch07: Chapter = {
         {text: '汚染された水源の近くでは、飲み水が重要になる場合があります。', src: ['L7'], step: 5},
       ],
       board:
-        '共通レイアウト。左に「PFAS／有機フッ素化合物の一群」と、形も大きさも異なる多数の記号（模式図）。「多くの物質の総称」のラベルを強調。「用途」を表示後、左の PFOA・PFOS の記号を塗りで強調し「分解されにくさ、体内から排出されるまでの長さ」の注記。続いて「接点（曝露源）」に食品・水・ほこりのチップと「補足：汚染された水源の近くでは飲み水」。一つの危険度メーターでは表さない。',
+        '共通レイアウト。左に「PFAS／有機フッ素化合物の一群」と、形も大きさも異なる多数の記号（模式図）。「多くの物質の総称」のラベルを強調。「用途」を表示後、左の PFOA・PFOS の記号を塗りで強調し「分解されにくさ、体内から排出されるまでの長さ」の注記（曝露源の行で強調と注記を解く）。続いて「接点（曝露源）」に食品・水・ほこりのチップと「補足：汚染された水源の近くでは飲み水」。一つの危険度メーターでは表さない。',
     },
     {
       id: 'c07-s10',
@@ -369,6 +369,8 @@ export const ch07: Chapter = {
       visual: 'ch07/SubstanceProfile',
       props: {
         identity: ID.pfas,
+        highlight: {members: ['PFOA'], step: 2, until: 3},
+        kindFocusSteps: [4],
         rows: {
           use: {mode: 'summary', text: SUM.pfas.use},
           contact: {mode: 'summary', text: SUM.pfas.contact},
@@ -401,7 +403,7 @@ export const ch07: Chapter = {
         {text: 'また、すべてのPFASが、同じ作用や危険度を持つわけでもありません。', src: ['L8'], step: 4},
       ],
       board:
-        '同じレイアウトで「研究される作用」を展開。関連を調べている指標をチップで並べる（血中脂質・肝機能の指標・ワクチンへの抗体反応・妊娠・出生に関する指標）。［評価］盾印で PFOA の発がん性の評価。続けて「ただし」の帯を2つ（ホルモン作用だけで説明できない／すべての PFAS が同じ作用や危険度ではない）。左の模式図は形の異なる多数の記号のまま（一つの危険度で表さない）。',
+        '同じレイアウトで「研究される作用」を展開。関連を調べている指標をチップで並べる（血中脂質・肝機能の指標・ワクチンへの抗体反応・妊娠・出生に関する指標）。［評価］盾印で PFOA の発がん性の評価。続けて「ただし」の帯を2つ（ホルモン作用だけで説明できない／すべての PFAS が同じ作用や危険度ではない）。左の模式図は形の異なる多数の記号のまま（一つの危険度で表さない）。PFOA の評価の行だけ PFOA の記号を強調し、最後の「ただし」では「多くの物質の総称」のラベルを強調し直す。',
     },
     {
       id: 'c07-s11',
@@ -419,7 +421,7 @@ export const ch07: Chapter = {
             mode: 'active',
             items: [
               {type: 'ne', left: '分解されにくい', right: '一度体に入ったら一生出ていかない', sub: '排出の速さは、物質や人によって異なる', subStep: 2, step: 1},
-              {type: 'ne', left: 'フライパンの樹脂（PTFE）', right: 'PFOA・PFOS', sub: '現在のフッ素樹脂加工フライパンの樹脂と同一視できない', step: 3},
+              {type: 'ne', left: '現在のフライパンの樹脂（PTFE）', right: 'PFOA・PFOS', sub: 'フッ素樹脂加工の樹脂と、PFOA・PFOSを同一視できない', step: 3},
             ],
           },
         },
@@ -432,10 +434,10 @@ export const ch07: Chapter = {
           captions: [['「分解されにくい」と', '「一度体に入ったら一生出ていかない」は'], ['同じではありません']],
         },
         {text: '排出の速さは、物質や人によって異なります。', src: ['L9'], step: 2},
-        {text: 'また、現在のフッ素樹脂加工フライパンの樹脂と、PFOA・PFOSを、同一視することはできません。', src: ['L9', 'N9'], step: 3},
+        {text: 'また、現在のフッ素樹脂加工フライパンの樹脂と、PFOA・PFOSを、同一視することはできません。', src: ['L9'], step: 3},
       ],
       board:
-        '同じレイアウトで「区別すべき点」を展開。①「分解されにくい」≠「一度体に入ったら一生出ていかない」と「排出の速さは物質や人によって異なる」。②「フライパンの樹脂（PTFE）≠ PFOA・PFOS」—左の模式図で PFOA・PFOS を強調。下に「現在のフッ素樹脂加工フライパンの樹脂と同一視できない」。PTFE の表記は原文 N9（表面に使われる PTFE）による。',
+        '同じレイアウトで「区別すべき点」を展開。①「分解されにくい」≠「一度体に入ったら一生出ていかない」と「排出の速さは物質や人によって異なる」。②「現在のフライパンの樹脂（PTFE）≠ PFOA・PFOS」—左の模式図で PFOA・PFOS を強調。下に「フッ素樹脂加工の樹脂と、PFOA・PFOSを同一視できない」。PTFE の表記は原文 N9（表面に使われる PTFE）による。',
     },
 
     /* ---------------------------------------------------------------- */
@@ -457,7 +459,7 @@ export const ch07: Chapter = {
             cells: {
               use: 'ポリカーボネート樹脂・\nエポキシ樹脂の製造',
               contact: '一部の食品容器・\n缶の内面塗装など',
-              effect: 'エストロゲン受容体など\nへの作用・影響の評価',
+              effect: 'エストロゲン受容体などへの\n作用（実験）・影響の評価',
               distinct: '「BPA不使用」の範囲\nPET ≠ ポリカーボネート',
             },
           },

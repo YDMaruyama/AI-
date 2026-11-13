@@ -45,8 +45,10 @@ type Props = {
   rows: Record<RowKey, RowState>;
   /** まとまり方のラベルを出す step（既定 0） */
   kindStep?: number;
-  /** 模式図の中で特定の物質を強調する */
-  highlight?: {members: string[]; step: number; callout?: string};
+  /** まとまり方のラベル（例：多くの物質の総称）を強調し直す step */
+  kindFocusSteps?: number[];
+  /** 模式図の中で特定の物質を強調する（until の step で強調を解く） */
+  highlight?: {members: string[]; step: number; until?: number; callout?: string};
   note?: string;
   noteStep?: number;
   noteLabel?: string;
@@ -65,14 +67,21 @@ const itemSteps = (it: ProfileItem) => (it.type === 'ne' && it.subStep !== undef
 /* ------------------------------------------------------------------ */
 /* 左：物質の名前とまとまり方                                            */
 /* ------------------------------------------------------------------ */
-const IdentityPanel: React.FC<{identity: Identity; kindStep: number; highlight?: Props['highlight']}> = ({identity, kindStep, highlight}) => {
+const IdentityPanel: React.FC<{identity: Identity; kindStep: number; kindFocusSteps: number[]; highlight?: Props['highlight']}> = ({
+  identity,
+  kindStep,
+  kindFocusSteps,
+  highlight,
+}) => {
   const c = toneColor(identity.tone);
   const base = useReveal(0, {duration: 0.7});
   const kindP = useReveal(kindStep);
-  const kindFocus = useFocus((s) => s === kindStep && kindStep > 0);
-  const hp = useReveal(highlight ? highlight.step : 999, {duration: 0.7});
+  const kindFocus = useFocus((s) => (s === kindStep && kindStep > 0) || kindFocusSteps.includes(s));
+  const hOn = useReveal(highlight ? highlight.step : 999, {duration: 0.7});
+  const hOff = useReveal(highlight?.until ?? 999, {duration: 0.7});
+  const hp = hOn * (1 - hOff);
   const hFocus = useFocus((s) => !!highlight && s === highlight.step);
-  const calloutP = useReveal(highlight ? highlight.step : 999, {delay: 0.3});
+  const calloutP = useReveal(highlight ? highlight.step : 999, {delay: 0.3}) * (1 - hOff);
   return (
     <div
       style={{
@@ -187,7 +196,8 @@ const ItemView: React.FC<{item: ProfileItem; allSteps: number[]; tone: Tone}> = 
   const c = toneColor(tone);
   const appear = useReveal(item.step);
   const mine = itemSteps(item);
-  const focus = useFocus((s) => (allSteps.includes(s) ? mine.includes(s) : true));
+  // 章の段階に含まれない step（導入の行）では強調しない。最後の段階より後は全体を強調
+  const focus = useFocus((s) => (allSteps.includes(s) ? mine.includes(s) : s > Math.max(...allSteps)));
   const subP = useReveal(item.type === 'ne' ? (item.subStep ?? item.step) : item.step, {delay: item.type === 'ne' && item.subStep === undefined ? 0.35 : 0});
   // 話していない項目も読める濃さで残す
   const wrap: React.CSSProperties = {...fadeUp(appear, 10), opacity: appear * (0.64 + 0.36 * focus)};
@@ -263,7 +273,7 @@ const Row: React.FC<{
   const c = toneColor(tone);
   const base = useReveal(0, {duration: 0.6});
   const steps = state.mode === 'active' ? state.items.flatMap(itemSteps) : [];
-  const focus = useFocus((s) => (state.mode !== 'active' ? false : allSteps.includes(s) ? steps.includes(s) : true));
+  const focus = useFocus((s) => (state.mode !== 'active' ? false : allSteps.includes(s) ? steps.includes(s) : s > Math.max(...allSteps)));
   const active = state.mode === 'active';
   const labelBg = active ? (focus > 0.5 ? c.main : c.soft) : COLORS.panel;
   const labelColor = active ? (focus > 0.5 ? COLORS.surface : COLORS.ink) : COLORS.inkSoft;
@@ -308,14 +318,14 @@ const Row: React.FC<{
   );
 };
 
-export const SubstanceProfile: React.FC<Props> = ({identity, rows, kindStep = 0, highlight, note, noteStep = 1, noteLabel}) => {
+export const SubstanceProfile: React.FC<Props> = ({identity, rows, kindStep = 0, kindFocusSteps = [], highlight, note, noteStep = 1, noteLabel}) => {
   const noteP = useReveal(noteStep);
   const itemStepList = ROW_DEFS.flatMap((d) => {
     const st = rows[d.key];
     return st.mode === 'active' ? st.items.flatMap(itemSteps) : [];
   });
   // 左の模式図だけを話している段階では、右の項目を強調しない
-  const idSteps = [kindStep > 0 ? kindStep : -1, highlight ? highlight.step : -1].filter((s) => s >= 0 && !itemStepList.includes(s));
+  const idSteps = [kindStep > 0 ? kindStep : -1, highlight ? highlight.step : -1, ...kindFocusSteps].filter((s) => s > 0 && !itemStepList.includes(s));
   const allSteps = [...itemStepList, ...idSteps];
 
   const areaH = H - (note ? NOTE_SPACE : 0);
@@ -329,7 +339,7 @@ export const SubstanceProfile: React.FC<Props> = ({identity, rows, kindStep = 0,
 
   return (
     <div style={{position: 'absolute', inset: 0}}>
-      <IdentityPanel identity={identity} kindStep={kindStep} highlight={highlight} />
+      <IdentityPanel identity={identity} kindStep={kindStep} kindFocusSteps={kindFocusSteps} highlight={highlight} />
       <div style={{position: 'absolute', left: ID_W + GAP, right: 0, top: 0, height: areaH, display: 'flex', flexDirection: 'column', gap: ROW_GAP}}>
         {ROW_DEFS.map((d, i) => (
           <Row

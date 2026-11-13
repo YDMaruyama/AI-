@@ -100,7 +100,7 @@ const Cell: React.FC<{text?: string; mode: 'map' | 'filled'; rowStep?: number; f
     <div
       style={{
         ...fadeUp(p, 10),
-        opacity: p * (0.55 + 0.45 * focus),
+        opacity: p * (0.64 + 0.36 * focus),
         height: ROW_H,
         boxSizing: 'border-box',
         borderRadius: 16,
