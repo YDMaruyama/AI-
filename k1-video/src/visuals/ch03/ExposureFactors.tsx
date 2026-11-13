@@ -1,6 +1,6 @@
 import React from 'react';
 import {Icon, IconName} from '../../components/Icons';
-import {fadeUp, useFocus, useReveal} from '../../components/scene-context';
+import {fadeUp, lerp, useFocus, useReveal} from '../../components/scene-context';
 import {NoteStrip} from '../../components/ui';
 import {COLORS} from '../../theme';
 
@@ -11,6 +11,8 @@ import {COLORS} from '../../theme';
  * - origin：チップの前に置く「由来（天然か合成か）」と「＋（加えて）」の区切り（E2 用）
  * 強調ルール：groups[step] があればその番号（origin は -1）、
  *             step に対応するチップがあればそのチップ、allStep 以降は全部、それ以外は表示済みの全部。
+ * leadCenterUntil：その step まで上段を図解領域の中ほどに置き、チップが出るときに上へ穏やかに移す
+ *                  （チップがまだない間に、画面の下半分が空かないようにする）。
  */
 type LeadItem = {icon: IconName; text: string; delay?: number};
 type Lead = {items: LeadItem[]; result: string; resultDelay?: number; extra?: string; extraStep?: number};
@@ -18,6 +20,10 @@ type Chip = {title: string; sub?: string; icon: IconName; step: number; divider?
 type Origin = {title: string; sub?: string; icon: IconName; step: number; joiner?: string};
 
 const LEAD_H = 140;
+const LEAD_TOP = 14;
+const LEAD_TOP_CENTER = 230;
+/** 上段が上へ移る間は、下段を少し遅らせて重ならないようにする */
+const AFTER_MOVE = 0.55;
 const CHIP_TOP = 262;
 const CHIP_H_DEFAULT = 340;
 
@@ -38,10 +44,12 @@ const isFocused = (
   return true;
 };
 
-const LeadRow: React.FC<{lead: Lead}> = ({lead}) => {
+const LeadRow: React.FC<{lead: Lead; centerUntil?: number}> = ({lead, centerUntil}) => {
   const base = useReveal(0, {duration: 0.6});
   const result = useReveal(0, {delay: lead.resultDelay ?? 1.6});
   const extra = useReveal(lead.extraStep ?? 99);
+  const move = useReveal(centerUntil ?? 0, {duration: 0.7});
+  const top = centerUntil === undefined ? LEAD_TOP : lerp(LEAD_TOP_CENTER, LEAD_TOP, move);
   return (
     <div
       style={{
@@ -49,7 +57,7 @@ const LeadRow: React.FC<{lead: Lead}> = ({lead}) => {
         position: 'absolute',
         left: 0,
         right: 0,
-        top: 14,
+        top,
         height: LEAD_H,
         boxSizing: 'border-box',
         background: COLORS.panel,
@@ -110,7 +118,8 @@ const ChipBox: React.FC<{
   focus: number;
   height: number;
   tone?: 'green' | 'slate';
-}> = ({title, sub, icon, appear, focus, height, tone = 'green'}) => {
+  titleSize?: number;
+}> = ({title, sub, icon, appear, focus, height, tone = 'green', titleSize = 46}) => {
   const main = tone === 'green' ? COLORS.green : COLORS.slate;
   const soft = tone === 'green' ? COLORS.greenSoft : COLORS.slateSoft;
   const on = focus > 0.5;
@@ -151,7 +160,7 @@ const ChipBox: React.FC<{
       >
         <Icon name={icon} size={64} />
       </div>
-      <div style={{fontSize: 46, fontWeight: 700, color: COLORS.ink, lineHeight: 1.25, whiteSpace: 'nowrap'}}>{title}</div>
+      <div style={{fontSize: titleSize, fontWeight: 700, color: COLORS.ink, lineHeight: 1.25, whiteSpace: 'nowrap'}}>{title}</div>
       {sub ? (
         <div style={{fontSize: 30, fontWeight: 500, color: COLORS.inkSoft, lineHeight: 1.45, whiteSpace: 'pre-line'}}>{sub}</div>
       ) : null}
@@ -167,30 +176,35 @@ const FactorChip: React.FC<{
   groups?: Record<string, number[]>;
   allStep?: number;
   height: number;
-}> = ({chip, index, chips, origin, groups, allStep, height}) => {
-  const appear = useReveal(chip.step);
+  titleSize?: number;
+  delay?: number;
+}> = ({chip, index, chips, origin, groups, allStep, height, titleSize, delay = 0}) => {
+  const appear = useReveal(chip.step, {delay});
   const focus = useFocus((s) => isFocused(index, s, chips, origin, groups, allStep));
   return (
     <>
       {chip.divider ? <div style={{opacity: appear, width: 0, height: height - 40, borderLeft: `3px dashed ${COLORS.line}`, flexShrink: 0}} /> : null}
-      <ChipBox title={chip.title} sub={chip.sub} icon={chip.icon} appear={appear} focus={focus} height={height} />
+      <ChipBox title={chip.title} sub={chip.sub} icon={chip.icon} appear={appear} focus={focus} height={height} titleSize={titleSize} />
     </>
   );
 };
 
-const OriginChip: React.FC<{origin: Origin; chips: Chip[]; groups?: Record<string, number[]>; allStep?: number; height: number}> = ({
-  origin,
-  chips,
-  groups,
-  allStep,
-  height,
-}) => {
-  const appear = useReveal(origin.step);
+const OriginChip: React.FC<{
+  origin: Origin;
+  chips: Chip[];
+  groups?: Record<string, number[]>;
+  allStep?: number;
+  height: number;
+  titleSize?: number;
+  delayFor: (step: number) => number;
+}> = ({origin, chips, groups, allStep, height, titleSize, delayFor}) => {
+  const appear = useReveal(origin.step, {delay: delayFor(origin.step)});
   const focus = useFocus((s) => isFocused(-1, s, chips, origin, groups, allStep));
-  const join = useReveal(Math.min(...chips.map((c) => c.step)));
+  const firstChip = Math.min(...chips.map((c) => c.step));
+  const join = useReveal(firstChip, {delay: delayFor(firstChip)});
   return (
     <>
-      <ChipBox title={origin.title} sub={origin.sub} icon={origin.icon} appear={appear} focus={focus} height={height} tone="slate" />
+      <ChipBox title={origin.title} sub={origin.sub} icon={origin.icon} appear={appear} focus={focus} height={height} tone="slate" titleSize={titleSize} />
       <div style={{...fadeUp(join, 10), width: 96, flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4}}>
         <div style={{fontSize: 72, fontWeight: 700, color: COLORS.gold, lineHeight: 1}}>＋</div>
         <div style={{fontSize: 28, fontWeight: 700, color: COLORS.gold, whiteSpace: 'nowrap'}}>{origin.joiner ?? '加えて'}</div>
@@ -208,24 +222,64 @@ export const ExposureFactors: React.FC<{
   groups?: Record<string, number[]>;
   allStep?: number;
   chipHeight?: number;
+  /** チップの見出しの文字サイズ（既定 46px。長い語がある場合に小さくする） */
+  chipTitleSize?: number;
+  leadCenterUntil?: number;
   note?: string;
   noteStep?: number;
   noteLabel?: string;
-}> = ({lead, chips, origin, chipsLabel, chipsLabelStep, groups, allStep, chipHeight = CHIP_H_DEFAULT, note, noteStep = 99, noteLabel}) => {
-  const label = useReveal(chipsLabelStep ?? Math.min(...chips.map((c) => c.step)));
+}> = ({
+  lead,
+  chips,
+  origin,
+  chipsLabel,
+  chipsLabelStep,
+  groups,
+  allStep,
+  chipHeight = CHIP_H_DEFAULT,
+  chipTitleSize,
+  leadCenterUntil,
+  note,
+  noteStep = 99,
+  noteLabel,
+}) => {
+  const delayFor = (step: number) => (leadCenterUntil !== undefined && step === leadCenterUntil ? AFTER_MOVE : 0);
+  const labelStep = chipsLabelStep ?? Math.min(...chips.map((c) => c.step));
+  const label = useReveal(labelStep, {delay: delayFor(labelStep)});
   const noteP = useReveal(noteStep);
   return (
     <div style={{position: 'absolute', inset: 0}}>
-      {lead ? <LeadRow lead={lead} /> : null}
+      {lead ? <LeadRow lead={lead} centerUntil={leadCenterUntil} /> : null}
       {chipsLabel ? (
         <div style={{...fadeUp(label, 10), position: 'absolute', left: 6, top: CHIP_TOP - 62, fontSize: 32, fontWeight: 700, color: COLORS.inkSoft}}>
           {chipsLabel}
         </div>
       ) : null}
       <div style={{position: 'absolute', left: 0, right: 0, top: CHIP_TOP, display: 'flex', alignItems: 'center', gap: 24}}>
-        {origin ? <OriginChip origin={origin} chips={chips} groups={groups} allStep={allStep} height={chipHeight} /> : null}
+        {origin ? (
+          <OriginChip
+            origin={origin}
+            chips={chips}
+            groups={groups}
+            allStep={allStep}
+            height={chipHeight}
+            titleSize={chipTitleSize}
+            delayFor={delayFor}
+          />
+        ) : null}
         {chips.map((c, i) => (
-          <FactorChip key={i} chip={c} index={i} chips={chips} origin={origin} groups={groups} allStep={allStep} height={chipHeight} />
+          <FactorChip
+            key={i}
+            chip={c}
+            index={i}
+            chips={chips}
+            origin={origin}
+            groups={groups}
+            allStep={allStep}
+            height={chipHeight}
+            titleSize={chipTitleSize}
+            delay={delayFor(c.step)}
+          />
         ))}
       </div>
       {note ? (
