@@ -110,5 +110,6 @@ const AreaLine: React.FC<{index: number; n: number; step: number; tileW: number;
 const AreaTile: React.FC<{area: AreaSpec; index: number; steps: number[]; allStep?: number}> = ({area, index, steps, allStep}) => {
   const {appear, focus} = useItem(index, steps, allStep);
   const k = useReveal(area.step, {delay: 0.25, duration: 0.9});
-  return <Tile kind={area.kind} label={area.label} appear={appear} focus={focus} k={k} artHeight={230} labelSize={36} />;
+  // 「自分の状態への気づき」（10 字）がタイル幅に余裕をもって収まる大きさにする
+  return <Tile kind={area.kind} label={area.label} appear={appear} focus={focus} k={k} artHeight={230} labelSize={34} />;
 };

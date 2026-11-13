@@ -144,11 +144,11 @@ const Caution: React.FC<{k: number}> = ({k}) => (
 
 const Alternative: React.FC<{k: number}> = ({k}) => (
   <g>
-    {/* 二つの選択肢 */}
-    <rect x={20} y={58} width={116} height={140} rx={16} fill={C.surface} stroke={C.line} strokeWidth={4} />
-    <SvgIcon name="bottle" x={33} y={82} size={90} color={C.slate} />
-    <rect x={184} y={58} width={116} height={140} rx={16} fill={C.surface} stroke={C.green} strokeWidth={4} />
-    <SvgIcon name="container" x={197} y={84} size={90} color={C.green} />
+    {/* 二つの選択肢（どちらかを良い・悪いと色で示さないよう、同じ描き方にそろえる） */}
+    <rect x={20} y={58} width={116} height={140} rx={16} fill={C.surface} stroke={C.inkSoft} strokeWidth={4} />
+    <SvgIcon name="bottle" x={33} y={82} size={90} color={C.inkSoft} />
+    <rect x={184} y={58} width={116} height={140} rx={16} fill={C.surface} stroke={C.inkSoft} strokeWidth={4} />
+    <SvgIcon name="container" x={197} y={84} size={90} color={C.inkSoft} />
     {/* 見比べる（両向きの弧） */}
     {k > 0.001 ? <path d="M86 50 Q160 -4 234 50" fill="none" stroke={C.gold} strokeWidth={6} strokeLinecap="round" {...drawDash(k, 190)} /> : null}
     <g opacity={k > 0.95 ? 1 : 0} fill="none" stroke={C.gold} strokeWidth={6} strokeLinecap="round" strokeLinejoin="round">
