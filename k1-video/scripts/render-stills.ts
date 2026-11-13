@@ -3,7 +3,7 @@
  *   npm run stills                       … 全シーン
  *   npm run stills -- c03-s02 c06-s01    … 指定シーン
  *   npm run stills -- --chapter ch03     … 章単位
- *   オプション: --scale 0.5（既定）, --mid（各段階の中間状態も出す）, --out out/stills
+ *   オプション: --scale 0.5（既定）, --mid（各段階の中間状態も出す）, --end（シーン終盤のみ）, --nosub（字幕なし）, --out out/stills
  * 各シーンについて「各 step の表示完了時点」と「シーン終盤」を出力する。
  * --mid を付けると、各 step の開始 0.25 秒後（アニメーション途中）も出力する。
  */
@@ -27,6 +27,7 @@ const outDir = path.resolve(ROOT, opt('--out', 'out/stills'));
 const chapterFilter = opt('--chapter', '');
 const withMid = args.includes('--mid');
 const noSub = args.includes('--nosub');
+const endOnly = args.includes('--end');
 const valueArgs = new Set(['--scale', '--out', '--chapter']);
 const ids = args.filter((a, i) => !a.startsWith('--') && !valueArgs.has(args[i - 1] ?? ''));
 
@@ -44,7 +45,7 @@ const main = async () => {
       const wanted = (ids.length === 0 || ids.includes(sc.id)) && (!chapterFilter || chapterFilter === ch.id);
       if (wanted) {
         const steps = [...new Map(tl.steps.map((s) => [s.step, s])).values()].sort((a, b) => a.at - b.at);
-        for (const s of steps) {
+        for (const s of endOnly ? [] : steps) {
           const done = Math.min(frames - 20, Math.round((s.at + 1.3) * fps));
           jobs.push({file: `${sc.id}_step${s.step}.png`, frame: offset + Math.max(0, done)});
           if (withMid) {

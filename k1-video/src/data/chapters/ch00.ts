@@ -30,7 +30,7 @@ export const ch00: Chapter = {
       visual: 'Points',
       props: {
         numbered: true,
-        size: 42,
+        size: 40,
         items: [
           {text: '「避ける・防ぐ・排出する」という排毒の考え方を説明できる', step: 1},
           {text: '物質と接する経路と、接触・吸収・健康への影響の違いを区別できる', step: 2},
