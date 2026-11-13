@@ -7,7 +7,10 @@
 export type Reading = {term: string; reading: string; note?: string; ttsOnly?: boolean};
 
 export const READINGS: Reading[] = [
+  {term: 'K1', reading: 'ケーワン'},
   {term: '曝露', reading: 'ばくろ'},
+  {term: '身体活動', reading: 'しんたいかつどう'},
+  {term: '身体', reading: 'からだ', note: '「身体活動」は しんたいかつどう'},
   {term: '内分泌', reading: 'ないぶんぴ'},
   {term: 'かく乱', reading: 'かくらん'},
   {term: '排毒', reading: 'はいどく'},

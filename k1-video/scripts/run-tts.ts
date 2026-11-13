@@ -52,7 +52,7 @@ if (todo.length > 0) {
   for (const s of todo) {
     const wav = path.join(OUT, `${s.id}.wav`);
     const mp3 = path.join(OUT, `${s.id}.mp3`);
-    execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', wav, '-ac', '1', '-ar', '48000', '-c:a', 'libmp3lame', '-b:a', '96k', mp3]);
+    execFileSync('ffmpeg', ['-y', '-v', 'error', '-i', wav, '-ac', '1', '-ar', '48000', '-c:a', 'libmp3lame', '-b:a', '64k', mp3]);
     rmSync(wav);
     hashes[s.id] = (s as {hash?: string}).hash!;
   }

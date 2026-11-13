@@ -18,7 +18,7 @@ import {displayWidth, splitCaption} from './lib/captions';
 const ROOT = path.resolve(__dirname, '..');
 const src = readFileSync(path.join(ROOT, 'source', 'K1_source_with_ids.md'), 'utf8');
 const paraIds = new Set([...src.matchAll(/^\[([A-Z][A-Z0-9-]*)\]/gm)].map((m) => m[1]).filter((id) => !id.endsWith('-cite')));
-const headingIds = new Set([...src.matchAll(/^#+ \[([A-Z][A-Z0-9]*)\]/gm)].map((m) => m[1]));
+const headingIds = new Set([...src.matchAll(/^#+ \[([A-Z][A-Z0-9-]*)\]/gm)].map((m) => m[1]));
 const extraIds = new Set(['BRIEF']);
 const contentIds = [...paraIds].filter((id) => /\d/.test(id) && id !== 'X0' && id !== 'T0');
 
