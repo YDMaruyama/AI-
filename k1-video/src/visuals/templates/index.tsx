@@ -199,7 +199,7 @@ const CardCell: React.FC<{item: CardItem; index: number; steps: number[]; allSte
       align="center"
       titleSize={count >= 4 ? 40 : 46}
       bodySize={count >= 4 ? 30 : 34}
-      tag={item.tag ? <Pill tone={item.tone ?? 'green'} size={24}>{item.tag}</Pill> : undefined}
+      tag={item.tag ? <Pill tone={item.tone ?? 'green'} size={28}>{item.tag}</Pill> : undefined}
       style={{justifyContent: 'flex-start', paddingTop: 40}}
     />
   );
@@ -270,7 +270,7 @@ const SidePanel: React.FC<{side: Side; index: number; steps: number[]; allStep?:
           </div>
         ) : null}
         <div>
-          {side.tag ? <Pill tone={side.tone ?? (index === 0 ? 'green' : 'slate')} size={24}>{side.tag}</Pill> : null}
+          {side.tag ? <Pill tone={side.tone ?? (index === 0 ? 'green' : 'slate')} size={28}>{side.tag}</Pill> : null}
           <div style={{fontSize: 46, fontWeight: 700, color: COLORS.ink, lineHeight: 1.3, marginTop: side.tag ? 8 : 0}}>{side.title}</div>
         </div>
       </div>

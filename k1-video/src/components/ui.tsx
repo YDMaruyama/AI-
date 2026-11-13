@@ -165,12 +165,12 @@ export const NoteStrip: React.FC<{
     <div
       style={{
         flexShrink: 0,
-        fontSize: 26,
+        fontSize: 28,
         fontWeight: 700,
         color: COLORS.surface,
         background: COLORS.gold,
         borderRadius: 8,
-        padding: '4px 14px',
+        padding: '3px 14px',
         letterSpacing: '0.08em',
       }}
     >
@@ -397,7 +397,7 @@ export const SvgText: React.FC<{
 export const NotEqual: React.FC<{appear?: number; size?: number; label?: string}> = ({appear = 1, size = 96, label}) => (
   <div style={{...fadeUp(appear, 10), display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6}}>
     <div style={{fontSize: size, fontWeight: 700, color: COLORS.gold, lineHeight: 1}}>≠</div>
-    {label ? <div style={{fontSize: 26, fontWeight: 700, color: COLORS.gold, whiteSpace: 'nowrap'}}>{label}</div> : null}
+    {label ? <div style={{fontSize: 28, fontWeight: 700, color: COLORS.gold, whiteSpace: 'nowrap'}}>{label}</div> : null}
   </div>
 );
 
