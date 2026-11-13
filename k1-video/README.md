@@ -7,6 +7,19 @@ BP 受講者向けの講義動画「K1 排毒とは 暮らしの中での毒」�
 - 納品ドキュメント：`deliverables/`（台本・絵コンテ・対応表・字幕・制作メモ）
 - 章の追加・修正の手順：`docs/AUTHORING.md`
 
+## 納品物
+
+| ファイル | 内容 |
+|---|---|
+| `out/K1_full_preview.mp4` | 全編プレビュー（1920×1080／60fps、**仮音声入り・字幕あり・仮尺**）。容量が大きいため git には含めない。`npm run render:preview` で再生成 |
+| `out/chapters/K1_ChNN.mp4` | 章ごとの書き出し（Ch00 は導入） |
+| `deliverables/narration_ja.md` | 収録用全文台本（読み方表・行ごとの読み注記つき） |
+| `deliverables/storyboard.md` | 絵コンテ：シーン・秒数・画面・動き・ナレーション |
+| `deliverables/source_coverage.md` | 原文の全段落・見出しとシーンの対応、統合した重複、未解決事項 |
+| `deliverables/captions_ja.srt` / `.vtt` | 外部字幕（仮尺。VTT には区分を NOTE で明記） |
+| `deliverables/production_notes.md` | 使用素材と利用条件、根拠の確認状況、要修正事項、実施した検証 |
+| `deliverables/evidence_check.md` / `factcheck.json` | 根拠の確認の詳細（資料 URL・確認日） |
+
 ## 必要なもの
 
 | 用途 | 必要なもの |
