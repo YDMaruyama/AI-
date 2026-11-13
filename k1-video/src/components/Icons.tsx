@@ -156,8 +156,11 @@ const paths: Record<IconName, React.ReactNode> = {
   ),
   cell: (
     <>
-      <ellipse {...S} cx="32" cy="32" rx="24" ry="20" />
-      <circle {...S} cx="34" cy="30" r="7" />
+      <path {...S} d="M12 31c-1-11 7-19 18-19 7 0 11 3 17 3 7 0 11 7 10 15-1 11-9 21-24 21-12 0-20-9-21-20z" />
+      <circle {...S} cx="28" cy="31" r="7" />
+      <circle cx="45" cy="26" r="2.4" fill="currentColor" />
+      <circle cx="42" cy="42" r="2.4" fill="currentColor" />
+      <circle cx="20" cy="44" r="2" fill="currentColor" />
     </>
   ),
   label: (

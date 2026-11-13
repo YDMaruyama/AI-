@@ -272,7 +272,7 @@ export const EvidenceBadge: React.FC<{kind: EvidenceKind; label?: string; appear
   kind,
   label,
   appear = 1,
-  size = 26,
+  size = 28,
 }) => {
   const e = EVIDENCE[kind];
   const c = toneColor(e.tone);
