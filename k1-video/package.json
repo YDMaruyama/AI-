@@ -14,7 +14,8 @@
     "render:preview": "tsx scripts/render.ts preview",
     "render:chapters": "tsx scripts/render.ts chapters",
     "stills": "tsx scripts/render-stills.ts",
-    "validate": "tsx scripts/validate.ts"
+    "validate": "tsx scripts/validate.ts",
+    "verify": "tsx scripts/verify-render.ts"
   },
   "dependencies": {
     "@remotion/cli": "4.0.543",
