@@ -97,7 +97,7 @@ export const IndicatorMeaning: React.FC<{steps?: Steps; notText?: string}> = ({
         </div>
         <div style={{position: 'absolute', right: 20, top: 20}}>
           <CornerTag appear={ab} style={{padding: '4px 12px'}}>
-            模式図
+            模式図・数は一定ではない
           </CornerTag>
         </div>
       </div>

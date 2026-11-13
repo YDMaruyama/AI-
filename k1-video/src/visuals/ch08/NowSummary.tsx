@@ -8,7 +8,7 @@ import {DashTag} from './parts';
 /**
  * M13：現時点で言えること。
  *  左：一部の化学物質 … 生殖・発達や免疫への有害性が確認（評価機関の判断）→ 曝露を減らすための管理
- *  右：マイクロプラスチック … 炎症などを起こす仕組みを研究中／普段の量でどの病気がどの程度増えるかは示せる段階にない（未解明）
+ *  右：マイクロプラスチック … 炎症などを起こす仕組みを研究中／普段の量でどの病気がどの程度増えるかは明確に示せる段階にない（未解明）
  * 左右は「一方」で並べ、同じ段階の話として描かない。
  */
 type Steps = {chem: number; manage: number; mpStudy: number; mpUnknown: number};
@@ -114,7 +114,7 @@ export const NowSummary: React.FC<{steps?: Steps}> = ({steps = {chem: 1, manage:
         <Item appear={right} focus={fStudy} head={<DashTag color={COLORS.slate}>研究されている</DashTag>}>
           炎症などを起こす仕組み
         </Item>
-        <Item appear={unk} focus={fUnk} head={<EvidenceBadge kind="unknown" label="まだ示せる段階にない" size={30} />}>
+        <Item appear={unk} focus={fUnk} head={<EvidenceBadge kind="unknown" label="明確に示せる段階にない" size={30} />}>
           普段の生活で取り込む量によって、
           <br />
           どの病気がどの程度増えるのか
