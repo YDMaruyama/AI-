@@ -14,5 +14,5 @@
     "ignoreDeprecations": "6.0"
   },
   "include": ["**/*.ts"],
-  "exclude": ["node_modules", "dist", "docs"]
+  "exclude": ["node_modules", "dist", "docs", "k1-video"]
 }

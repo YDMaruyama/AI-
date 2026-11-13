@@ -1,0 +1,8 @@
+node_modules
+out/
+.remotion
+*.log
+# 作業用の一時ファイル
+tmp/
+# TTS の中間 wav（配布用は mp3 を使用）
+public/audio/**/*.wav

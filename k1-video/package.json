@@ -1,0 +1,33 @@
+{
+  "name": "k1-teaching-video",
+  "version": "0.1.0",
+  "private": true,
+  "description": "K1 排毒とは 暮らしの中での毒 — BP受講者向け講義動画（Remotion）",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "timeline": "tsx scripts/build-timeline.ts",
+    "tts": "tsx scripts/run-tts.ts",
+    "docs": "tsx scripts/build-docs.ts",
+    "build:data": "npm run timeline && npm run docs",
+    "render:full": "remotion render src/index.ts K1-Full out/K1_full.mp4",
+    "render:preview": "tsx scripts/render.ts preview",
+    "render:chapters": "tsx scripts/render.ts chapters",
+    "stills": "tsx scripts/render-stills.ts",
+    "validate": "tsx scripts/validate.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.543",
+    "@remotion/fonts": "4.0.543",
+    "@remotion/media": "4.0.543",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.543"
+  },
+  "devDependencies": {
+    "@types/node": "22.18.0",
+    "@types/react": "19.2.2",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  }
+}
