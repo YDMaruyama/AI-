@@ -265,3 +265,50 @@ const sceneCount = CHAPTERS.reduce((a, c) => a + c.scenes.length, 0);
 const chars = CHAPTERS.flatMap((c) => c.scenes.flatMap((s: Scene) => s.lines.map((l) => spokenLength(l.text)))).reduce((a, b) => a + b, 0);
 console.log(`docs → deliverables/ （${sceneCount} シーン、ナレーション ${chars} 字、合計 ${fmt(total)}、${modeLabel(timeline.mode)}）`);
 void lineIdOf;
+
+/* ---------------- evidence_check.md（根拠の確認状況：factcheck.json から） ---------------- */
+{
+  const fcPath = path.join(OUT, 'factcheck.json');
+  if (existsSync(fcPath)) {
+    type Finding = {
+      source_ids: string[];
+      claim_in_source: string;
+      status: string;
+      evidence_summary_ja: string;
+      sources: {title: string; publisher: string; url: string; date?: string}[];
+      time_sensitive_note_ja?: string;
+      suggested_action_ja: string;
+    };
+    const fc: {cluster: string; findings: Finding[]}[] = JSON.parse(readFileSync(fcPath, 'utf8'));
+    const L: string[] = [];
+    L.push('# 根拠の確認状況（evidence check）');
+    L.push('');
+    L.push(`- 確認日：${today}（Web 検索・公開ページの閲覧による確認。調査担当：AI リサーチエージェント）`);
+    L.push('- 目的：更新性の高い規制・評価や、出典の不足している主張を抽出し、利用可能な公式資料で確認する。**原文の独立した医学監査ではない。**');
+    L.push('- 状態の区分：確認済み／一部確認／根拠未確認／原文と相違あり。確認できなかったものは「根拠未確認」とし、本編の表現を新しい断定へ書き換えていない。');
+    L.push('- 元文書のリンク先 URL は取得できなかったため推測していない。下記 URL は今回の確認で検索・閲覧した公開資料。');
+    L.push('- この制作環境から直接閲覧できないサイト（ECHA、EUR-Lex、FDA、BfR、ATSDR 等の一部）は、検索結果の抜粋・公的機関の引用で確認した旨を各項目に記載。公開前に人の手で原文を再確認すること。');
+    L.push('- 補足：一部の検索結果の source_ids は、調査側で付けた資料 ID（S1 など）になっている。原文段落 ID との対応は「対象の記述」欄で確認できる。');
+    L.push('');
+    const counts: Record<string, number> = {};
+    for (const c of fc) for (const f of c.findings) counts[f.status] = (counts[f.status] ?? 0) + 1;
+    L.push(`集計：${Object.entries(counts).map(([k, v]) => `${k} ${v} 件`).join('、')}`);
+    L.push('');
+    for (const c of fc) {
+      L.push(`## ${c.cluster}`);
+      L.push('');
+      c.findings.forEach((f, i) => {
+        L.push(`### ${c.cluster}-${i + 1}　【${f.status}】`);
+        L.push('');
+        L.push(`- 対象の記述：${f.claim_in_source.replace(/\n/g, ' ')}`);
+        L.push(`- 確認内容：${f.evidence_summary_ja}`);
+        if (f.time_sensitive_note_ja) L.push(`- 更新性・留意点：${f.time_sensitive_note_ja}`);
+        L.push(`- 推奨対応：${f.suggested_action_ja}`);
+        L.push('- 資料：');
+        for (const s of f.sources) L.push(`  - ${s.publisher}「${s.title}」${s.date ? `（${s.date}）` : ''} ${s.url}`);
+        L.push('');
+      });
+    }
+    writeFileSync(path.join(OUT, 'evidence_check.md'), L.join('\n'));
+  }
+}

@@ -1,0 +1,1911 @@
+[
+ {
+  "cluster": "BPA",
+  "findings": [
+   {
+    "source_ids": [
+     "L1"
+    ],
+    "claim_in_source": "BPAは、ポリカーボネート樹脂やエポキシ樹脂の製造に使われてきた物質です。一部の食品容器や缶の内面塗装などが曝露源となり得ます。使用状況は製品や国、製造時期によって異なります。",
+    "status": "確認済み",
+    "evidence_summary_ja": "米FDAは、BPAがポリカーボネート樹脂と、金属缶の内面塗装に使われるエポキシ樹脂の原料だと説明しています。EFSAとNIEHSは、主な曝露経路を食品としています。国や時期による違いも裏付けがあります。FDAは乳児用の哺乳瓶などへの使用を2012〜2013年に認めなくなり、EUは2025年1月20日から食品接触材での使用を原則禁止しました。",
+    "sources": [
+     {
+      "title": "Bisphenol A (BPA): Use in Food Contact Application",
+      "publisher": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/food-packaging-other-substances-come-contact-food-information-consumers/bisphenol-bpa-use-food-contact-application"
+     },
+     {
+      "title": "Food is main source of BPA for consumers, thermal paper also potentially significant",
+      "publisher": "EFSA",
+      "url": "https://www.efsa.europa.eu/en/press/news/130725",
+      "date": "2013-07-25"
+     },
+     {
+      "title": "Bisphenol A (BPA)",
+      "publisher": "NIEHS (U.S. National Institutes of Health)",
+      "url": "https://www.niehs.nih.gov/health/topics/agents/sya-bpa"
+     },
+     {
+      "title": "EU prohibition on the use and trade of Bisphenol A from 20 January 2025",
+      "publisher": "European Commission (Access2Markets)",
+      "url": "https://trade.ec.europa.eu/access-to-markets/en/news/eu-prohibition-use-and-trade-bisphenol-20-january-2025"
+     }
+    ],
+    "suggested_action_ja": "現行の表現のままで問題ありません。「使われてきた」という過去形を含む表現は、EUで禁止された現状とも矛盾しません。",
+    "time_sensitive_note_ja": "EUでは2025年1月から原則禁止となり、移行期間が順次終わりつつあります。このため、欧州市場で流通している製品の状況は2024年以前とは異なります。"
+   },
+   {
+    "source_ids": [
+     "L2"
+    ],
+    "claim_in_source": "実験ではエストロゲン受容体などへの作用が確認され、生殖・発達・代謝・免疫などへの影響が評価されています。",
+    "status": "確認済み",
+    "evidence_summary_ja": "ECHAのSVHC（高懸念物質）特定文書は、BPAがエストロゲン受容体に結合し（親和性は弱い）、内分泌かく乱性と生殖毒性を理由にSVHCに特定されたとしています。EFSAの2023年再評価では、免疫毒性、代謝影響、神経毒性、生殖・発達毒性などの健康影響カテゴリーごとに評価されました。",
+    "sources": [
+     {
+      "title": "SVHC Support Document – 4,4'-Isopropylidenediphenol (Bisphenol A)",
+      "publisher": "ECHA",
+      "url": "https://echa.europa.eu/documents/10162/13638/svhc_msc_support_document_bisphenol_a_en.pdf/de4c668e-c1bf-d13c-b035-be8b624a69b1"
+     },
+     {
+      "title": "Re-evaluation of the risks to public health related to the presence of bisphenol A (BPA) in foodstuffs",
+      "publisher": "EFSA Journal 2023;21(4):6857",
+      "url": "https://www.efsa.europa.eu/en/efsajournal/pub/6857",
+      "date": "2023-04-19"
+     },
+     {
+      "title": "EFSA presentation to the Standing Committee FCM working group (BPA re-evaluation)",
+      "publisher": "European Commission DG SANTE",
+      "url": "https://food.ec.europa.eu/system/files/2023-05/cs_fcm_wg_20230427_pres_efsa_0.pdf",
+      "date": "2023-04-27"
+     }
+    ],
+    "suggested_action_ja": "現行の表現のままで問題ありません。「実験では」という限定は、根拠が主に動物・in vitroのデータであることと合っているので、残してください。",
+    "time_sensitive_note_ja": ""
+   },
+   {
+    "source_ids": [
+     "L2",
+     "M7"
+    ],
+    "claim_in_source": "BPAについて、欧州食品安全機関は免疫系への有害な影響を重視して評価しています。（L2：欧州では免疫系への影響などを重視して…）",
+    "status": "確認済み",
+    "evidence_summary_ja": "EFSAは2023年4月19日公表の再評価で、免疫系をBPAに最も感受性の高い系と判断しました。マウスでのTh17細胞への影響を「重要な影響（critical effect）」としてTDIを導出しています。EFSAの公式ニュースも、BPAが免疫系に有害な影響を及ぼし得ると結論したと述べています。",
+    "sources": [
+     {
+      "title": "Bisphenol A in food is a health risk",
+      "publisher": "EFSA",
+      "url": "https://www.efsa.europa.eu/en/news/bisphenol-food-health-risk",
+      "date": "2023-04-19"
+     },
+     {
+      "title": "Re-evaluation of the risks to public health related to the presence of bisphenol A (BPA) in foodstuffs",
+      "publisher": "EFSA Journal 2023;21(4):6857 (PMC)",
+      "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10113887/",
+      "date": "2023-04-19"
+     }
+    ],
+    "suggested_action_ja": "現行の表現のままで問題ありません。EFSAの判断であることを主語で明示している点は適切なので、維持してください。",
+    "time_sensitive_note_ja": "EFSAの2023年評価は現時点でも有効です。2025年のビスフェノール類評価ガイダンス資料でも、Th17細胞の増加が主要な免疫毒性所見として扱われています。"
+   },
+   {
+    "source_ids": [
+     "M8"
+    ],
+    "claim_in_source": "具体的には、動物実験で、炎症反応に関わる免疫細胞の一種である「Th17細胞」の増加などが認められました。こうした変化が、アレルギー性の肺の炎症などにつながる可能性が問題とされています。",
+    "status": "確認済み",
+    "evidence_summary_ja": "EFSAは、マウスで脾臓のヘルパーT細胞（Th17）の割合が増加したことを重要な影響としました。公式ニュースでも、こうした細胞の増加がアレルギー性の肺の炎症や自己免疫疾患の発症につながり得ると説明しています。一方でEMA、BfR、英国COTは、Th17の増加そのものは争わないものの、中間的な指標であり有害な転帰との因果関係は確立していないと反論しています。",
+    "sources": [
+     {
+      "title": "Bisphenol A in food is a health risk",
+      "publisher": "EFSA",
+      "url": "https://www.efsa.europa.eu/en/news/bisphenol-food-health-risk",
+      "date": "2023-04-19"
+     },
+     {
+      "title": "Report on divergent opinion between EFSA and EMA on bisphenol A (EMA/150385/2023)",
+      "publisher": "EMA",
+      "url": "https://www.ema.europa.eu/en/documents/report/report-divergent-opinion-between-efsa-and-ema-bisphenol_en.pdf",
+      "date": "2023-04"
+     },
+     {
+      "title": "Supplementary statement to the COT's position paper on bisphenol A (BPA)",
+      "publisher": "UK Committee on Toxicity (GOV.UK)",
+      "url": "https://www.gov.uk/government/publications/supplementary-statement-to-the-cots-position-paper-on-bisphenol-a-bpa/supplementary-statement-to-the-cots-position-paper-on-bisphenol-a-bpa",
+      "date": "2026-07-06"
+     }
+    ],
+    "suggested_action_ja": "表現はEFSAの説明と合っており、「可能性が問題とされています」という慎重な言い回しも適切なので、そのままで構いません。ただし、ヒトで確認された影響と受け取られないよう、「動物実験（マウス）」の文脈が映像やテロップでも保たれているか、医療監修者に確認してもらってください。",
+    "time_sensitive_note_ja": "英国COTは2026年7月6日公表の補足声明で、Th17の増加は中間的な指標にすぎず、EFSAの結論を証拠の重みが支持しないと明言しました。"
+   },
+   {
+    "source_ids": [
+     "L2"
+    ],
+    "claim_in_source": "食品からの摂取に対する評価は機関によって異なり、",
+    "status": "確認済み",
+    "evidence_summary_ja": "EFSAはTDIを0.2 ng/kg体重/日としましたが、独BfRは約1000倍高い200 ng/kg（0.2 µg/kg）を導出し、EMAも反対意見を公表しました。豪NZのFSANZは留保を表明し、英国COTはBfRのTDIを採用しています。米FDAは、現行の使用は安全とする従来の立場を示しています。日本では、ポリカーボネート製器具・容器包装に2.5 ppmの溶出規格があります。食品安全委員会は2010年の中間とりまとめで、TDIの設定は困難としていました。",
+    "sources": [
+     {
+      "title": "Report on diverging views between EFSA and BfR on EFSA's BPA opinion",
+      "publisher": "EFSA / BfR",
+      "url": "https://www.efsa.europa.eu/sites/default/files/2023-04/bfr-efsa-art-30.pdf",
+      "date": "2023-04"
+     },
+     {
+      "title": "Bisphenol A in everyday products: Answers to frequently asked questions",
+      "publisher": "BfR",
+      "url": "https://www.bfr.bund.de/en/service/frequently-asked-questions/topic/bisphenol-a-in-everyday-products-answers-to-frequently-asked-questions/"
+     },
+     {
+      "title": "Report on divergent opinion between EFSA and EMA on bisphenol A",
+      "publisher": "EMA",
+      "url": "https://www.ema.europa.eu/en/documents/report/report-divergent-opinion-between-efsa-and-ema-bisphenol_en.pdf",
+      "date": "2023-04"
+     },
+     {
+      "title": "Bisphenol A (BPA)",
+      "publisher": "Food Standards Australia New Zealand",
+      "url": "https://www.foodstandards.gov.au/consumer/chemicals/bpa"
+     },
+     {
+      "title": "Questions & Answers on Bisphenol A (BPA) Use in Food Contact Applications",
+      "publisher": "U.S. FDA",
+      "url": "https://www.fda.gov/food/food-packaging-other-substances-come-contact-food-information-consumers/questions-answers-bisphenol-bpa-use-food-contact-applications"
+     },
+     {
+      "title": "Supplementary statement to the COT's position paper on bisphenol A (BPA)",
+      "publisher": "UK Committee on Toxicity (GOV.UK)",
+      "url": "https://www.gov.uk/government/publications/supplementary-statement-to-the-cots-position-paper-on-bisphenol-a-bpa/supplementary-statement-to-the-cots-position-paper-on-bisphenol-a-bpa",
+      "date": "2026-07-06"
+     },
+     {
+      "title": "ビスフェノールAについてのQ&A",
+      "publisher": "消費者庁",
+      "url": "https://www.caa.go.jp/policies/policy/standards_evaluation/appliance/bisphenol_a/"
+     },
+     {
+      "title": "ビスフェノールAについてのQ&A",
+      "publisher": "厚生労働省",
+      "url": "https://www.mhlw.go.jp/topics/bukyoku/iyaku/kigu/topics/080707-1.html"
+     },
+     {
+      "title": "食品安全確保総合調査計画（BPA中間とりまとめ言及資料）",
+      "publisher": "食品安全委員会",
+      "url": "https://www.fsc.go.jp/senmon/anzenchousa/chousa25keikaku_1.pdf"
+     }
+    ],
+    "suggested_action_ja": "「機関によって異なる」という表現は複数の公的機関の資料で裏付けられているので、そのままで構いません。数値をナレーションに加える必要はありません。",
+    "time_sensitive_note_ja": "英国COTの補足声明（2026年7月）は新しい動きです。米FDAは2022年の再評価請願について、少なくとも2026年1月時点で結論を出していません（EDFブログ等の二次情報）。日本の器具・容器包装の規格行政は消費者庁に移管されており、Q&Aも同庁サイトに掲載されています。FDAと日本の最新ページは、検索結果の抜粋でしか確認できていません。"
+   },
+   {
+    "source_ids": [
+     "L2"
+    ],
+    "claim_in_source": "欧州では免疫系への影響などを重視して管理が強化されました。",
+    "status": "確認済み",
+    "evidence_summary_ja": "欧州委員会は2024年12月19日に委員会規則(EU) 2024/3190を採択し、EFSAの最新評価を考慮して、食品接触材でのBPAと有害なビスフェノール類の使用を禁止しました。規則は2024年12月31日に官報に掲載され、2025年1月20日に発効しています。大半の製品には18か月（2026年7月20日まで）、果物・野菜・水産加工品の缶詰などには36か月の移行期間があります。2026年2月2日付の訂正規則(EU) 2026/250で、移行措置の文言が明確化されました。",
+    "sources": [
+     {
+      "title": "Commission adopts ban of Bisphenol A in food contact materials",
+      "publisher": "European Commission (DG SANTE)",
+      "url": "https://food.ec.europa.eu/food-safety-news/commission-adopts-ban-bisphenol-food-contact-materials-2024-12-19_en",
+      "date": "2024-12-19"
+     },
+     {
+      "title": "Commission Regulation (EU) 2024/3190",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/3190/oj/eng",
+      "date": "2024-12-31"
+     },
+     {
+      "title": "Consolidated text 02024R3190-20260223",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02024R3190-20260223",
+      "date": "2026-02-23"
+     },
+     {
+      "title": "Commission Regulation (EU) 2026/250 (correcting Regulation (EU) 2024/3190)",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/250/oj",
+      "date": "2026-02-02"
+     },
+     {
+      "title": "EU prohibition on the use and trade of Bisphenol A from 20 January 2025",
+      "publisher": "European Commission (Access2Markets)",
+      "url": "https://trade.ec.europa.eu/access-to-markets/en/news/eu-prohibition-use-and-trade-bisphenol-20-january-2025"
+     },
+     {
+      "title": "Commission guidance notice C/2025/6721 on Regulation (EU) 2024/3190",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/C/2025/6721/oj/eng"
+     }
+    ],
+    "suggested_action_ja": "「管理が強化されました」という一般的な表現は正確で、そのままで構いません。規則はEFSA評価を「考慮して」採択されたもので、規則文書が免疫影響だけを理由に挙げているわけではありません。「免疫系への影響など」の「など」は残してください。",
+    "time_sensitive_note_ja": "一般的な18か月の移行期限（2026年7月20日）はすでに過ぎていますが、一部の品目の移行期間はまだ続いています。訂正規則(EU) 2026/250（2026年2月発効）で移行措置の文言が変わったため、具体的な日付をテロップ等で示す場合は、EUR-Lexの統合版第11条を直接確認してください（今回はEUR-Lexの本文を直接閲覧できず、検索結果の抜粋のみで確認しました）。"
+   },
+   {
+    "source_ids": [
+     "L3"
+    ],
+    "claim_in_source": "「BPA不使用」は、BPAについての表示です。…一般的なPETボトルのPETとポリカーボネートは別の材質で、PETの製造にBPAを使うわけではありません。",
+    "status": "一部確認",
+    "evidence_summary_ja": "PETの主原料はテレフタル酸とエチレングリコールで、BPAではありません。食品安全委員会の研究資料にある国内PETボトルの溶出しうる物質の一覧にも、BPAは含まれていません。業界団体NAPCORも、PETには意図的に添加されたBPAは含まれないとしています。ただし、「PETの製造にBPAを使わない」と明言した行政機関の文書は見つかりませんでした。また、再生PETではポリカーボネート等の混入により微量のBPAが検出され得るとの指摘があります。",
+    "sources": [
+     {
+      "title": "食品安全委員会 研究成果報告（PETボトルからの溶出物質に関する研究）",
+      "publisher": "食品安全委員会",
+      "url": "https://www.fsc.go.jp/chousa/kenkyu/kenkyu_happyo.data/30_kenkyu_happyo_1603.pdf"
+     },
+     {
+      "title": "PET: Innovative Package Solutions",
+      "publisher": "NAPCOR（業界団体）",
+      "url": "https://napcor.com/about-pet/"
+     },
+     {
+      "title": "Bisphenol A (BPA): Use in Food Contact Application",
+      "publisher": "U.S. FDA",
+      "url": "https://www.fda.gov/food/food-packaging-other-substances-come-contact-food-information-consumers/bisphenol-bpa-use-food-contact-application"
+     }
+    ],
+    "suggested_action_ja": "化学的には正確で、現行の表現のままで構いません。ただし「PETには一切BPAが含まれない」と言い切る方向へ表現を強めないでください。再生PETでの微量混入の可能性があるため、医療監修者か材料の専門家に一言確認してもらうと安心です。「BPA不使用はBPAについての表示」という趣旨は、EU規則がBPA以外の有害なビスフェノール類も対象にしている点とも整合します。",
+    "time_sensitive_note_ja": ""
+   }
+  ]
+ },
+ {
+  "cluster": "Phthalates",
+  "findings": [
+   {
+    "source_ids": [
+     "S1",
+     "S2",
+     "S3"
+    ],
+    "claim_in_source": "[K5][L5] 一部のフタル酸エステル（DEHP、DBP、BBPなど）で、動物実験により胎仔のテストステロン産生低下や生殖器の発達への影響が調べられ、規制評価にも使われている。主に動物実験から分かっている仕組み。",
+    "status": "確認済み",
+    "evidence_summary_ja": "Gray et al. 2000（Toxicol Sci）のラット周産期投与試験では、DEHPとBBPで雄の肛門生殖器間距離の短縮と高率の生殖器奇形が報告された。EFSA（2019）はDEHP・DBP・BBP（とDINP）を「胎仔テストステロン低下」という共通の機序でまとめ、グループTDIを設定した。米EPAもTSCAの評価で「フタル酸症候群」を累積評価の軸にしている。",
+    "sources": [
+     {
+      "title": "Perinatal exposure to the phthalates DEHP, BBP, and DINP, but not DEP, DMP, or DOTP, alters sexual differentiation of the male rat (Gray et al., Toxicol Sci 2000)",
+      "publisher": "Toxicological Sciences (QxMD abstract page)",
+      "url": "https://read.qxmd.com/read/11099647/perinatal-exposure-to-the-phthalates-dehp-bbp-and-dinp-but-not-dep-dmp-or-dotp-alters-sexual-differentiation-of-the-male-rat",
+      "date": "2000"
+     },
+     {
+      "title": "Update of the risk assessment of DBP, BBP, DEHP, DINP and DIDP for use in food contact materials (EFSA CEP Panel)",
+      "publisher": "EFSA Journal / PubMed",
+      "url": "https://www.pubmed.gov/32626195/",
+      "date": "2019-12"
+     },
+     {
+      "title": "EPA Finalizes TSCA Risk Evaluation for Diisononyl Phthalate (DINP)",
+      "publisher": "U.S. EPA",
+      "url": "https://epa.gov/chemicals-under-tsca/epa-finalizes-tsca-risk-evaluation-diisononyl-phthalate-dinp",
+      "date": "2025-01"
+     }
+    ],
+    "suggested_action_ja": "現行の表現のままで問題ない。「主に動物実験から」という限定は根拠と合っているので残すこと。",
+    "time_sensitive_note_ja": "EFSAは2019年の評価を「暫定的」と位置づけている。米EPAの6物質の累積リスク評価は、2025年初めに公表予定とされていたが、最終版が出たかは確認できなかった。"
+   },
+   {
+    "source_ids": [
+     "S1",
+     "S3",
+     "S4"
+    ],
+    "claim_in_source": "[K5] すべてのフタル酸エステルに同じ作用があるわけではありません。",
+    "status": "確認済み",
+    "evidence_summary_ja": "Gray et al. 2000では、同じ用量でもDEP・DMP・DOTPに雄の性分化への影響は見られなかった。DINPの作用は約1桁弱かった。米EPAはDIDPについて、フタル酸症候群を起こすと判断できる根拠がないとして累積評価から除いている。EFSAもDIDPのTDIは肝臓への影響に基づいて別に設定している。",
+    "sources": [
+     {
+      "title": "Perinatal exposure to the phthalates DEHP, BBP, and DINP, but not DEP, DMP, or DOTP, alters sexual differentiation of the male rat (Gray et al., 2000)",
+      "publisher": "Toxicological Sciences (QxMD abstract page)",
+      "url": "https://read.qxmd.com/read/11099647/perinatal-exposure-to-the-phthalates-dehp-bbp-and-dinp-but-not-dep-dmp-or-dotp-alters-sexual-differentiation-of-the-male-rat",
+      "date": "2000"
+     },
+     {
+      "title": "Update of the risk assessment of DBP, BBP, DEHP, DINP and DIDP for use in food contact materials",
+      "publisher": "EFSA Journal / PubMed",
+      "url": "https://www.pubmed.gov/32626195/",
+      "date": "2019-12"
+     },
+     {
+      "title": "EPA Finalizes TSCA Risk Evaluation for Diisodecyl Phthalate (DIDP) (snapshot)",
+      "publisher": "U.S. EPA",
+      "url": "https://19january2025snapshot.epa.gov/chemicals-under-tsca/epa-finalizes-tsca-risk-evaluation-diisodecyl-phthalate-didp",
+      "date": "2025-01"
+     }
+    ],
+    "suggested_action_ja": "現行の表現のままで問題ない。",
+    "time_sensitive_note_ja": ""
+   },
+   {
+    "source_ids": [
+     "S5",
+     "S6",
+     "S7",
+     "S8",
+     "S9",
+     "S10"
+    ],
+    "claim_in_source": "[M5] DEHPやDBPなど一部のフタル酸エステルでは、動物実験で男性ホルモンの働きや胎仔の生殖器の発達への影響が確認され、規制上も生殖・発達への有害性が問題とされています。（cited: 欧州化学品庁（ECHA）・フタル酸エステル）",
+    "status": "確認済み",
+    "evidence_summary_ja": "EUではDEHP・DBP・BBP・DIBPがCLPで生殖毒性区分1Bに分類され、REACHの高懸念物質（生殖毒性。のちに内分泌かく乱性も追加）として認可対象（附属書XIV）になっている。2021年の規則2021/2045で内分泌かく乱性が認可リストの記載に加わった。附属書XVIIエントリー51（規則2018/2005）では、可塑化材料を含む成形品で4物質の合計0.1%超が2020年7月7日から制限されている。",
+    "sources": [
+     {
+      "title": "Consultation on four phthalates for updating their authorisation list entries with endocrine disrupting properties",
+      "publisher": "European Chemicals Agency (ECHA)",
+      "url": "https://echa.europa.eu/fr/-/consultation-on-four-phthalates-for-updating-their-authorisation-list-entries-with-endocrine-disrupting-properties",
+      "date": "2018"
+     },
+     {
+      "title": "Commission Regulation (EU) 2021/2045 amending Annex XIV to REACH (PDF)",
+      "publisher": "Italian Ministry of Environment (MASE) hosting EU Official Journal text",
+      "url": "https://bancasostanze.mase.gov.it/sites/default/files/inline-files/Reg%202021_2045%20All%20XIV.pdf",
+      "date": "2021-11-23"
+     },
+     {
+      "title": "Commission Regulation (EU) 2018/2005 – Annex (REACH Annex XVII entry 51)",
+      "publisher": "legislation.gov.uk (EU retained text)",
+      "url": "https://legislation.gov.uk/eur/2018/2005/annex?view=plain",
+      "date": "2018-12"
+     },
+     {
+      "title": "ECHA review report on DEHP (2010)",
+      "publisher": "European Chemicals Agency (ECHA)",
+      "url": "https://echa.europa.eu/documents/10162/13641/dehp_echa_review_report_2010_6_en.pdf/ce8e254f-3371-4c8b-8b92-865962bc5424",
+      "date": "2010"
+     },
+     {
+      "title": "CLH report – Diisobutyl phthalate (DIBP)",
+      "publisher": "European Chemicals Agency (ECHA)",
+      "url": "https://chesar.echa.europa.eu/documents/10162/e7e46e38-2b75-74ba-e7a0-24672c2c361b",
+      "date": "2014"
+     },
+     {
+      "title": "EU Proposes CLP Annex VI Updates for Endocrine Disruptors and PBT Substances",
+      "publisher": "REACH24H (secondary news)",
+      "url": "https://en.reach24h.com/news/industry-news/chemical/clp-annex-vi-endocrine-pbt-proposal",
+      "date": "2026-10"
+     }
+    ],
+    "suggested_action_ja": "ナレーションはこのままでよい。ただし、出典として示す「ECHA・フタル酸エステル」のページのURLと最新の記載は、編集者が直接確認してほしい。このセッションではechaとeur-lexのサイトに接続できず、検索結果での確認にとどまっている。",
+    "time_sensitive_note_ja": "2026年10月27日、欧州委員会がCLP附属書VIの改正案（内分泌かく乱性の分類ED HH 1などを追加）の意見募集を始めた（11月24日まで）。二次情報ではDEHP・DBP・BBP・DIBPが対象に含まれるとされるが、未採択である。医療機器でのDEHP使用の期限は、規則2023/2482で2030年まで延びている。"
+   },
+   {
+    "source_ids": [
+     "S11"
+    ],
+    "claim_in_source": "[L5] 人でも生殖関連の指標との関連を調べる研究があります…",
+    "status": "確認済み",
+    "evidence_summary_ja": "Swan et al. 2005（EHP）は、妊婦の尿中フタル酸代謝物（MEP、MBPなど）と男児の肛門生殖器間距離の関連を報告した。人では初めての研究とされる。一方で、統計の記述の訂正（2006年）や方法への批判も出ており、観察研究の段階の知見である。",
+    "sources": [
+     {
+      "title": "Decrease in anogenital distance among male infants with prenatal phthalate exposure (Swan et al., Environ Health Perspect 2005;113:1056-1061)",
+      "publisher": "Environmental Health Perspectives (University of Minnesota Experts record)",
+      "url": "https://experts.umn.edu/en/publications/decrease-in-anogenital-distance-among-male-infants-with-prenatal-/",
+      "date": "2005-08"
+     }
+    ],
+    "suggested_action_ja": "「関連を調べる研究がある」という控えめな表現はそのまま残すこと。因果関係が確立したと受け取られる言い回しに強めないよう、医療監修者が確認してほしい。",
+    "time_sensitive_note_ja": ""
+   },
+   {
+    "source_ids": [
+     "S12",
+     "S13",
+     "S14",
+     "S15"
+    ],
+    "claim_in_source": "[L4] 主に樹脂を柔らかくする可塑剤などに用いられる物質群。一部の軟質塩化ビニル製品、床材、食品に接触する材料などが関係し、物質によっては香料や化粧品にも使われてきました。",
+    "status": "確認済み",
+    "evidence_summary_ja": "ECHAとデンマークの制限提案（2017年）では、4物質の用途の約94%がPVCで、床材・壁材・室内配線・被覆布などが対象例に挙がっている。日本の厚労省は、油脂や脂肪性食品に触れる器具・容器包装でDEHPを使ったPVCを原則禁止しており、食品接触材料に関わることも確認できた。米FDAによれば、化粧品で主に使われているのはDEPで、香料の溶剤・保留剤として使われている。",
+    "sources": [
+     {
+      "title": "Restriction proposal on four phthalates and several authorisation applications agreed by RAC and SEAC",
+      "publisher": "European Chemicals Agency (ECHA)",
+      "url": "https://echa.europa.eu/sl/-/restriction-proposal-on-four-phthalates-and-several-authorisation-applications-agreed-by-rac-and-seac",
+      "date": "2017"
+     },
+     {
+      "title": "食品用器具・容器包装に関するパンフレット（DEHPを用いたPVCの使用禁止を含む）",
+      "publisher": "厚生労働省",
+      "url": "https://www.mhlw.go.jp/topics/bukyoku/iyaku/syoku-anzen/dl/pamph01n.pdf"
+     },
+     {
+      "title": "Phthalates in Cosmetics",
+      "publisher": "U.S. Food and Drug Administration (FDA)",
+      "url": "https://www.fda.gov/cosmetics/cosmetic-ingredients/phthalates-cosmetics"
+     },
+     {
+      "title": "EU amends Annex I to Regulation (EU) No 10/2011 (Regulation (EU) 2023/1442, DIBP)",
+      "publisher": "UL Prospector (secondary)",
+      "url": "https://ulprospector.ul.com/15602/fb-eu-amends-annex-i-to-regulation-eu-no-10-2011/",
+      "date": "2023"
+     }
+    ],
+    "suggested_action_ja": "現行の表現のままで問題ない。「使われてきました」という過去形は、EUでDEHP・DBPが化粧品に配合禁止されている現状とも矛盾しない。",
+    "time_sensitive_note_ja": "EUの食品接触プラスチック規則10/2011では、規則2023/1442によりDIBPが許可物質リストに含まれていないことが明確になった（2025年2月から適用）。食品接触材料での位置づけは物質ごとに変わってきている。"
+   },
+   {
+    "source_ids": [
+     "S1",
+     "S16",
+     "S14",
+     "S17"
+    ],
+    "claim_in_source": "[L6] 香料に使われることがあるDEPについての知見を、DEHPと同じものとして扱わないことが重要です。",
+    "status": "確認済み",
+    "evidence_summary_ja": "Gray et al. 2000ではDEPに抗アンドロゲン様の作用は見られなかった。ECHAのDEP物質評価（2015年）は「他のフタル酸ジエステルに見られるような内分泌かく乱作用は示さない」と結論している。米FDAは、現在の使い方での化粧品・香料のDEPに安全上の懸念はないとしている。EUのSCCNFP（2002年）も、現行の濃度での化粧品使用を支持している。",
+    "sources": [
+     {
+      "title": "Perinatal exposure to the phthalates DEHP, BBP, and DINP, but not DEP, DMP, or DOTP, alters sexual differentiation of the male rat",
+      "publisher": "Toxicological Sciences (QxMD abstract page)",
+      "url": "https://read.qxmd.com/read/11099647/perinatal-exposure-to-the-phthalates-dehp-bbp-and-dinp-but-not-dep-dmp-or-dotp-alters-sexual-differentiation-of-the-male-rat",
+      "date": "2000"
+     },
+     {
+      "title": "Substance Evaluation Conclusion document – Diethyl phthalate (DEP)",
+      "publisher": "European Chemicals Agency (ECHA)",
+      "url": "https://chesar.echa.europa.eu/documents/10162/2702407c-c3cb-c399-b83d-0135f26da05b",
+      "date": "2015-08-28"
+     },
+     {
+      "title": "Phthalates in Cosmetics",
+      "publisher": "U.S. Food and Drug Administration (FDA)",
+      "url": "https://www.fda.gov/cosmetics/cosmetic-ingredients/phthalates-cosmetics"
+     },
+     {
+      "title": "SCCNFP Opinion concerning Diethyl Phthalate (SCCNFP/0411/01)",
+      "publisher": "European Commission, SCCNFP",
+      "url": "https://ec.europa.eu/health/archive/ph_risk/committees/sccp/documents/out168_en.pdf",
+      "date": "2002-06-04"
+     }
+    ],
+    "suggested_action_ja": "表現はこのままでよい。ただし、DEPが「安全と証明された」「無害」とまで言い切る言い回しにはしないよう、医療監修者が確認してほしい。人の疫学研究（Swan 2005）では、DEP代謝物MEPと指標の関連も報告されており、ECHAのグループ評価では環境への内分泌かく乱の可能性も指摘されている。",
+    "time_sensitive_note_ja": "SCCNFPの意見は2002〜2004年のもので、より新しいSCCSの再評価は見つからなかった。"
+   },
+   {
+    "source_ids": [
+     "S18"
+    ],
+    "claim_in_source": "[L6] PETの名称に「テレフタレート」が含まれていても、軟質樹脂に使うフタル酸系可塑剤が加えられているという意味ではありません。",
+    "status": "確認済み",
+    "evidence_summary_ja": "ドイツ連邦リスク評価研究所（BfR）のQ&Aは、「ポリエチレンテレフタレート（PET）」がオルトフタル酸エステル類と誤って混同されがちだと説明している。そのうえで、PETボトルの製造にはフタル酸エステルなどの可塑剤は使われないとしている。PETはテレフタル酸から作る高分子のポリエステルで、オルトフタル酸のエステルである可塑剤とは別の物質である。",
+    "sources": [
+     {
+      "title": "Selected questions and answers on PET bottles (PET bottles: no indication of health risk)",
+      "publisher": "German Federal Institute for Risk Assessment (BfR)",
+      "url": "https://www.bfr.bund.de/en/service/frequently-asked-questions/topic/selected-questions-and-answers-on-pet-bottles/"
+     }
+    ],
+    "suggested_action_ja": "現行の表現は正確なので、そのままでよい。PETボトル入りの飲料から、他の経路による微量のフタル酸エステルが検出された研究もあるため、「PETにはフタル酸が一切含まれない」と強めて言い換えないこと。",
+    "time_sensitive_note_ja": ""
+   },
+   {
+    "source_ids": [
+     "S19",
+     "S20",
+     "S13"
+    ],
+    "claim_in_source": "（ドラフト本文には日本の規制への直接の言及なし。チェック指示に基づく参考確認）[L4]「一部の軟質塩化ビニル製品…食品に接触する材料」に関わる日本の規制",
+    "status": "一部確認",
+    "evidence_summary_ja": "厚労省の資料で次の2点を確認した。食品衛生法のおもちゃの規格基準は2002年に強化され、2010年の告示第336号で指定おもちゃの規制対象にDBP・BBP・DIDP・DNOPが加わり、DEHP・DINPと合わせて6物質になった。油脂・脂肪性食品に触れる器具・容器包装では、DEHPを使ったPVCが原則禁止されている（2003年8月から適用）。ただし、含有量の基準値（0.1%）と最新の告示本文は確認できなかった。",
+    "sources": [
+     {
+      "title": "おもちゃの規格基準改正（平成22年厚生労働省告示第336号）に関する輸入関係通知",
+      "publisher": "厚生労働省",
+      "url": "https://www.mhlw.go.jp/topics/yunyu/other/2010/dl/100906-1.pdf",
+      "date": "2010-09-06"
+     },
+     {
+      "title": "フタル酸エステルの規格基準の取扱いに関するQ&A",
+      "publisher": "厚生労働省",
+      "url": "https://www.mhlw.go.jp/topics/bukyoku/iyaku/kigu/dl/101111-1.pdf",
+      "date": "2010-11-11"
+     },
+     {
+      "title": "食品用器具・容器包装に関するパンフレット",
+      "publisher": "厚生労働省",
+      "url": "https://www.mhlw.go.jp/topics/bukyoku/iyaku/syoku-anzen/dl/pamph01n.pdf"
+     }
+    ],
+    "suggested_action_ja": "ナレーションに日本の規制を加える場合は、基準値や対象を、現行の「食品、添加物等の規格基準」の告示で編集者が確認すること。現行のナレーションには変更は不要。",
+    "time_sensitive_note_ja": "日本では食品用器具・容器包装のポジティブリスト制度が2020年に施行されて移行期間が続いており、規格の書き方が変わっている可能性がある。この点は検索で確認できていない。"
+   }
+  ]
+ },
+ {
+  "cluster": "PFAS",
+  "findings": [
+   {
+    "source_ids": [
+     "ENV-PFAS",
+     "ENV-HANDBOOK"
+    ],
+    "claim_in_source": "[L7] PFASは、性質の異なる多くの物質を含む総称です。撥水・撥油加工、泡消火薬剤、工業用途などで使われてきました。",
+    "status": "確認済み",
+    "evidence_summary_ja": "環境省は、PFASを有機フッ素化合物のうちペルフルオロアルキル化合物とポリフルオロアルキル化合物の総称とし、1万種類以上あるとしている（数え方で数が変わるとも注記）。撥水・撥油剤、界面活性剤、泡消火薬剤、半導体用途などに使われてきたと説明している。",
+    "sources": [
+     {
+      "title": "有機フッ素化合物（PFAS）について",
+      "publisher": "環境省",
+      "url": "https://www.env.go.jp/water/pfas.html"
+     },
+     {
+      "title": "PFASハンドブック（令和7年3月）",
+      "publisher": "環境省",
+      "url": "https://www.env.go.jp/content/000305650.pdf",
+      "date": "2025-03"
+     }
+    ],
+    "suggested_action_ja": "原文のままで問題ない。物質数をナレーションに入れる必要はない。",
+    "time_sensitive_note_ja": "環境省の資料も、国際的に統一された定義はなく、物質数は分類の仕方で変わるとしている。"
+   },
+   {
+    "source_ids": [
+     "LI2018",
+     "ATSDR-TP-C3"
+    ],
+    "claim_in_source": "[L7] PFOAやPFOSなどは、分解されにくさや体内から排出されるまでの長さが問題になっています。[L9] 「分解されにくい」と「一度体に入ったら一生出ていかない」は同じではありません。排出の速さは物質や人によって異なります。",
+    "status": "確認済み",
+    "evidence_summary_ja": "Li et al. 2018（スウェーデン・ロンネビー。汚染された飲料水の供給を止めた後、106人を追跡）では、血中からの平均半減期がPFOA約2.7年、PFOS約3.4年、PFHxS約5.3年と年単位だった。一方で血中濃度は時間とともに下がり、個人差は約3倍、性差もあった。ATSDR毒性プロファイルなどでは、短鎖PFAS（PFBA、PFBSなど）の半減期は数日〜約1か月とされ、物質によって大きく違う。",
+    "sources": [
+     {
+      "title": "Half-lives of PFOS, PFHxS and PFOA after end of exposure to contaminated drinking water (Li et al., Occup Environ Med 2018;75:46-51)",
+      "publisher": "EPA HERO（論文書誌）",
+      "url": "https://hero.epa.gov/hero/index.cfm/reference/details/reference_id/4238434",
+      "date": "2018"
+     },
+     {
+      "title": "Half-lives of PFOS, PFHxS and PFOA after end of exposure to contaminated drinking water",
+      "publisher": "Lund University (LUP)",
+      "url": "https://lup.lub.lu.se/record/557a6316-35ff-4388-bb6e-9aea3b096ca8",
+      "date": "2018"
+     },
+     {
+      "title": "Toxicological Profile for Perfluoroalkyls, Chapter 3 (Toxicokinetics)",
+      "publisher": "ATSDR",
+      "url": "https://www.atsdr.cdc.gov/toxprofiles/tp200-c3.pdf",
+      "date": "2021"
+     }
+    ],
+    "suggested_action_ja": "原文のままで問題ない。半減期の数値をナレーションに加える必要はない。",
+    "time_sensitive_note_ja": "半減期の推定値は研究ごとに幅がある（ATSDRの資料でも版や表によって範囲が異なる）。このセッションではATSDRのページを直接取得できず、検索結果の要約で確認した。"
+   },
+   {
+    "source_ids": [
+     "ATSDR-EA",
+     "LI2018",
+     "ENV-WATER"
+    ],
+    "claim_in_source": "[L7] …汚染された水源の近くでは飲み水が重要になる場合があります。",
+    "status": "確認済み",
+    "evidence_summary_ja": "ATSDR/CDCは、泡消火薬剤（AFFF）などで飲料水が汚染された10地域でばく露評価を行い、飲料水を主な経路として扱っている。ロンネビーの研究では、汚染水の供給を止めた後に住民の血中濃度が下がった。日本では2025年6月の省令改正で、PFOSとPFOAの合算値を水道水質基準に格上げした（2026年4月1日施行、水道事業者に遵守と定期検査を義務付け）。",
+    "sources": [
+     {
+      "title": "Final Report: Findings Across Ten Exposure Assessment Sites",
+      "publisher": "ATSDR/CDC",
+      "url": "https://www.atsdr.cdc.gov/pfas/final-report/index.html"
+     },
+     {
+      "title": "Half-lives of PFOS, PFHxS and PFOA after end of exposure to contaminated drinking water",
+      "publisher": "EPA HERO（論文書誌）",
+      "url": "https://hero.epa.gov/hero/index.cfm/reference/details/reference_id/4238434",
+      "date": "2018"
+     },
+     {
+      "title": "PFASに関するよくある質問（水道）",
+      "publisher": "環境省",
+      "url": "https://www.env.go.jp/water/pfas/faq010.html"
+     },
+     {
+      "title": "PFOS・PFOAの水質基準への格上げに関する資料",
+      "publisher": "環境省",
+      "url": "https://www.env.go.jp/content/000396986.pdf"
+     }
+    ],
+    "suggested_action_ja": "原文のままで問題ない。日本の水道水の制度に触れる場合は、2026年4月から水質基準として施行済みであることを監修者が確認する（数値は加えない）。",
+    "time_sensitive_note_ja": "日本の水道水質基準化は2026年4月1日に施行されたばかり。以前の「暫定目標値」という説明が台本や字幕に残っていないか確認が必要。"
+   },
+   {
+    "source_ids": [
+     "ATSDR-HE",
+     "NASEM-2022",
+     "FSCJ-PFAS-2024"
+    ],
+    "claim_in_source": "[L8] 一部のPFASでは、血中脂質、肝機能の指標、ワクチンへの抗体反応…などとの関連が調べられています。[M10] PFOAやPFOSなど一部の物質では、人の研究で、血中コレステロールの上昇、肝酵素の変化、一部のワクチンに対する抗体反応の低下などとの関連が報告されています。",
+    "status": "確認済み",
+    "evidence_summary_ja": "ATSDRは疫学研究にもとづく「関連」として、コレステロール上昇（PFOA, PFOS, PFNA, PFDA）、肝酵素の変化（PFOA, PFOS, PFHxS）、ワクチン抗体反応の低下（PFOA, PFOS, PFHxS, PFDA）を挙げている。NASEM（2022）は、抗体反応の低下と脂質異常症を「関連の証拠十分」、肝酵素を「限定的・示唆的」と評価し、感染リスクの増加やワクチン効果の差については証拠不十分とした。食品安全委員会（2024）は、関連の可能性は否定できないが証拠の質や十分さに課題があり、ALTやコレステロールの変化は軽微だとしている。",
+    "sources": [
+     {
+      "title": "Potential Health Effects of PFAS",
+      "publisher": "ATSDR",
+      "url": "https://www.atsdr.cdc.gov/pfas/health-effects/"
+     },
+     {
+      "title": "PFAS Clinical Overview: Health Effects",
+      "publisher": "ATSDR",
+      "url": "https://atsdr.cdc.gov/pfas/hcp/clinical-overview/health-effects.html"
+     },
+     {
+      "title": "Guidance on PFAS Exposure, Testing, and Clinical Follow-Up (Chapter 8)",
+      "publisher": "National Academies of Sciences, Engineering, and Medicine",
+      "url": "https://www.nationalacademies.org/read/26156/chapter/8",
+      "date": "2022-07-28"
+     },
+     {
+      "title": "有機フッ素化合物（PFAS）の食品健康影響評価について",
+      "publisher": "内閣府 食品安全委員会",
+      "url": "https://www.fsc.go.jp/osirase/pfas_health_assessment.data/pfas_hyoukagaiyou.pdf",
+      "date": "2024-06-25"
+     }
+    ],
+    "suggested_action_ja": "「関連が報告」という表現はこのまま残してよい。因果関係を断定する字幕や演出、「ワクチンが効かなくなる」と受け取られる表現にならないかを監修者が確認する。",
+    "time_sensitive_note_ja": "ATSDRとNASEMは関連の強さを高めに評価し、日本の食品安全委員会はより慎重という違いがある。ATSDRのページは直接取得できず、検索結果の要約で確認した。米国政府サイトは改訂されることがあるため、公開前に現行の記載を再確認することが望ましい。"
+   },
+   {
+    "source_ids": [
+     "ATSDR-HE",
+     "NASEM-2022",
+     "FSCJ-PFAS-2024"
+    ],
+    "claim_in_source": "[L8] …妊娠・出生に関する指標などとの関連が調べられています。[M12] また、一部のPFASでは、妊娠高血圧症候群、出生体重のわずかな低下、腎臓がんや精巣がんとの関連も報告されています。(cited: ATSDR・PFASの健康影響)",
+    "status": "確認済み",
+    "evidence_summary_ja": "ATSDRの健康影響ページは、妊娠高血圧・妊娠高血圧腎症（PFOA, PFOS）、出生体重のわずかな低下（PFOA, PFOS）、腎臓がん・精巣がん（PFOA）を疫学上の関連として挙げており、出典表示は妥当。NASEM（2022）は出生体重の低下と腎臓がんを「証拠十分」、妊娠高血圧と精巣がんを「限定的・示唆的」と評価している。食品安全委員会（2024）は、PFOAと腎臓がん・精巣がんの関連について、結果に一貫性がなく証拠は限定的と判断した。",
+    "sources": [
+     {
+      "title": "Potential Health Effects of PFAS",
+      "publisher": "ATSDR",
+      "url": "https://www.atsdr.cdc.gov/pfas/health-effects/"
+     },
+     {
+      "title": "PFAS Clinical Overview: Health Effects",
+      "publisher": "ATSDR",
+      "url": "https://atsdr.cdc.gov/pfas/hcp/clinical-overview/health-effects.html"
+     },
+     {
+      "title": "Guidance on PFAS Exposure, Testing, and Clinical Follow-Up (Chapter 8)",
+      "publisher": "National Academies of Sciences, Engineering, and Medicine",
+      "url": "https://www.nationalacademies.org/read/26156/chapter/8",
+      "date": "2022-07-28"
+     },
+     {
+      "title": "有機フッ素化合物（PFAS）の食品健康影響評価について",
+      "publisher": "内閣府 食品安全委員会",
+      "url": "https://www.fsc.go.jp/osirase/pfas_health_assessment.data/pfas_hyoukagaiyou.pdf",
+      "date": "2024-06-25"
+     }
+    ],
+    "suggested_action_ja": "原文のままで可。ATSDRではがんとの関連がPFOAに限られている点、項目ごとに証拠の強さが違う点を、字幕や図で誤解なく示せているか監修者が確認する。",
+    "time_sensitive_note_ja": "ATSDRのページは直接取得できず、検索結果の要約で確認した。公開前に現行の記載をもう一度確認することを推奨する。"
+   },
+   {
+    "source_ids": [
+     "IARC-QA135",
+     "IARC-VOL135",
+     "LANCET-ONC-2024",
+     "FSCJ-IARC-QA"
+    ],
+    "claim_in_source": "[L8] PFOAには発がん性の評価もあります。",
+    "status": "確認済み",
+    "evidence_summary_ja": "IARC作業部会（2023年11月7〜14日、リヨン）は、PFOAを「ヒトに対して発がん性がある」（グループ1）に分類した。根拠は動物での十分な証拠とばく露した人での強いメカニズムの証拠で、人の疫学は腎細胞がん・精巣がんについて限定的だった。PFOSは初めて評価され、グループ2B（発がん性がある可能性）とされた。概要はLancet Oncology 2024;25(1):16-17に掲載され、モノグラフ第135巻は2025年に公開された。",
+    "sources": [
+     {
+      "title": "Q&A: IARC Monographs Volume 135 (PFOA and PFOS)",
+      "publisher": "IARC/WHO",
+      "url": "https://www.iarc.who.int/wp-content/uploads/2023/11/QA_Mono135.pdf",
+      "date": "2023-11"
+     },
+     {
+      "title": "IARC Monographs Volume 135: Perfluorooctanoic acid (PFOA) and perfluorooctanesulfonic acid (PFOS)",
+      "publisher": "IARC/WHO",
+      "url": "https://publications.iarc.who.int/636",
+      "date": "2025"
+     },
+     {
+      "title": "Carcinogenicity of perfluorooctanoic acid and perfluorooctanesulfonic acid (Zahm et al., Lancet Oncol 2024;25:16-17)",
+      "publisher": "CDC Stacks（論文書誌）",
+      "url": "https://stacks.cdc.gov/view/cdc/207670",
+      "date": "2024-01"
+     },
+     {
+      "title": "PFOA及びPFOSに対するIARCの評価結果に関するQ&A",
+      "publisher": "内閣府 食品安全委員会",
+      "url": "https://www.fsc.go.jp/foodsafetyinfo_map/pfoa_and_pfos_faq.html"
+     }
+    ],
+    "suggested_action_ja": "原文の控えめな表現のままで可。字幕などで「グループ1」に触れる場合は、ハザード（発がん性の確からしさ）の分類でありリスクの大きさではないことの説明と、PFOSが2Bである点を監修者が確認する。",
+    "time_sensitive_note_ja": "PFOAは2014年のグループ2Bから2023年にグループ1へ引き上げられた。食品安全委員会（2024）は、発がん性の知見だけでは指標値の算出に不十分と判断しており、IARCとは評価の目的が異なる。IARCのサイトは直接取得できず、検索結果で確認した。"
+   },
+   {
+    "source_ids": [
+     "FSCJ-F03",
+     "FSCJ-F02",
+     "EPA-STEWARDSHIP",
+     "FDA-FCS",
+     "ENV-FAQ003"
+    ],
+    "claim_in_source": "[L9] 現在のフッ素樹脂加工フライパンの樹脂とPFOA・PFOSを同一視することはできません。",
+    "status": "確認済み",
+    "evidence_summary_ja": "食品安全委員会のファクトシートによると、PFOAはフッ素樹脂（PTFE）の製造助剤として使われてきたが、フライパンなどの調理器具にはほとんど残っていないことが確認されている。米EPAのPFOAスチュワードシップ・プログラムでは、主要メーカー8社が2015年までに排出と製品含有からPFOAをなくすことを約束し、EPAは目標達成と報告している。日本でも2021年10月以降、化審法でPFOAの製造・輸入が原則禁止。FDAは、ノンスティック塗膜は高温で調理器具に固着した高分子で、食品への移行は無視できる程度としている。",
+    "sources": [
+     {
+      "title": "ファクトシート パーフルオロ化合物（令和2年10月27日更新）",
+      "publisher": "内閣府 食品安全委員会",
+      "url": "https://www.fsc.go.jp/factsheets/index.data/f03_perfluoro_compounds.pdf",
+      "date": "2020-10-27"
+     },
+     {
+      "title": "ファクトシート フッ素樹脂",
+      "publisher": "内閣府 食品安全委員会",
+      "url": "https://www.fsc.go.jp/sonota/factsheets/f02_fluorocarbon_polymers.pdf",
+      "date": "2012-11-19"
+     },
+     {
+      "title": "Fact Sheet: 2010/2015 PFOA Stewardship Program",
+      "publisher": "U.S. EPA",
+      "url": "https://www.epa.gov/assessing-and-managing-chemicals-under-tsca/fact-sheet-20102015-pfoa-stewardship-program"
+     },
+     {
+      "title": "Authorized Uses of PFAS in Food Contact Applications",
+      "publisher": "U.S. FDA",
+      "url": "https://www.fda.gov/food/process-contaminants-food/authorized-uses-pfas-food-contact-applications"
+     },
+     {
+      "title": "PFASに関するよくある質問",
+      "publisher": "環境省",
+      "url": "https://www.env.go.jp/water/pfas/faq003.html"
+     }
+    ],
+    "suggested_action_ja": "「同一視できない」はそのままで可。ただし、PTFE自体も広い定義ではPFASに含まれ、「PFOA不使用」は「PFAS不使用」と同じではない。完全に無関係・PFASフリーと受け取られる演出になっていないか、過加熱時の注意を扱う他の章と矛盾しないかを監修者が確認する。",
+    "time_sensitive_note_ja": "EPAのプログラムは参加8社が対象で、それ以外の事業者や海外製・輸入品まで「PFOA不使用が一般的」と言える公的な裏付けは、今回の確認では得られていない。"
+   },
+   {
+    "source_ids": [
+     "POPS-ALL",
+     "POPS-PFAS",
+     "ENV-FAQ003",
+     "MHLW-2024",
+     "METI-2025"
+    ],
+    "claim_in_source": "[背景確認・台本本文に明示なし] PFOA・PFOSの規制状況（L7・L9の「問題になっている」「現在の」の前提）",
+    "status": "確認済み",
+    "evidence_summary_ja": "ストックホルム条約では、PFOSが2009年に附属書B、PFOAが2019年に附属書A、PFHxSが2022年に附属書A、長鎖PFCAが2025年に附属書Aに掲載された。日本の化審法では、PFOS（2010年）、PFOA（2021年10月）、PFHxS（2024年2月）が第一種特定化学物質として製造・輸入が原則禁止となり、PFOA関連物質も2025年1月に施行された。PFHxS関連物質の指定は2025年12月12日に政令が閣議決定されている。",
+    "sources": [
+     {
+      "title": "All POPs listed in the Stockholm Convention",
+      "publisher": "Stockholm Convention Secretariat (UNEP)",
+      "url": "https://pops.int/TheConvention/ThePOPs/AllPOPs/tabid/2509"
+     },
+     {
+      "title": "PFAS Overview (Industrial POPs)",
+      "publisher": "Stockholm Convention Secretariat (UNEP)",
+      "url": "https://chm.pops.int/Implementation/IndustrialPOPs/PFAS/Overview/tabid/5221/Default.aspx"
+     },
+     {
+      "title": "PFASに関するよくある質問",
+      "publisher": "環境省",
+      "url": "https://www.env.go.jp/water/pfas/faq003.html"
+     },
+     {
+      "title": "「化学物質の審査及び製造等の規制に関する法律施行令の一部を改正する政令」が閣議決定されました（PFOA関連物質）",
+      "publisher": "厚生労働省",
+      "url": "https://www.mhlw.go.jp/stf/newpage_41043.html",
+      "date": "2024-07"
+     },
+     {
+      "title": "「化学物質の審査及び製造等の規制に関する法律施行令の一部を改正する政令」が閣議決定されました",
+      "publisher": "経済産業省",
+      "url": "https://www.meti.go.jp/press/2025/12/20251212001/20251212001.html",
+      "date": "2025-12-12"
+     }
+    ],
+    "suggested_action_ja": "台本で規制に触れる場合は、「日本では製造・輸入が原則禁止」程度にとどめる。既にある製品の使用は規制対象外である点も含め、監修者が最新の状況を確認する。",
+    "time_sensitive_note_ja": "PFHxS関連物質と長鎖PFCAの国内指定は2025〜2026年に手続きが進んでおり、2026年11月時点の施行状況は確認できていない。公開直前に経済産業省・環境省の発表で確認が必要。"
+   },
+   {
+    "source_ids": [
+     "ATSDR-TEST",
+     "ATSDR-CLIN-2024",
+     "ENV-QA2024",
+     "NASEM-2022"
+    ],
+    "claim_in_source": "[O4] PFASの血液検査だけで、症状の原因や将来の発症を確定することはできません。",
+    "status": "確認済み",
+    "evidence_summary_ja": "ATSDRは、PFASの血液検査では現在や将来の健康問題を特定できず、治療の情報にもならないとしている。血中濃度にもとづく健康上のスクリーニング基準も設けておらず、関連が指摘される病気はありふれていて原因も多様だとしている。環境省のQ&A（2024年8月）も、検査時点の血液検査の結果だけで個人の健康影響を把握・予測するのは困難としている。一方NASEM（2022）は、高ばく露が疑われる人に検査を提供し、結果に応じて脂質異常症などのスクリーニングにつなげることを推奨している（診断ではなく経過観察の判断材料）。",
+    "sources": [
+     {
+      "title": "Testing for PFAS (Blood Testing)",
+      "publisher": "ATSDR",
+      "url": "https://www.atsdr.cdc.gov/pfas/blood-testing"
+     },
+     {
+      "title": "ATSDR PFAS Information for Clinicians",
+      "publisher": "ATSDR",
+      "url": "https://www.atsdr.cdc.gov/media/pdfs/2024/07/ATSDR-PFAS-Information-for-Clinicians.pdf",
+      "date": "2024-07"
+     },
+     {
+      "title": "PFOS、PFOAに関するQ&A集（2024年8月時点）",
+      "publisher": "環境省 PFASに対する総合戦略検討専門家会議",
+      "url": "https://www.env.go.jp/content/000242834.pdf",
+      "date": "2024-08"
+     },
+     {
+      "title": "New Report Calls for Expanded PFAS Testing for People With History of Elevated Exposure",
+      "publisher": "National Academies of Sciences, Engineering, and Medicine",
+      "url": "https://www.nationalacademies.org/news/2022/07/new-report-calls-for-expanded-pfas-testing-for-people-with-history-of-elevated-exposure-offers-advice-for-clinical-treatment",
+      "date": "2022-07-28"
+     }
+    ],
+    "suggested_action_ja": "表現はこのままで正確。ただしNASEMは高ばく露者への検査提供を推奨しているため、「検査は無意味」と受け取られないか、高ばく露が心配な人の相談先の案内が前後の文脈にあるかを監修者が確認する。",
+    "time_sensitive_note_ja": "ATSDRの臨床医向け資料は2024年に更新されているが、NASEMの基準値を採用していない。米国と日本で血液検査の位置づけに違いがある点に注意が必要。ATSDRのページは直接取得できず、検索結果の要約で確認した。"
+   }
+  ]
+ },
+ {
+  "cluster": "PTFE-pans",
+  "findings": [
+   {
+    "source_ids": [
+     "BfR-FAQ-DE",
+     "BfR-FAQ-EN-2025",
+     "FSC-factsheet-2012",
+     "CAA-nabe-guide",
+     "Luo2022-STOTEN"
+    ],
+    "claim_in_source": "[N9] フッ素樹脂加工のフライパンは、表面を硬い金属製のヘラや研磨剤などで傷つけると、コーティングの一部が剥がれ、食品に混じることがあります。表面に使われるPTFEも合成樹脂の一種で…",
+    "status": "確認済み",
+    "evidence_summary_ja": "BfRのFAQは、傷ついたコーティングから微小な粒子がはがれ、食事と一緒に飲み込まれることがあると認めています。食品安全委員会のファクトシート（2012年）も、調理器具のコーティングがはがれた薄片を飲み込む場合を扱っています。消費者庁の家庭用品品質表示法「鍋」ガイドでは、取扱い上の注意として「金属製の固いものを使用しない」旨の表示を求めています。査読論文（Luo et al., Sci Total Environ 2022）でも、こすったり傷つけたりすると多数のPTFE微粒子が出ると報告されています。",
+    "sources": [
+     {
+      "title": "Ausgewählte Fragen und Antworten zu Geschirr mit Antihaftbeschichtung aus PTFE für das Braten, Kochen und Backen",
+      "publisher": "Bundesinstitut für Risikobewertung (BfR)",
+      "url": "https://www.bfr.bund.de/fragen-und-antworten/thema/ausgewaehlte-fragen-und-antworten-zu-geschirr-mit-antihaftbeschichtung-aus-ptfe-fuer-das-braten-kochen-und-backen"
+     },
+     {
+      "title": "ファクトシート フッ素樹脂（作成日 平成24年6月14日、最終更新日 平成24年11月19日）",
+      "publisher": "内閣府 食品安全委員会",
+      "url": "https://www.fsc.go.jp/sonota/factsheets/f02_fluorocarbon_polymers.pdf",
+      "date": "2012-11-19"
+     },
+     {
+      "title": "鍋（家庭用品品質表示法 雑貨工業品 表示ガイド）",
+      "publisher": "消費者庁",
+      "url": "https://www.caa.go.jp/policies/policy/representation/household_goods/guide/zakka/zakka_28.html"
+     },
+     {
+      "title": "Raman imaging for the identification of Teflon microplastics and nanoplastics released from non-stick cookware (Sci Total Environ 851, 2022)",
+      "publisher": "Macquarie University research portal (peer-reviewed paper listing)",
+      "url": "https://researchers.mq.edu.au/en/publications/raman-imaging-for-the-identification-of-teflon-microplastics-and-/",
+      "date": "2022"
+     }
+    ],
+    "suggested_action_ja": "表現はこのままで問題ありません。ただし省略部（…）の続きでPTFE粒子をマイクロプラスチックの健康リスクにつなげている場合は、Luo et al.の著者自身も「リスク評価はこれから」としているので、断定的な表現になっていないか監修者が確認してください。",
+    "time_sensitive_note_ja": "PTFEはPFASの一種です。EU全体でPFASを規制する提案（ECHA、2023年）は審議が続いており、今後フッ素樹脂加工の調理器具の扱いが変わる可能性があります。2026年11月時点の最新状況は今回確認できていません。"
+   },
+   {
+    "source_ids": [
+     "BfR-FAQ-EN-2025",
+     "BfR-FAQ-DE",
+     "BfR-PR-PFAS-pan",
+     "FSC-factsheet-2012"
+    ],
+    "claim_in_source": "[N10] ドイツ連邦リスク評価研究所は、傷から生じた微小なPTFE粒子を飲み込んでも、消化されずに排出され、健康への悪影響は予想されないとしています。(cited: ドイツ連邦リスク評価研究所（BfR）)",
+    "status": "確認済み",
+    "evidence_summary_ja": "BfRのFAQ（英語版の表題は「No adverse health effects to be expected from cookware with PTFE non-stick coating」）は、傷ついたコーティングから微小な粒子がはがれて飲み込まれても健康上問題ないとしています。理由は、PTFEが不活性で、消化されずにそのまま排出されるためです。ドイツ語版には「nach derzeitigem Kenntnisstand（現時点の知見では）」という限定が付いています。日本の食品安全委員会のファクトシート（2012年）も、はがれた薄片は吸収されずに体を通過するとしています。なお、このセッションではbfr.bund.deを直接取得できず、内容は同サイトの検索結果の抜粋で確認しました。",
+    "sources": [
+     {
+      "title": "No adverse health effects to be expected from cookware with PTFE non-stick coating (Selected questions and answers on cookware, ovenware and frying pans with a non-stick coating made of PTFE)",
+      "publisher": "German Federal Institute for Risk Assessment (BfR)",
+      "url": "https://www.bfr.bund.de/en/service/frequently-asked-questions/topic/selected-questions-and-answers-on-cookware-ovenware-and-frying-pans-with-a-non-stick-coating-made-of-ptfe/",
+      "date": "2025-07-02"
+     },
+     {
+      "title": "Ausgewählte Fragen und Antworten zu Geschirr mit Antihaftbeschichtung aus PTFE für das Braten, Kochen und Backen",
+      "publisher": "Bundesinstitut für Risikobewertung (BfR)",
+      "url": "https://www.bfr.bund.de/fragen-und-antworten/thema/ausgewaehlte-fragen-und-antworten-zu-geschirr-mit-antihaftbeschichtung-aus-ptfe-fuer-das-braten-kochen-und-backen"
+     },
+     {
+      "title": "\"Forever Chemicals\" PFAS in the Frying Pan: Compact Insights",
+      "publisher": "German Federal Institute for Risk Assessment (BfR)",
+      "url": "https://www.bfr.bund.de/en/press-release/forever-chemicals-pfas-in-the-frying-pan-compact-insights/"
+     },
+     {
+      "title": "ファクトシート フッ素樹脂",
+      "publisher": "内閣府 食品安全委員会",
+      "url": "https://www.fsc.go.jp/sonota/factsheets/f02_fluorocarbon_polymers.pdf",
+      "date": "2012-11-19"
+     }
+    ],
+    "suggested_action_ja": "BfRの見解の要約として正確なので、このままで構いません。BfRの原文に合わせて「現時点の知見では」のような限定を付けるかどうかは、編集者・監修者が判断してください。公開前に、BfRのページを人の手で直接開いて最新の文言を確認することをおすすめします。",
+    "time_sensitive_note_ja": "検索結果によると、BfRのFAQは2025年7月2日付で改訂されています。食品安全委員会のファクトシートは2012年から更新されていません。"
+   },
+   {
+    "source_ids": [
+     "BfR-FAQ-EN-2025",
+     "BfR-FAQ-DE",
+     "FSC-factsheet-2012",
+     "FSC-kikanshi-32",
+     "CAA-nabe-guide",
+     "PMC4436768",
+     "PubMed-1119084",
+     "PubMed-16922460"
+    ],
+    "claim_in_source": "[N12] PTFEは著しく過熱されると分解し、有害なガスを生じることがあります。…空のまま強火で熱し続けないようにしましょう。",
+    "status": "確認済み",
+    "evidence_summary_ja": "BfRによると、PTFEはおよそ360℃以上で分解し、人に有害なフッ素化合物の蒸気や粒子を出します。リスクが生じるのは主に空のまま過熱したときで、食材が入っていれば過熱はまず起きないとしています。また、目に見える煙が出なくても有害物質が出ることがあるとも述べています。食品安全委員会のファクトシートも、360℃以上で有害な蒸気が出てインフルエンザ様の症状（いわゆるポリマーヒューム熱）を起こし得るとしており、空焚きを避けるよう呼びかけています。消費者庁の表示ガイドも、鍋に「空炊きをしない」旨の表示を求めています。",
+    "sources": [
+     {
+      "title": "No adverse health effects to be expected from cookware with PTFE non-stick coating",
+      "publisher": "German Federal Institute for Risk Assessment (BfR)",
+      "url": "https://www.bfr.bund.de/en/service/frequently-asked-questions/topic/selected-questions-and-answers-on-cookware-ovenware-and-frying-pans-with-a-non-stick-coating-made-of-ptfe/",
+      "date": "2025-07-02"
+     },
+     {
+      "title": "ファクトシート フッ素樹脂",
+      "publisher": "内閣府 食品安全委員会",
+      "url": "https://www.fsc.go.jp/sonota/factsheets/f02_fluorocarbon_polymers.pdf",
+      "date": "2012-11-19"
+     },
+     {
+      "title": "季刊誌 vol.32 フッ素樹脂とは／人への影響と各国の対応は？",
+      "publisher": "内閣府 食品安全委員会",
+      "url": "https://www.fsc.go.jp/sonota/kikansi/32gou/32gou_4.pdf",
+      "date": "2012-10"
+     },
+     {
+      "title": "鍋（家庭用品品質表示法 雑貨工業品 表示ガイド）",
+      "publisher": "消費者庁",
+      "url": "https://www.caa.go.jp/policies/policy/representation/household_goods/guide/zakka/zakka_28.html"
+     },
+     {
+      "title": "Polytetrafluoroethylene fume–induced pulmonary edema: a case report and review of the literature",
+      "publisher": "PMC (peer-reviewed case report)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4436768/"
+     },
+     {
+      "title": "A case of polytetrafluoroethylene poisoning in cockatiels accompanied by polymer fume fever in the owner (Vet Rec 1975)",
+      "publisher": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1119084/",
+      "date": "1975"
+     },
+     {
+      "title": "[Case of polymer fume fever with interstitial pneumonia caused by inhalation of polytetrafluoroethylene (Teflon)] (Chudoku Kenkyu 2006)",
+      "publisher": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/16922460/",
+      "date": "2006"
+     }
+    ],
+    "suggested_action_ja": "表現・注意喚起ともにこのままで問題ありません。BfRは「健康被害はPTFEの工業生産の現場でしか知られておらず、家庭での例はない」としています。一方、論文では家庭でフライパンを過熱した後のポリマーヒューム熱や肺水腫の症例が報告されています。省略部（…）で被害の頻度や症状に触れている場合は、どちらの見解に基づくかを監修者が確認してください。",
+    "time_sensitive_note_ja": "米国FDAについては、焦げ付き防止コーティングからの食品への移行はごくわずかだとする一般的な見解しか検索で見つからず、過熱に関するFDAの公式な注意喚起は確認できませんでした。www.fda.govとwww.bfr.bund.deはこのセッションのネットワーク設定で許可されておらず、直接取得できていません。食品安全委員会の資料は2012年のものです。"
+   }
+  ]
+ },
+ {
+  "cluster": "Microplastics-definitions-health",
+  "findings": [
+   {
+    "source_ids": [
+     "EFSA2016",
+     "EFSA2016-journal",
+     "COMEAP2025",
+     "NZ-MfE-HRA",
+     "Koelmans-NRM",
+     "ISO24187-secondary"
+    ],
+    "claim_in_source": "[I1] 一般に、5 mm未満の小さなプラスチック粒子を指します。さらに小さいものをナノプラスチックと呼びます。研究によって細かな境界は異なりますが、ナノプラスチックを1 µm未満として扱うことがあります。",
+    "status": "確認済み",
+    "evidence_summary_ja": "英国COMEAP声明（2025年）は、WHO（2022年）の定義として「最大5 mmまでの粒子・繊維」「ナノプラスチックは1 µm未満」を採用し、普遍的に合意された定義はないと明記している。一方EFSA（2016年）はマイクロプラスチック0.1〜5,000 µm、ナノプラスチックは約1〜100 nmとしており、ISO 24187はマイクロプラスチックを1 µm〜1,000 µmとするなど、機関ごとに境界が異なる。草稿の「5 mm未満」「1 µm未満として扱うことがある」「境界は研究で異なる」はいずれもこれらと整合する。",
+    "sources": [
+     {
+      "title": "Microplastics and nanoplastics in food – an emerging issue (EFSA news)",
+      "publisher": "European Food Safety Authority (EFSA)",
+      "url": "https://www.efsa.europa.eu/en/news/microplastics-and-nanoplastics-food-emerging-issue",
+      "date": "2016-06-23"
+     },
+     {
+      "title": "Presence of microplastics and nanoplastics in food, with particular focus on seafood (EFSA Journal 14(6):4501)",
+      "publisher": "EFSA CONTAM Panel / EFSA Journal (DOAJ listing)",
+      "url": "https://doaj.org/article/70049c2a0aac4ff4b6f0ccba210af4cd",
+      "date": "2016-06"
+     },
+     {
+      "title": "COMEAP Statement on airborne nano- and microplastic particles and fibres",
+      "publisher": "UK Committee on the Medical Effects of Air Pollutants (COMEAP), GOV.UK",
+      "url": "https://assets.publishing.service.gov.uk/media/68d66c6d6671e376214b157f/COMEAP_Statement_on_airborne_nano-_and_microplastic_particles_and_fibres.pdf",
+      "date": "2025-10-02"
+     },
+     {
+      "title": "Updated Health Risk Assessment of Microplastics and Nanoplastics",
+      "publisher": "New Zealand Ministry for the Environment",
+      "url": "https://environment.govt.nz/assets/publications/Waste/Updated-Health-Risk-Assessment-of-Microplastics-and-Nanoplastics.pdf"
+     },
+     {
+      "title": "Nature Reviews Materials article on microplastic risk (Koelmans et al.)",
+      "publisher": "Nature Reviews Materials",
+      "url": "https://www.nature.com/articles/s41578-021-00411-y.pdf"
+     },
+     {
+      "title": "New microplastic testing standard ISO 24187 sets guidelines for analysis (secondary summary)",
+      "publisher": "Measurlabs",
+      "url": "https://measurlabs.com/blog/microplastic-testing-standard-iso-24187"
+     }
+    ],
+    "suggested_action_ja": "現行の文言のままで問題ない。「100 nm未満とする定義（EFSA等）もある」ことは制作ノートに留め、ナレーションに数値を追加する必要はない。",
+    "time_sensitive_note_ja": "国際的に統一された定義はまだなく（COMEAP 2025でも明記）、ISOやEU規制で用語整理が進行中のため、公開前に大きな定義変更がないか確認するとよい。なお本セッションではEFSA・WHOの原文ページを直接取得できず、検索結果の抜粋と公的機関の引用に基づく確認である。"
+   },
+   {
+    "source_ids": [
+     "COMEAP2025",
+     "COMEAP2025-page",
+     "WHO2022",
+     "WHO2022-summary"
+    ],
+    "claim_in_source": "[M2] 細胞や動物を使った実験では、マイクロプラスチックによる炎症や、細胞を傷つけ得る「酸化ストレス」が報告されています。吸い込んだ粒子については、気道や肺への影響が懸念されています。",
+    "status": "確認済み",
+    "evidence_summary_ja": "英国COMEAP（2025年10月）は、動物・細胞研究で肺に沈着した粒子が酸化ストレス・炎症・細胞毒性を誘発するという限定的な証拠があるとし、一般人よりはるかに高濃度の職業曝露では肺機能低下や間質性肺疾患の報告もあると整理している。WHO（2022年）報告も、摂取した粒子の影響は他の不溶性粒子と同様に活性酸素の産生や炎症が想定されるとしつつ、ヒトでの有害影響の証拠は乏しいと結論している。",
+    "sources": [
+     {
+      "title": "COMEAP Statement on airborne nano- and microplastic particles and fibres",
+      "publisher": "UK Committee on the Medical Effects of Air Pollutants (COMEAP), GOV.UK",
+      "url": "https://assets.publishing.service.gov.uk/media/68d66c6d6671e376214b157f/COMEAP_Statement_on_airborne_nano-_and_microplastic_particles_and_fibres.pdf",
+      "date": "2025-10-02"
+     },
+     {
+      "title": "COMEAP statement on airborne nano and microplastic particles and fibres (publication page)",
+      "publisher": "GOV.UK",
+      "url": "https://www.gov.uk/government/publications/comeap-statement-on-airborne-nano-and-microplastic-particles-and-fibres",
+      "date": "2025-10-02"
+     },
+     {
+      "title": "Dietary and inhalation exposure to nano- and microplastic particles and potential implications for human health",
+      "publisher": "World Health Organization",
+      "url": "https://www.who.int/publications/i/item/9789240054608",
+      "date": "2022-08-30"
+     },
+     {
+      "title": "WHO report on potential human health implications of microplastics (summary)",
+      "publisher": "Food Packaging Forum",
+      "url": "https://www.foodpackagingforum.org/news/who-report-on-potential-human-health-implications-of-microplastics"
+     }
+    ],
+    "suggested_action_ja": "文言はこのままでよい。ただし実験は高用量やポリスチレン球など実環境と異なる条件が多く、COMEAPも「限定的な証拠」としているため、映像の演出で日常的な曝露でも同じことが起きると誤解させないよう監修者に確認してもらうとよい。",
+    "time_sensitive_note_ja": "COMEAP声明は2025年10月公表の比較的新しい公的見解であり、吸入経路については同声明が現時点で最も新しい公的整理の一つ。"
+   },
+   {
+    "source_ids": [
+     "Canada-SA2020",
+     "HealthCanada-infosheet",
+     "HealthCanada-2024funding"
+    ],
+    "claim_in_source": "[M3] …日常生活で取り込む量が、人の身体にどの程度の影響を与えるかは、まだ十分に分かっていません。(cited: カナダ政府・プラスチック汚染の科学評価)",
+    "status": "確認済み",
+    "evidence_summary_ja": "カナダ環境・気候変動省と保健省の「プラスチック汚染の科学評価」（最終版2020年10月）は、人は食品・飲料水・空気からマイクロプラスチックに曝露し得るが、ヒト健康影響に関する情報は限られているとし、リスクの定量化を目的としない現状調査であると明記している。2024年1月には保健大臣が「マイクロプラスチックの健康影響には分からないことが多い」として研究資金を発表しており、草稿の趣旨と一致する。",
+    "sources": [
+     {
+      "title": "Science assessment of plastic pollution",
+      "publisher": "Environment and Climate Change Canada / Health Canada",
+      "url": "https://www.canada.ca/en/environment-climate-change/services/evaluating-existing-substances/science-assessment-plastic-pollution.html",
+      "date": "2020-10-07"
+     },
+     {
+      "title": "Plastic pollution - information sheet",
+      "publisher": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/services/chemical-substances/fact-sheets/chemicals-glance/plastic-pollution.html"
+     },
+     {
+      "title": "Government of Canada funding research on the health risks of microplastics",
+      "publisher": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/news/2024/01/government-of-canada-funding-research-on-the-health-risks-of-microplastics.html",
+      "date": "2024-01-22"
+     }
+    ],
+    "suggested_action_ja": "文言はこのままでよい。出典表記は「2020年の最終版（草案は2020年1月）」であることを制作ノートに明記し、草案版のページを誤って引用しないよう編集者が確認する。",
+    "time_sensitive_note_ja": "検索の範囲では2020年評価を改訂した新しい科学評価は見当たらず、最新の動きは2024年1月の研究資金発表だった。公開前にHealth Canadaの情報ページで更新の有無を再確認するとよい。カナダ政府サイトは本セッションから直接取得できず、検索抜粋での確認である。"
+   },
+   {
+    "source_ids": [
+     "WHO2022",
+     "WHO2022-summary",
+     "WHO2019-transcript",
+     "WHO2019-summary",
+     "FDA-MNP",
+     "COMEAP2025",
+     "NEJM2024-secondary"
+    ],
+    "claim_in_source": "[M13] …マイクロプラスチックについては、炎症などを起こす仕組みが研究されていますが、普段の生活で取り込む量によって、どの病気がどの程度増えるのかを明確に示せる段階にはありません。",
+    "status": "確認済み",
+    "evidence_summary_ja": "WHO（2019年・飲料水）は現行レベルで健康上の懸念を示す証拠はないとし、WHO（2022年・食事と吸入）は限られたデータからはヒトへの有害影響の証拠は乏しく、リスク評価にはごく限定的にしか使えないと結論した。米FDAも食品中の濃度がヒト健康リスクをもたらすとは示されていないとし、COMEAP（2025年）も集団の健康リスク評価は時期尚早としており、草稿の表現と整合する。",
+    "sources": [
+     {
+      "title": "Dietary and inhalation exposure to nano- and microplastic particles and potential implications for human health",
+      "publisher": "World Health Organization",
+      "url": "https://www.who.int/publications/i/item/9789240054608",
+      "date": "2022-08-30"
+     },
+     {
+      "title": "WHO report on potential human health implications of microplastics (summary)",
+      "publisher": "Food Packaging Forum",
+      "url": "https://www.foodpackagingforum.org/news/who-report-on-potential-human-health-implications-of-microplastics"
+     },
+     {
+      "title": "Microplastics in drinking-water (press briefing transcript)",
+      "publisher": "World Health Organization",
+      "url": "https://www.who.int/news-room/transcripts/detail/20-08-2019-microplastics-in-drinking-water",
+      "date": "2019-08-20"
+     },
+     {
+      "title": "WHO report on microplastics in drinking water (summary)",
+      "publisher": "Food Packaging Forum",
+      "url": "https://www.foodpackagingforum.org/news/who-report-on-microplastics-in-drinking-water"
+     },
+     {
+      "title": "Microplastics and Nanoplastics in Foods",
+      "publisher": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/environmental-contaminants-food/microplastics-and-nanoplastics-foods"
+     },
+     {
+      "title": "COMEAP Statement on airborne nano- and microplastic particles and fibres",
+      "publisher": "UK COMEAP, GOV.UK",
+      "url": "https://assets.publishing.service.gov.uk/media/68d66c6d6671e376214b157f/COMEAP_Statement_on_airborne_nano-_and_microplastic_particles_and_fibres.pdf",
+      "date": "2025-10-02"
+     },
+     {
+      "title": "Risk for MI, Stroke, Death Increased With Plastics in Carotid Plaques (NEJM study coverage)",
+      "publisher": "HealthDay",
+      "url": "https://www.healthday.com/healthpro-news/cardiovascular-diseases/risk-for-mi-stroke-death-increased-with-plastics-in-carotid-plaques",
+      "date": "2024-03"
+     }
+    ],
+    "suggested_action_ja": "文言はこのままでよい。視聴者から頸動脈プラークの研究（NEJM 2024）などを指摘される可能性があるため、監修者は「観察研究で関連が示された段階で、因果は未確立」という整理を把握しておくとよい。",
+    "time_sensitive_note_ja": "研究が急速に増えている分野で、2024年のNEJM観察研究（プラーク中の粒子と心血管イベントの関連）や2025年のLancet Countdown on Health and Plasticsなど新しい知見が出ている。検索ではWHOの2025〜2026年の新報告は確認できなかったが、公開直前にWHO・FDAの見解更新を再確認するとよい。"
+   },
+   {
+    "source_ids": [
+     "UoN-WWF2019",
+     "Senathirajah2021",
+     "MohamedNor2021-secondary",
+     "Pletz2022"
+    ],
+    "claim_in_source": "[O1] 「人は全員、毎週一定量のプラスチックを食べている」という印象的な換算は、推計方法や不確実性を確認します。",
+    "status": "確認済み",
+    "evidence_summary_ja": "「週にクレジットカード1枚分（約5 g）」はWWFが委託しニューカッスル大学が2019年に発表した推計が起源で、論文版（Senathirajah et al., 2021, J Hazard Mater）では世界平均で週0.1〜5 gと幅のある推計だった。その後、Mohamed Nor et al.（2021, ES&T）は成人の中央値を週4.1 µg程度と大幅に低く推計し、Pletz（2022, J Hazard Mater Letters）は元の推計が数桁過大で手法に誤りがあると批判している。",
+    "sources": [
+     {
+      "title": "Plastic ingestion by people could be equating to a credit card a week",
+      "publisher": "University of Newcastle (Australia)",
+      "url": "https://www.newcastle.edu.au/news/2019/06/plastic-ingestion-by-people-could-be-equating-to-a-credit-card-a-week",
+      "date": "2019-06-12"
+     },
+     {
+      "title": "Estimation of the mass of microplastics ingested - A pivotal first step towards human health risk assessment",
+      "publisher": "Journal of Hazardous Materials (PubMed)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/33130380/",
+      "date": "2021-02"
+     },
+     {
+      "title": "Lifetime microplastic exposure (coverage of Mohamed Nor et al., ES&T 2021)",
+      "publisher": "Phys.org",
+      "url": "https://phys.org/news/2021-03-lifetime-microplastic-exposure.pdf",
+      "date": "2021-03"
+     },
+     {
+      "title": "Ingested microplastics: Do humans eat one credit card per week?",
+      "publisher": "Journal of Hazardous Materials Letters (DOAJ listing)",
+      "url": "https://doaj.org/article/c0413ccf4d294cd4942c3d710f5d938a",
+      "date": "2022-11-19"
+     }
+    ],
+    "suggested_action_ja": "「推計方法や不確実性を確認する」という扱いは適切で、このままでよい。ナレーションや画面で「5 g/週」を事実として示さず、出典と批判論文は制作ノートに記録する程度でよい。",
+    "time_sensitive_note_ja": "推計値は研究ごとに数桁の幅があり、2021〜2022年の批判以降も新しい推計が出ているため、引用する場合は最新の議論を確認すること。"
+   },
+   {
+    "source_ids": [
+     "FDA-MNP",
+     "WHO2022-summary",
+     "EFSA-FCM2025-secondary",
+     "Canada-SA2020"
+    ],
+    "claim_in_source": "[J1] …研究ごとの測定法や対象粒子が異なるため、検出された食品名を並べただけでは、摂取量の順位や健康リスクは分かりません。",
+    "status": "確認済み",
+    "evidence_summary_ja": "米FDAは検出・定量・特性評価の標準化された方法がなく、多くの研究の精度や特異性にばらつきがあると明記している。WHO（2022年）も曝露研究は10 µm未満の粒子をほとんど測っておらず影響研究とずれがあるとして分析法の標準化を求め、カナダの科学評価も標準化された手法の開発を優先課題に挙げている。EFSAの2025年10月の文献レビューでも、汚染や粒子の誤同定などの問題から、消費者曝露を推計するにはデータが不十分とされた。",
+    "sources": [
+     {
+      "title": "Microplastics and Nanoplastics in Foods",
+      "publisher": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/environmental-contaminants-food/microplastics-and-nanoplastics-foods"
+     },
+     {
+      "title": "WHO report on potential human health implications of microplastics (summary)",
+      "publisher": "Food Packaging Forum",
+      "url": "https://www.foodpackagingforum.org/news/who-report-on-potential-human-health-implications-of-microplastics"
+     },
+     {
+      "title": "EFSA: Current studies may overestimate microplastics transferring from FCMs into food",
+      "publisher": "Food Safety Magazine",
+      "url": "https://www.food-safety.com/articles/10811-efsa-current-studies-may-overestimate-microplastics-transferring-from-fcms-into-food",
+      "date": "2025-10"
+     },
+     {
+      "title": "EFSA publishes report on micro- and nanoplastics from FCMs",
+      "publisher": "Food Packaging Forum",
+      "url": "https://foodpackagingforum.org/news/efsa-publishes-report-on-micro-and-nanoplastics-from-fcms",
+      "date": "2025-10"
+     },
+     {
+      "title": "Science assessment of plastic pollution",
+      "publisher": "Environment and Climate Change Canada / Health Canada",
+      "url": "https://www.canada.ca/en/environment-climate-change/services/evaluating-existing-substances/science-assessment-plastic-pollution.html",
+      "date": "2020-10-07"
+     }
+    ],
+    "suggested_action_ja": "文言はこのままでよい。画面で食品名の一覧を見せる場合は、ランキングや危険度の順位に見えるデザインを避けるよう編集者が確認する。",
+    "time_sensitive_note_ja": "EFSAの食品接触材料に関する文献レビュー（2025年10月）は5年以内の再評価を提案しており、測定法の標準化が進めば評価が変わる可能性がある。このEFSAレビューは二次報道で確認したもので、原文（EFSA Supporting Publication）は未取得。"
+   }
+  ]
+ },
+ {
+  "cluster": "Containers-boards",
+  "findings": [
+   {
+    "source_ids": [
+     "S1-Hussain2023-PubMed",
+     "S2-UNL-news-2023",
+     "S3-UNL-Engineering-2023",
+     "S7-Li2020-NatureFood"
+    ],
+    "claim_in_source": "[N3] 実験では、一部の容器からマイクロプラスチックやナノプラスチックが放出され、電子レンジ加熱で放出量が増えた例が報告されています。ただし、すべての容器で同じ量が出るわけではありません。(cited: プラスチック容器からの粒子放出を調べた研究)",
+    "status": "確認済み",
+    "evidence_summary_ja": "引用元はHussain et al. 2023（Environ. Sci. Technol. 57(26):9782–9792、DOI 10.1021/acs.est.3c01942、PMID 37343248）と推定されます。この研究ではPP製のベビーフード容器2種とPE製の再利用パウチ1種に水または3%酢酸を入れ、冷蔵・室温保存・高温・電子レンジ（1000W、3分）の各条件で試験しました。放出量は電子レンジ加熱が最も多く、PEパウチはPP容器より多く放出したと報告されています。一方で、試験したのは3製品だけで、使ったのは実際の食品ではなく模擬液です。また外部の専門家からは、ポリマーと添加剤を区別できていないとの指摘があります。",
+    "sources": [
+     {
+      "title": "Assessing the Release of Microplastics and Nanoplastics from Plastic Containers and Reusable Food Pouches: Implications for Human Health (PubMed 37343248)",
+      "publisher": "Environmental Science & Technology / PubMed",
+      "url": "https://www.pubmed.gov/37343248/",
+      "date": "2023-06-21"
+     },
+     {
+      "title": "Nebraska study finds billions of nanoplastics released when microwaving containers",
+      "publisher": "University of Nebraska-Lincoln (Nebraska Today)",
+      "url": "https://news.unl.edu/newsrooms/today/article/nebraska-study-finds-billions-of-nanoplastics-released-when-microwaving",
+      "date": "2023-07-21"
+     },
+     {
+      "title": "Nebraska engineers find billions of plastic particles released when microwaving containers",
+      "publisher": "University of Nebraska-Lincoln College of Engineering",
+      "url": "https://engineering.unl.edu/news/230721/cee/hussain_microwave_plastics/",
+      "date": "2023-07-21"
+     },
+     {
+      "title": "Microplastic release from the degradation of polypropylene feeding bottles during infant formula preparation (Li et al., Nature Food 2020, DOI 10.1038/s43016-020-00171-y)",
+      "publisher": "Trinity College Dublin repository (edepositireland)",
+      "url": "https://edepositireland.ie/handle/2262/94127",
+      "date": "2020-10"
+     }
+    ],
+    "suggested_action_ja": "文言はこのままで問題ありません。ただし原稿のリンク先URLが手元にないため、引用研究がHussain 2023（DOI 10.1021/acs.est.3c01942）で合っているかを編集者が確認してください。補強となる研究として、高温でPP哺乳瓶からの放出が増えたLi 2020があります。",
+    "time_sensitive_note_ja": "2026年11月時点の検索では、この論文の訂正や撤回は見つかりませんでした。この環境ではpubs.acs.orgとPubMed（ncbi）が通信不可で本文を直接読めず、検索結果と大学の公式発表で照合しました。"
+   },
+   {
+    "source_ids": [
+     "S1-Hussain2023-PubMed",
+     "S8-ScienceAlert-2023",
+     "S4-FDA-MNP-page"
+    ],
+    "claim_in_source": "[N4] …電子レンジ対応の表示があっても、粒子の放出がゼロであることを意味するものではありません。",
+    "status": "一部確認",
+    "evidence_summary_ja": "Hussain 2023の試験品はFDAの基準に適合した材質で、二次報道ではPP容器に「microwave-safe」と表示されていたとされます。その製品でも加熱による粒子放出が報告されたため、文の趣旨は実験結果と矛盾しません。ただし、表示の有無を原著で直接は確認できていません。国内の「電子レンジ対応」表示（家庭用品品質表示法の耐熱温度など）が何を保証するのかも、公式の規程本文では確認できませんでした。",
+    "sources": [
+     {
+      "title": "Assessing the Release of Microplastics and Nanoplastics from Plastic Containers and Reusable Food Pouches (PubMed 37343248)",
+      "publisher": "Environmental Science & Technology / PubMed",
+      "url": "https://www.pubmed.gov/37343248/",
+      "date": "2023-06-21"
+     },
+     {
+      "title": "Microwaving 'Safe' Plastics Can Release Billions of Particles, Scientists Warn",
+      "publisher": "ScienceAlert（二次報道）",
+      "url": "https://www.sciencealert.com/microwaving-safe-plastics-can-release-billions-of-particles-scientists-warn",
+      "date": "2023"
+     },
+     {
+      "title": "Microplastics and Nanoplastics in Foods",
+      "publisher": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/environmental-contaminants-food/microplastics-and-nanoplastics-foods",
+      "date": "2024-07-24"
+     }
+    ],
+    "suggested_action_ja": "論理的な注意書きとしては残してよいと考えます。ただ、試験されたのは米国製品であり、国内の「電子レンジ対応」製品を調べた研究ではありません。表示製品が危険だという印象にならないよう、医療監修者に言い回しの確認を依頼してください。編集者には、原著で試験品にmicrowave-safe表示があったかの確認をお願いします。",
+    "time_sensitive_note_ja": "FDAのウェブページ（2024年7月公開）は、プラスチック包装由来の粒子が食品へ移行することを示す科学的根拠は十分でないとの立場です。二次情報によれば、2026年1月の米国食事ガイドラインでも同じ趣旨が記載されています。"
+   },
+   {
+    "source_ids": [
+     "S5-Yadav2023-PubMed",
+     "S6-ACS-press-2023"
+    ],
+    "claim_in_source": "[N6] ポリエチレンやポリプロピレン製のまな板を使った実験では、切る動作による粒子の発生が確認されています。(cited: まな板からのマイクロプラスチック発生を調べた研究)",
+    "status": "確認済み",
+    "evidence_summary_ja": "引用元はYadav et al. 2023（Environ. Sci. Technol. 57(22):8225–8235、DOI 10.1021/acs.est.3c00924、PMID 37220346）と推定されます。この研究では、PE・PP・木製のまな板を同じ包丁で、にんじんを切る場合と切らない場合の両方で試験し、刻む動作で微粒子が生じることを示しました。放出量はPPがPEより多く、木製まな板は木の微粒子を出しました。マウス線維芽細胞での予備的な毒性試験では、明確な影響は見られませんでした。小規模な実験で、年間の曝露推計は仮定に基づくものです。独立した追試は見つかりませんでした。",
+    "sources": [
+     {
+      "title": "Cutting Boards: An Overlooked Source of Microplastics in Human Food? (PubMed 37220346)",
+      "publisher": "Environmental Science & Technology / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37220346/",
+      "date": "2023-05-23"
+     },
+     {
+      "title": "Cutting boards can produce microparticles when chopping veggies, study shows",
+      "publisher": "American Chemical Society (press release)",
+      "url": "https://www.acs.org/pressroom/presspacs/2023/june/cutting-boards-can-produce-microparticles-when-chopping-veggies.html",
+      "date": "2023-06"
+     }
+    ],
+    "suggested_action_ja": "文言はこのままで問題ありません。引用研究がYadav 2023（DOI 10.1021/acs.est.3c00924）で合っているかは編集者が確認してください。同じ研究で木製まな板も木の微粒子を出しているため、木製に替えれば粒子が出ないかのような表現にならないよう注意してください。",
+    "time_sensitive_note_ja": "二次報道では、2025年にEnvironmental Health Perspectivesで、プラスチックまな板で調理した餌をマウスに与えた研究が報じられています。原著は未確認で、この文の主張とは別の論点です。pubs.acs.orgとPubMedは、この環境から直接読めませんでした。"
+   },
+   {
+    "source_ids": [
+     "S9-Zimmermann2025-FPF",
+     "S4-FDA-MNP-page",
+     "S1-Hussain2023-PubMed",
+     "S5-Yadav2023-PubMed"
+    ],
+    "claim_in_source": "[J2 前半] 食品に触れる容器や器具から粒子が離れることを示す研究もあります。",
+    "status": "確認済み",
+    "evidence_summary_ja": "Zimmermann et al. 2025（npj Science of Food、DOI 10.1038/s41538-025-00470-3）の系統的エビデンスマップは103研究を整理し、そのうち96%が食品や模擬液から粒子を検出したと報告しています。ただし、問いに十分答えられる設計とデータ品質を備えていたのは7研究だけでした。一方FDAは、包装から食品へ移行する根拠は不十分だとしています。そのため「研究もある」という控えめな表現は妥当です。",
+    "sources": [
+     {
+      "title": "New FPF study and dashboard show that food contact articles are a source of micro- and nanoplastics in food",
+      "publisher": "Food Packaging Forum",
+      "url": "https://foodpackagingforum.org/news/new-fpf-study-and-dashboard-show-that-food-contact-articles-are-a-source-of-micro-and-nanoplastics-in-food",
+      "date": "2025-06-24"
+     },
+     {
+      "title": "Microplastics and Nanoplastics in Foods",
+      "publisher": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/environmental-contaminants-food/microplastics-and-nanoplastics-foods",
+      "date": "2024-07-24"
+     }
+    ],
+    "suggested_action_ja": "文言はこのままで問題ありません。「示す研究もあります」という程度の表現を保ち、断定的な言い方に強めないよう医療監修者に確認を依頼してください。",
+    "time_sensitive_note_ja": "規制当局（FDA）と研究者のレビューとで評価が分かれている、現在進行中の論点です。公開後に新しい公式見解が出る可能性があります。"
+   },
+   {
+    "source_ids": [
+     "S10-WHO-2022",
+     "S4-FDA-MNP-page",
+     "S11-FPF-FDA-HFP-2026",
+     "S9-Zimmermann2025-FPF",
+     "S12-Wired-Boland-repost"
+    ],
+    "claim_in_source": "[J2 後半] …測定中の混入や、プラスチック以外の物質を数える問題があり、報告された個数をそのまま家庭での摂取量と考えることはできません。",
+    "status": "確認済み",
+    "evidence_summary_ja": "WHOの2022年報告は、方法がばらばらで品質保証も不十分なため、既存データはヒトのリスク評価にごく限られた用途しかないとしています。FDAも、標準化された定義・標準物質・品質管理がないことを理由に、現時点ではリスク評価ができないと説明しています。FDA食品部門が2026年3月に出した研究ニーズでは、食品にもともと含まれる物質とマイクロプラスチックを見分ける手法の開発が挙げられました。Hussain研究についても、ポリマーと添加剤を区別できていないという外部専門家の指摘があります。",
+    "sources": [
+     {
+      "title": "Dietary and inhalation exposure to nano- and microplastic particles and potential implications for human health",
+      "publisher": "World Health Organization",
+      "url": "https://www.who.int/publications/i/item/9789240054608",
+      "date": "2022-08-30"
+     },
+     {
+      "title": "Microplastics and Nanoplastics in Foods",
+      "publisher": "U.S. Food and Drug Administration",
+      "url": "https://www.fda.gov/food/environmental-contaminants-food/microplastics-and-nanoplastics-foods",
+      "date": "2024-07-24"
+     },
+     {
+      "title": "FDA's Human Foods Program outlines priority scientific knowledge needed to inform policy",
+      "publisher": "Food Packaging Forum（FDA文書の紹介）",
+      "url": "https://foodpackagingforum.org/news/fdas-human-foods-program-outlines-priority-scientific-knowledge-needed-to-inform-policy",
+      "date": "2026-03-31"
+     },
+     {
+      "title": "For the Love of God, Stop Microwaving Plastic（Wired記事の転載、Boland氏コメント）",
+      "publisher": "Beyond Plastics（二次情報）",
+      "url": "https://www.beyondplastics.org/news-stories/for-the-love-of-god-stop-microwaving-plastic",
+      "date": "2023-07-31"
+     }
+    ],
+    "suggested_action_ja": "文言はこのままで問題なく、公的機関の見解とも合っています。医療監修者には、この但し書きが前段（N3・N6）の研究紹介と同じ場面か近い位置で読まれるよう、構成を確認してもらうことを勧めます。",
+    "time_sensitive_note_ja": "2026年3月31日のFDA研究ニーズ文書は二次情報（FPF）経由でしか確認できていません。2025〜2026年には人体組織中の測定（熱分解GC-MS）の偽陽性をめぐる議論も報じられていますが、食品容器とは別の分野です。"
+   }
+  ]
+ },
+ {
+  "cluster": "Softener-microcapsules",
+  "findings": [
+   {
+    "source_ids": [
+     "ECHA-QA-microplastics",
+     "EU-2023-2055",
+     "nippon-com-kougai",
+     "Givaudan-PlanetCaps"
+    ],
+    "claim_in_source": "[J7] 一部の製品では、香料を小さなカプセルに包んで衣類に付着させ、摩擦や衝撃でカプセルが壊れることで香料を放出する仕組みが使われています。（[N13] 前半「一部の柔軟剤は、香料をマイクロカプセルに包んで衣類に付着させ…」も同趣旨）",
+    "status": "一部確認",
+    "evidence_summary_ja": "ECHAのQ&Aは、洗剤などの家庭用品でポリマー製の香料カプセル化システムが使われていると明記しています。EU規則2023/2055でも「香料のカプセル化」は独立した用途として扱われています。一方、摩擦や衝撃で殻が壊れて香料が出る仕組みの説明は、報道や業界資料で確認できただけで、日本の公的機関の一次資料では確認できませんでした。",
+    "sources": [
+     {
+      "title": "Questions and answers on intentionally added microplastics (ECHA media Q&A)",
+      "publisher": "European Chemicals Agency (ECHA)",
+      "url": "https://chesar.echa.europa.eu/documents/10162/6755610/qa_media_intentionally_added_microplastics_en.pdf/e5eeedda-e5ba-e720-cd57-4195e512253c"
+     },
+     {
+      "title": "Commission Regulation (EU) 2023/2055 of 25 September 2023 (synthetic polymer microparticles)",
+      "publisher": "EUR-Lex / European Commission",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/2055/oj/eng",
+      "date": "2023-09-25"
+     },
+     {
+      "title": "香害の甘い危険（The Sweet Danger of Scent Pollution）",
+      "publisher": "nippon.com",
+      "url": "https://www.nippon.com/ja/in-depth/d00703/"
+     }
+    ],
+    "suggested_action_ja": "一般的な仕組みの説明としては、現行の表現のままで差し支えないと考えられます。「一部の製品／一部の柔軟剤」という限定は残してください。仕組みの部分に公的な出典を付ける必要がある場合は、監修者が一次資料を補ってください。",
+    "time_sensitive_note_ja": "EUで生分解性の香料カプセルが市販されるなど、製品の設計は変わりつつあります。"
+   },
+   {
+    "source_ids": [
+     "EU-2023-2055",
+     "EC-explanatory-guide-2025",
+     "ECHA-QA-microplastics",
+     "MOE-intl-trends-pdf",
+     "Givaudan-PlanetCaps"
+    ],
+    "claim_in_source": "[J8] カプセルの殻に合成樹脂を使うものがあり、マイクロプラスチックの発生源としても問題になります。ただし、素材や分解性は製品によって異なるため、すべての香料カプセルを同じものとして扱うことはできません。／[N13] カプセルの殻に合成樹脂を使うものがあり、素材によってはマイクロプラスチックに該当します。",
+    "status": "一部確認",
+    "evidence_summary_ja": "EU規則2023/2055は「合成ポリマー微粒子」（意図的に添加されたマイクロプラスチック）を規制対象とし、香料カプセル化の用途にも移行期間を設けています。したがって、ポリマー製の香料カプセルはEUの法的定義上、マイクロプラスチックに該当し得ます。分解性（付録15）や水溶性（付録16）の基準を満たすポリマーは対象外で、生分解性カプセルもすでに市販されています。このため「素材によって異なる」という記述はEUの枠組みと一致します。環境省の国際動向資料も、EU規制の対象に香料カプセルが含まれると整理しています（検索結果の要約で確認）。",
+    "sources": [
+     {
+      "title": "Commission Regulation (EU) 2023/2055 (Annex XVII entry 78, synthetic polymer microparticles)",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/2055/oj/eng",
+      "date": "2023-09-25"
+     },
+     {
+      "title": "REACH restriction of synthetic polymer microparticles – Explanatory Guide (Intro + Part I)",
+      "publisher": "European Commission, DG GROW",
+      "url": "https://single-market-economy.ec.europa.eu/document/download/ec80269d-7ef6-43de-8667-2041a8607209_en?filename=20250326_EGMP_Intro+PartI_forPub.pdf",
+      "date": "2025-04-01"
+     },
+     {
+      "title": "マイクロプラスチックに関する国際動向資料（EUの意図的添加マイクロプラスチック規制の整理）",
+      "publisher": "環境省",
+      "url": "https://www.env.go.jp/content/000354340.pdf"
+     },
+     {
+      "title": "Givaudan introduces PlanetCaps, the first-to-market biodegradable fragrance capsules",
+      "publisher": "Givaudan（業界資料・企業発表）",
+      "url": "https://www.givaudan.com/print/972431"
+     }
+    ],
+    "suggested_action_ja": "内容自体はEUの規制枠組みと整合するため、表現は維持してよいと考えられます。ただし「マイクロプラスチックに該当」はEUの法的定義に基づく判断です。根拠表示はEU規則2023/2055などへの差し替えを検討してください。また、日本でも同じ定義・規制があるように受け取られないか、監修者が確認してください。",
+    "time_sensitive_note_ja": "日本で香料カプセルを対象にした同様の規制は、今回の検索では確認できませんでした。環境省のPDF（env.go.jp）は、このセッションのネットワーク制限で本文を開けず、検索結果の要約での確認にとどまります。"
+   },
+   {
+    "source_ids": [
+     "MHLW-poster-notice-2026",
+     "mhlw-grants-202425002A",
+     "CAO-consumer-opinion-2505"
+    ],
+    "claim_in_source": "[J8]／[N13] の出典表示「厚生労働省公開の調査報告書」",
+    "status": "根拠未確認",
+    "evidence_summary_ja": "厚労省サイト、厚労科研の成果データベース、消費者庁・消費者委員会の関連資料を検索しました。しかし、香料マイクロカプセルの殻素材やマイクロプラスチック該当性を扱った厚労省の調査報告書は特定できませんでした。見つかった厚労科研報告（家庭用品中の有害物質の試験法など）や厚労省の事務連絡は、マイクロカプセルを扱っていません。消費者委員会にある「マイクロカプセルはマイクロプラスチック」という記述は、市民団体の意見書です。",
+    "sources": [
+     {
+      "title": "香りへの配慮に関する啓発ポスターについて（事務連絡）",
+      "publisher": "厚生労働省",
+      "url": "https://www.mhlw.go.jp/hourei/doc/tsuchi/T260601I0050.pdf",
+      "date": "2026-05-29"
+     },
+     {
+      "title": "家庭用品中有害物質の試験法及び規制基準設定に関する研究（令和6年度 総括・分担研究報告書）",
+      "publisher": "厚生労働科学研究成果データベース（国立保健医療科学院）",
+      "url": "https://mhlw-grants.niph.go.jp/system/files/download_pdf/2024/202425002A.pdf",
+      "date": "2025"
+     },
+     {
+      "title": "香害への対応を求める意見書（香害をなくす連絡会）",
+      "publisher": "内閣府 消費者委員会（寄せられた意見）",
+      "url": "https://www.cao.go.jp/consumer/opinion/2025/2505_ikenyoubou.pdf",
+      "date": "2025-05-21"
+     }
+    ],
+    "suggested_action_ja": "編集者が報告書の正式名称・年度・URLを特定できない場合は、「厚生労働省公開の調査報告書」という出典表示を外すか差し替えてください。代わりの出典としては、確認できる一次資料（EU規則2023/2055、欧州委員会の解説ガイド、環境省の国際動向資料など）を検討してください。市民団体の意見書を行政の見解として扱わないよう注意が必要です。",
+    "time_sensitive_note_ja": "mhlw-grants.niph.go.jp と www.env.go.jp は、このセッションのネットワーク設定で本文を取得できませんでした。そのため、データベース内に該当報告書がある可能性は完全には否定できません。"
+   },
+   {
+    "source_ids": [
+     "EU-2023-2055",
+     "EU-2023-2055-corrigendum-2025",
+     "EU-2026-1168",
+     "EC-restriction-page",
+     "SGS-2023",
+     "SGS-2026",
+     "ECHA-QA-microplastics"
+    ],
+    "claim_in_source": "（確認依頼事項）EU規則(EU)2023/2055（意図的に添加されたマイクロプラスチックの制限）における香料カプセルの扱いと移行期間",
+    "status": "確認済み",
+    "evidence_summary_ja": "規則2023/2055は2023年9月25日に採択、9月27日に官報掲載、2023年10月17日から適用されています（REACH附属書XVIIのエントリー78）。香料のカプセル化に使う合成ポリマー微粒子には、2029年10月17日から上市制限が適用されます（6年の移行期間）。ECHAは、代替材料がまだないことを移行期間を設けた理由に挙げています。",
+    "sources": [
+     {
+      "title": "Commission Regulation (EU) 2023/2055",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/2055/oj/eng",
+      "date": "2023-09-25"
+     },
+     {
+      "title": "Corrigendum to Commission Regulation (EU) 2023/2055",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/2055/corrigendum/2025-06-06/oj",
+      "date": "2025-06-06"
+     },
+     {
+      "title": "Commission Regulation (EU) 2026/1168 amending Annex XVII to REACH (entry 78)",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/reg/2026/1168/oj/eng",
+      "date": "2026-06-01"
+     },
+     {
+      "title": "Commission Regulation (EU) 2023/2055 - Restriction of microplastics intentionally added to products",
+      "publisher": "European Commission, DG GROW",
+      "url": "https://single-market-economy.ec.europa.eu/sectors/chemicals/reach/restrictions/commission-regulation-eu-20232055-restriction-microplastics-intentionally-added-products_en"
+     },
+     {
+      "title": "SafeGuardS: EU updates microplastics rules under REACH (2026)",
+      "publisher": "SGS",
+      "url": "https://www.sgs.com/en/news/2026/06/safeguards-08126-eu-updates-microplastics-rules-under-reach",
+      "date": "2026-06"
+     },
+     {
+      "title": "SafeGuardS: EU regulates microplastics under REACH (2023)",
+      "publisher": "SGS",
+      "url": "https://www.sgs.com/en/news/2023/10/safeguards-12623-eu-regulates-microplastics-under-reach",
+      "date": "2023-10"
+     }
+    ],
+    "suggested_action_ja": "動画でEU規制に触れる場合は、「EUでは香料カプセル用途も規制対象で、移行期間後に制限される」程度の表現にとどめるのが安全です。具体的な日付を画面に出す場合は、監修時にEUR-Lexの統合版で条文（エントリー78の移行期間の項）を再確認してください。",
+    "time_sensitive_note_ja": "2025年6月に訂正、2026年6月に改正規則(EU)2026/1168（医薬品・研究開発の適用除外の拡大、固体マトリックス条項の変更）が出ており、改正が続いています。確認した範囲では香料カプセルの2029年10月17日の期限は変わっていませんが、EUR-Lexは直接開けず、検索結果からの確認です。"
+   },
+   {
+    "source_ids": [
+     "MHLW-poster-notice-2026",
+     "Setagaya-poster-page",
+     "JA-CES-poster-2026",
+     "kokusen-2020"
+    ],
+    "claim_in_source": "（確認依頼事項）消費者庁など関係省庁の香害関連資料（J8／N13の根拠になり得るか）",
+    "status": "一部確認",
+    "evidence_summary_ja": "消費者庁は関係府省庁と共同で啓発ポスター「その香り困っている人もいます」を作っています。2026年5月14日に、こども家庭庁と国土交通省を加えた計7府省庁版として掲載され、厚労省も同月29日付の事務連絡で周知しています。ポスターは香りによる体調不良への配慮を呼びかけるもので、確認した範囲ではマイクロカプセルやマイクロプラスチックには触れていません。",
+    "sources": [
+     {
+      "title": "香りへの配慮に関する啓発ポスターについて（事務連絡）",
+      "publisher": "厚生労働省",
+      "url": "https://www.mhlw.go.jp/hourei/doc/tsuchi/T260601I0050.pdf",
+      "date": "2026-05-29"
+     },
+     {
+      "title": "香りへの配慮に関する啓発ポスターの再周知について（別添）",
+      "publisher": "一般社団法人 日本化学物質安全・情報センター（掲載資料）",
+      "url": "https://ja-ces.or.jp/ja-ces/wp-content/uploads/2026/06/香りへの配慮に関する啓発ポスターの再周知について（別添）.pdf",
+      "date": "2026-06"
+     },
+     {
+      "title": "香りへの配慮について",
+      "publisher": "世田谷区",
+      "url": "https://www.city.setagaya.lg.jp/02245/3178.html"
+     },
+     {
+      "title": "柔軟仕上げ剤のにおいに関する情報提供",
+      "publisher": "国民生活センター",
+      "url": "https://www.kokusen.go.jp/news/data/n-20200409_2.html",
+      "date": "2020-04-09"
+     }
+    ],
+    "suggested_action_ja": "これらの資料は、J8／N13（殻素材やマイクロプラスチック該当性）の根拠としては使えません。香害の文脈で触れる場合は「行政が香りへの配慮を呼びかけている」という位置づけにとどめてください。",
+    "time_sensitive_note_ja": "2026年5月にポスターの共同作成省庁が追加・再周知されています。"
+   },
+   {
+    "source_ids": [
+     "EU-2023-2055",
+     "ECHA-QA-microplastics"
+    ],
+    "claim_in_source": "[J9] 香りを感じることだけでは、プラスチック粒子をどれほど吸い込んだかは分かりません。",
+    "status": "根拠未確認",
+    "evidence_summary_ja": "香りの感じ方と、カプセル由来のプラスチック粒子の吸入量との関係を示す公的資料は見つかりませんでした。EU規制の主な根拠は環境への放出で、吸入による曝露量ではありません。ただし、この文は「分からない」と述べる慎重な表現で、これと矛盾する公的資料も見当たりませんでした。",
+    "sources": [
+     {
+      "title": "Questions and answers on intentionally added microplastics (ECHA media Q&A)",
+      "publisher": "European Chemicals Agency (ECHA)",
+      "url": "https://chesar.echa.europa.eu/documents/10162/6755610/qa_media_intentionally_added_microplastics_en.pdf/e5eeedda-e5ba-e720-cd57-4195e512253c"
+     },
+     {
+      "title": "Commission Regulation (EU) 2023/2055",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/2055/oj/eng",
+      "date": "2023-09-25"
+     }
+    ],
+    "suggested_action_ja": "現行の表現は維持してよいと考えられます。ただし前後の文脈で、香料カプセル由来のプラスチック粒子を相当量吸い込んでいることが確かめられているかのように受け取られないか、監修者が確認してください。",
+    "time_sensitive_note_ja": ""
+   }
+  ]
+ },
+ {
+  "cluster": "EDC-mechanisms",
+  "findings": [
+   {
+    "source_ids": [
+     "S01",
+     "S02",
+     "S03",
+     "S07",
+     "S08",
+     "S25"
+    ],
+    "claim_in_source": "[I3] 内分泌かく乱物質：ホルモン系の働きを変化させ、それによって健康への有害な影響を起こす物質です。",
+    "status": "確認済み",
+    "evidence_summary_ja": "WHO/IPCS(2002)は内分泌かく乱物質を「内分泌系の機能を変化させ、その結果として、無傷の生物、その子孫、または(部分)集団に有害な健康影響を引き起こす外因性の物質または混合物」と定義しており、原稿の要約と一致します。EUの判定基準（委任規則2017/2100、2018/605）とCLPの新しい有害性クラス（2023/707）も、このWHO定義に基づいています。",
+    "sources": [
+     {
+      "title": "Global assessment of the state-of-the-science of endocrine disruptors (WHO/PCS/EDC/02.2)",
+      "publisher": "WHO / IPCS（伊環境省サイト掲載PDF）",
+      "url": "https://mase.gov.it/sites/default/files/archivio/allegati/interferenti_endocrini/who_state_of_the_science_2002.pdf",
+      "date": "2002"
+     },
+     {
+      "title": "Global assessment of the state-of-the-science of endocrine disruptors (bibliographic record)",
+      "publisher": "US EPA HERO",
+      "url": "https://hero.epa.gov/reference/1597568"
+     },
+     {
+      "title": "Endocrine Disrupting Chemicals",
+      "publisher": "UNEP",
+      "url": "https://www.unep.org/fr/node/1190"
+     },
+     {
+      "title": "Commission Delegated Regulation (EU) 2017/2100",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/reg_del/2017/2100?locale=EN",
+      "date": "2017"
+     },
+     {
+      "title": "Commission Regulation (EU) 2018/605, Article 3",
+      "publisher": "legislation.gov.uk",
+      "url": "https://www.legislation.gov.uk/eur/2018/605/article/3/data.html",
+      "date": "2018"
+     },
+     {
+      "title": "New CLP hazard classes and classification criteria (ED, PBT, PMT) — secondary summary",
+      "publisher": "EcoMundo",
+      "url": "https://ecomundo.eu/en/blog/new-eu-hazard-classifications-endocrine-pbt-pmt-explained"
+     }
+    ],
+    "suggested_action_ja": "ナレーションは現行のままで問題ありません。WHOの定義では、対象は「外因性（体外から入る）」の物質や混合物で、子孫や集団への影響も含みます。この点を字幕などで補足するかは、医療監修者が判断してください。",
+    "time_sensitive_note_ja": "欧州委員会は2025年11月28日に、判定基準の運用経験の評価を公表しました。ただし内容は未確認です。CLPのED有害性クラスは、物質に2025年5月、混合物に2026年5月から適用されます（二次情報）。定義そのものが変わったことは確認されていません。"
+   },
+   {
+    "source_ids": [
+     "S19",
+     "S20",
+     "S21",
+     "S11"
+    ],
+    "claim_in_source": "[I3] 「環境ホルモン」は広く使われてきた呼び名ですが、ホルモンに似た働きをする物質だけを指すわけではありません。",
+    "status": "確認済み",
+    "evidence_summary_ja": "環境白書（平成16年版）は、内分泌かく乱化学物質を「内分泌系に影響を及ぼすことにより生体に障害や有害な影響をおこす外因性の化学物質」と説明し、「いわゆる環境ホルモン」とも呼ばれるとしています。この部分は検索結果の抜粋で確認し、env.go.jpのページ本体はネットワーク制限のため取得できませんでした。作用の仕組みにはホルモン受容体への拮抗や、ホルモンの合成・代謝の変化も含まれるため（La Merrillら）、「ホルモンに似た働きだけではない」という説明は妥当です。",
+    "sources": [
+     {
+      "title": "環境白書 平成16年版（内分泌かく乱化学物質の説明）",
+      "publisher": "環境省",
+      "url": "https://www.env.go.jp/policy/hakusyo/h16/20659.html",
+      "date": "2004"
+     },
+     {
+      "title": "内分泌かく乱化学物質(環境ホルモン)に関する情報（SPEED'98の定義を引用）",
+      "publisher": "千葉市",
+      "url": "https://www.city.chiba.jp/kankyo/kankyohozen/hozen/hrmn_index.html"
+     },
+     {
+      "title": "令和8年版 環境・循環型社会・生物多様性白書 第2部第5章第3節 懸念問題への対応",
+      "publisher": "環境省",
+      "url": "https://www.env.go.jp/policy/hakusyo/r08/html/hj26020503.html",
+      "date": "2026"
+     },
+     {
+      "title": "Consensus on the key characteristics of endocrine-disrupting chemicals as a basis for hazard identification (Nat Rev Endocrinol 16:45-57)",
+      "publisher": "Nature Reviews Endocrinology",
+      "url": "https://link.springer.com/10.1038/s41574-019-0273-8",
+      "date": "2019-11 (online) / 2020-01"
+     }
+    ],
+    "suggested_action_ja": "現行の表現で問題ありません。環境省の最新の資料（EXTEND2022、令和8年版白書）では「内分泌かく乱作用」という語が中心に使われています。用語の表記をそれに揃えるかは、編集者が確認してください。",
+    "time_sensitive_note_ja": "令和8年版環境白書（2026年）は、EXTEND2022に基づく試験法開発や評価が継続中であると報告しています。"
+   },
+   {
+    "source_ids": [
+     "S10",
+     "S07",
+     "S09",
+     "S24",
+     "S21"
+    ],
+    "claim_in_source": "[I4] ホルモンに作用することと、健康被害を起こすことは区別します。",
+    "status": "確認済み",
+    "evidence_summary_ja": "EFSA科学委員会（2013）は、ホルモン系と相互作用する「内分泌活性物質」と、それが生体で有害影響につながる「内分泌かく乱物質」を区別しています。EUの基準とECHA/EFSAの2018年ガイダンスは、物質を内分泌かく乱物質と判定するために、①有害影響、②内分泌を介した作用機序、③両者の生物学的にもっともらしい因果関係、の3点すべてを求めています。環境省EXTEND2022も、第1段階で「作用の有無」、第2段階で有害性を確かめる二段階の枠組みです。",
+    "sources": [
+     {
+      "title": "EFSA Scientific Opinion on the hazard assessment of endocrine disruptors (2013)",
+      "publisher": "EFSA Scientific Committee（伊環境省サイト掲載PDF）",
+      "url": "https://mase.gov.it/sites/default/files/archivio/allegati/interferenti_endocrini/efsa_scientific_opinion_2013.pdf",
+      "date": "2013"
+     },
+     {
+      "title": "Commission Delegated Regulation (EU) 2017/2100",
+      "publisher": "EUR-Lex",
+      "url": "https://eur-lex.europa.eu/eli/reg_del/2017/2100?locale=EN",
+      "date": "2017"
+     },
+     {
+      "title": "Guidance for the identification of endocrine disruptors in the context of Regulations (EU) No 528/2012 and (EC) No 1107/2009",
+      "publisher": "ECHA / EFSA (JRC支援)",
+      "url": "https://echa.europa.eu/documents/10162/2324906/bpr_guidance_identif_ed_en.pdf/1a4d2811-3faa-fe61-1de2-3cbce8fd4d95",
+      "date": "2018"
+     },
+     {
+      "title": "Endocrine disruptors — GreenFacts summary of the WHO/IPCS 2002 report (secondary)",
+      "publisher": "GreenFacts",
+      "url": "https://www.greenfacts.org/en/endocrine-disruptors/endocrine-disruptors-greenfacts-level2.pdf"
+     },
+     {
+      "title": "令和8年版 環境白書 懸念問題への対応（EXTEND2022）",
+      "publisher": "環境省",
+      "url": "https://www.env.go.jp/policy/hakusyo/r08/html/hj26020503.html",
+      "date": "2026"
+     }
+    ],
+    "suggested_action_ja": "ナレーションは現行のままで問題ありません。公的機関の考え方と一致しています。"
+   },
+   {
+    "source_ids": [
+     "S11"
+    ],
+    "claim_in_source": "[K2]-[K6] 受容体を動かす／受容体の働きを妨げる／ホルモン合成を変える／運搬や分解を変える",
+    "status": "確認済み",
+    "evidence_summary_ja": "La Merrillら（Nat Rev Endocrinol, 2020）は、内分泌かく乱物質の主要特性を10項目にまとめています。そのうち、受容体との相互作用・活性化（KC1）、受容体への拮抗（KC2）、ホルモン合成の変化（KC6）、細胞膜を通る輸送の変化（KC7）、分布・血中濃度の変化（KC8）、代謝・除去の変化（KC9）が、原稿の4分類に対応します。残りは受容体の発現、シグナル伝達、エピジェネティックな変化、細胞の運命の変化です。著者らは、この10項目はチェックリストではなく、有害性を見極めるための整理の枠組みだとしています。",
+    "sources": [
+     {
+      "title": "Consensus on the key characteristics of endocrine-disrupting chemicals as a basis for hazard identification",
+      "publisher": "Nature Reviews Endocrinology (La Merrill MA et al.)",
+      "url": "https://link.springer.com/10.1038/s41574-019-0273-8",
+      "date": "2019-11 (online) / 2020-01"
+     },
+     {
+      "title": "Consensus on the key characteristics of endocrine-disrupting chemicals (PMC full text)",
+      "publisher": "PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6902641"
+     },
+     {
+      "title": "Consensus on the key characteristics of endocrine-disrupting chemicals (DOE PAGES record)",
+      "publisher": "OSTI / US DOE",
+      "url": "https://www.osti.gov/pages/biblio/1599837-consensus-key-characteristics-endocrine-disrupting-chemicals-basis-hazard-identification"
+     }
+    ],
+    "suggested_action_ja": "内容は正確です。ただし主要特性は10項目あるため、この4つが仕組みのすべてだと受け取られない言い回し（「主な例」など）になっているかを、監修者が確認してください。",
+    "time_sensitive_note_ja": "論文自身が、主要特性の一覧は今後の知見で変わりうると明記しています。"
+   },
+   {
+    "source_ids": [
+     "S01",
+     "S04",
+     "S05",
+     "S12"
+    ],
+    "claim_in_source": "[K7] 胎児期や乳幼児期など、体の仕組みが作られる時期には特に注意が必要です。",
+    "status": "確認済み",
+    "evidence_summary_ja": "WHO/IPCS（2002）は、発達の臨界期に曝露すると不可逆的な影響が出うるとして、乳児と子どもを特に懸念すると結論しています（WHO告知の二次引用で確認）。WHO/UNEP（2012）も、発達初期の影響は不可逆的であることが多く、後年になって現れることがあると指摘しています。内分泌学会のEDC-2も、胎児期と乳児期を重要な時期として重視しています。",
+    "sources": [
+     {
+      "title": "Global assessment of the state-of-the-science of endocrine disruptors",
+      "publisher": "WHO / IPCS",
+      "url": "https://mase.gov.it/sites/default/files/archivio/allegati/interferenti_endocrini/who_state_of_the_science_2002.pdf",
+      "date": "2002"
+     },
+     {
+      "title": "State of the science of endocrine disrupting chemicals 2012",
+      "publisher": "WHO / UNEP",
+      "url": "https://www.who.int/publications/i/item/9789241505031",
+      "date": "2013"
+     },
+     {
+      "title": "State of the science of endocrine disrupting chemicals 2012: summary for decision-makers",
+      "publisher": "WHO / UNEP",
+      "url": "https://www.who.int/publications/i/item/state-of-the-science-of-endocrine-disrupting-chemicals-summary",
+      "date": "2013"
+     },
+     {
+      "title": "Position statement: Endocrine-disrupting chemicals",
+      "publisher": "Endocrine Society",
+      "url": "https://www.endocrine.org/-/media/endocrine/files/advocacy/position-statement/position_statement_endocrine_disrupting_chemicals.pdf"
+     }
+    ],
+    "suggested_action_ja": "ナレーションは現行のままで問題ありません。WHO関連の資料では思春期も感受性の高い時期として挙げられることがありますが、触れるかどうかは監修者の判断で構いません。"
+   },
+   {
+    "source_ids": [
+     "S13",
+     "S14",
+     "S15",
+     "S16"
+    ],
+    "claim_in_source": "[K8] 一部の物質や作用では、量が増えると影響も一直線に増えるとは限らない反応が研究されています。",
+    "status": "確認済み",
+    "evidence_summary_ja": "Vandenbergら（2012）は、低用量影響と非単調な用量反応を総説しています。EFSA科学委員会（2021）は、一部の研究で非単調な用量反応が観察されていることを認めています。一方で、統計的に評価する標準的な方法はなく、生物学的な仕組みの理解が必要だとしています。米EPAの2013年草案は「存在するが一般的ではない」としましたが、全米研究評議会（2014）はその評価方法を批判しており、議論は続いています。",
+    "sources": [
+     {
+      "title": "Hormones and endocrine-disrupting chemicals: low-dose effects and nonmonotonic dose responses (Endocr Rev 33:378-455)",
+      "publisher": "PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/22419778/",
+      "date": "2012"
+     },
+     {
+      "title": "Opinion on the impact of non-monotonic dose responses on EFSA's human health risk assessments (EFSA Journal 2021;19(10):6877)",
+      "publisher": "EFSA Scientific Committee (DOAJ record)",
+      "url": "https://doaj.org/article/71f15f72c9644c07a79127ec9b5b2233",
+      "date": "2021-10"
+     },
+     {
+      "title": "Review of the EPA's State-of-the-Science Evaluation of Nonmonotonic Dose-Response Relationships as They Apply to Endocrine Disruptors",
+      "publisher": "National Academies Press (NRC)",
+      "url": "https://nap.nationalacademies.org/catalog/18608/review-of-the-environmental-protection-agencys-state-of-the-science-evaluation-of-nonmonotonic-dose-response-relationships-as-they-apply-to-endocrine-disruptors",
+      "date": "2014"
+     },
+     {
+      "title": "State of the Science Evaluation: Nonmonotonic Dose Responses as They Apply to Estrogen, Androgen, and Thyroid Pathways and EPA Testing and Assessment Procedures (draft)",
+      "publisher": "US EPA (archived snapshot)",
+      "url": "https://19january2021snapshot.epa.gov/sites/static/files/2016-01/documents/nmdr.pdf",
+      "date": "2013 (draft)"
+     }
+    ],
+    "suggested_action_ja": "今の慎重な表現（「一部の物質や作用では」「研究されています」）のままで適切です。「少量ほど危険」のような断定に書き換えないよう、編集時に注意してください。",
+    "time_sensitive_note_ja": "EFSA（2021）は、国際的に合意されたガイダンスや評価の枠組みを作ることを推奨しました。その後に国際的な合意がまとまったかどうかは、今回確認できていません。"
+   },
+   {
+    "source_ids": [
+     "S17",
+     "S18",
+     "S06"
+    ],
+    "claim_in_source": "[K8] 似た作用を持つ複数の物質を一緒に評価することもありますが、すべての組み合わせで影響が何倍にもなると決まっているわけではありません。",
+    "status": "確認済み",
+    "evidence_summary_ja": "EFSAの複合曝露ガイダンス（2019）は、物質を共通の評価グループにまとめる方法を示しています。相互作用（相乗・拮抗）の証拠がない限り、影響は「用量加算」で見積もるのが基本です。英国COTのコメントは、相乗作用が示されたのは主に高い曝露量の場合だとしています。一方でWHO/UNEP（2012）は、物質を1つずつ見るだけでは混合物のリスクを過小評価しうると指摘しています。",
+    "sources": [
+     {
+      "title": "Guidance on harmonised methodologies for human health, animal health and ecological risk assessment of combined exposure to multiple chemicals (EFSA Journal 2019;17(3):5634)",
+      "publisher": "EFSA Scientific Committee",
+      "url": "https://www.efsa.europa.eu/ga/efsajournal/pub/5634",
+      "date": "2019-03"
+     },
+     {
+      "title": "COT discussion paper on combined exposure / EFSA draft guidance (TOX/2018/34)",
+      "publisher": "UK Committee on Toxicity (COT)",
+      "url": "https://cot.food.gov.uk/sites/default/files/tox2018-34.pdf",
+      "date": "2018"
+     },
+     {
+      "title": "Key concerns of endocrine disrupting chemicals",
+      "publisher": "UNEP",
+      "url": "https://www.unep.org/es/node/8119"
+     }
+    ],
+    "suggested_action_ja": "内容は公的機関の評価方法と一致しており、現行の表現で問題ありません。ただし「組み合わせなら心配ない」と受け取られないよう、WHO/UNEPが複合曝露の重要性を指摘している点とのバランスを、監修者が確認してください。"
+   }
+  ]
+ }
+]
