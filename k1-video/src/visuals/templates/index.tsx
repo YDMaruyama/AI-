@@ -222,7 +222,7 @@ export const Cards: React.FC<{cards: CardItem[]; allStep?: number; height?: numb
           position: 'absolute',
           left: 0,
           right: 0,
-          top: note ? 10 : 30,
+          top: note ? 16 : 30,
           display: 'grid',
           gridTemplateColumns: `repeat(${cards.length}, 1fr)`,
           gap: 36,
@@ -294,7 +294,7 @@ export const Compare: React.FC<
   const h = note ? H - NOTE_SPACE - 30 : H - 40;
   return (
     <div style={{position: 'absolute', inset: 0}}>
-      <div style={{position: 'absolute', left: 0, right: 0, top: note ? 0 : 20, display: 'flex', alignItems: 'center', gap: 28}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: note ? 10 : 24, display: 'flex', alignItems: 'center', gap: 28}}>
         <SidePanel side={left} index={0} steps={steps} allStep={allStep} height={h} />
         <div style={{width: 130, display: 'flex', justifyContent: 'center'}}>
           {relation === 'ne' ? <NotEqual appear={rel} label={relationLabel} /> : null}
