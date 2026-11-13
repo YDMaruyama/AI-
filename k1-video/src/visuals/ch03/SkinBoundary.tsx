@@ -27,11 +27,11 @@ const MOVERS: {i: number; to: [number, number]}[] = [
 ];
 
 const CONDITIONS: {icon: IconName; text: string}[] = [
-  {icon: 'flask', text: '物質の性質・濃度'},
+  {icon: 'flask', text: '物質の性質'},
   {icon: 'skin', text: '皮膚の状態'},
   {icon: 'hand', text: '触れる部位'},
   {icon: 'scale', text: '製品の量'},
-  {icon: 'clock', text: '接触時間・使い方'},
+  {icon: 'clock', text: '接触時間'},
 ];
 
 export const SkinBoundary: React.FC<{steps?: Steps; distinctText?: string}> = ({
@@ -129,7 +129,7 @@ export const SkinBoundary: React.FC<{steps?: Steps; distinctText?: string}> = ({
           boxSizing: 'border-box',
         }}
       >
-        <div style={{fontSize: 34, fontWeight: 700, color: COLORS.ink, marginBottom: 14}}>移行を左右する条件の例</div>
+        <div style={{fontSize: 34, fontWeight: 700, color: COLORS.ink, marginBottom: 14}}>考えたい条件の例</div>
         {CONDITIONS.map((c) => (
           <div key={c.text} style={{display: 'flex', alignItems: 'center', gap: 18, padding: '9px 0'}}>
             <div style={{color: COLORS.green}}>

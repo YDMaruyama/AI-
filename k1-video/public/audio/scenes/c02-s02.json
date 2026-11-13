@@ -1,0 +1,29 @@
+{
+ "scene": "c02-s02",
+ "duration": 22.65,
+ "lines": [
+  {
+   "id": "c02-s02-l1",
+   "start": 0.0,
+   "end": 2.531
+  },
+  {
+   "id": "c02-s02-l2",
+   "start": 3.081,
+   "end": 10.098
+  },
+  {
+   "id": "c02-s02-l3",
+   "start": 10.648,
+   "end": 17.067
+  },
+  {
+   "id": "c02-s02-l4",
+   "start": 17.617,
+   "end": 22.65
+  }
+ ],
+ "engine": "pyopenjtalk-plus / HTS voice Mei (CC BY 3.0)",
+ "speed": 0.92,
+ "gap": 0.55
+}

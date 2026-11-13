@@ -1,6 +1,6 @@
 {
  "scene": "c00-s02",
- "duration": 44.085,
+ "duration": 44.31,
  "lines": [
   {
    "id": "c00-s02-l1",
@@ -20,17 +20,17 @@
   {
    "id": "c00-s02-l4",
    "start": 21.523,
-   "end": 30.854
+   "end": 30.947
   },
   {
    "id": "c00-s02-l5",
-   "start": 31.404,
-   "end": 40.441
+   "start": 31.497,
+   "end": 40.665
   },
   {
    "id": "c00-s02-l6",
-   "start": 40.991,
-   "end": 44.085
+   "start": 41.215,
+   "end": 44.31
   }
  ],
  "engine": "pyopenjtalk-plus / HTS voice Mei (CC BY 3.0)",

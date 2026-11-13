@@ -35,7 +35,7 @@ export const ChapterTitle: React.FC<{number: number; title: string; subtitle?: s
         {kicker ?? (number === 0 ? 'K1' : `第${number}章`)}
       </div>
       <div style={{height: 4, width: 520 * line, background: COLORS.gold, margin: '26px 0 34px', borderRadius: 2}} />
-      <div style={{...fadeUp(b), fontSize: FONT.headingLarge, fontWeight: 700, color: COLORS.ink, lineHeight: 1.35, letterSpacing: '0.03em', maxWidth: 1500}}>
+      <div style={{...fadeUp(b), fontSize: FONT.headingLarge, fontWeight: 700, color: COLORS.ink, lineHeight: 1.35, letterSpacing: '0.03em', maxWidth: 1620}}>
         {title}
       </div>
       {subtitle ? (

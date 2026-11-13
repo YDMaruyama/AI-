@@ -1,0 +1,34 @@
+{
+ "scene": "c04-s12",
+ "duration": 36.874,
+ "lines": [
+  {
+   "id": "c04-s12-l1",
+   "start": 0.0,
+   "end": 6.203
+  },
+  {
+   "id": "c04-s12-l2",
+   "start": 6.753,
+   "end": 17.352
+  },
+  {
+   "id": "c04-s12-l3",
+   "start": 17.902,
+   "end": 23.024
+  },
+  {
+   "id": "c04-s12-l4",
+   "start": 23.574,
+   "end": 29.54
+  },
+  {
+   "id": "c04-s12-l5",
+   "start": 30.09,
+   "end": 36.874
+  }
+ ],
+ "engine": "pyopenjtalk-plus / HTS voice Mei (CC BY 3.0)",
+ "speed": 0.92,
+ "gap": 0.55
+}

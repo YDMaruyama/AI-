@@ -78,6 +78,7 @@ export const ch06: Chapter = {
       props: {mode: 'overview', steps: {markers: [1, 2, 3, 4]}},
       lines: [
         {text: '内分泌かく乱は、この情報伝達のいくつかの段階で起こり得ます。', src: ['K2'], step: 0},
+        {text: 'ここでは、四つの段階に分けて見ていきます。', src: ['K2', 'K-H1', 'K-H2', 'K-H3', 'K-H4']},
         {text: '一つ目は、受容体を動かすこと。', src: ['K3'], step: 1},
         {text: '二つ目は、受容体の働きを妨げること。', src: ['K4'], step: 2},
         {text: '三つ目は、ホルモンを作る過程を変えること。', src: ['K5'], step: 3},

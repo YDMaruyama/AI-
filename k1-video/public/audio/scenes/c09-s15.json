@@ -1,0 +1,19 @@
+{
+ "scene": "c09-s15",
+ "duration": 16.407,
+ "lines": [
+  {
+   "id": "c09-s15-l1",
+   "start": 0.0,
+   "end": 8.991
+  },
+  {
+   "id": "c09-s15-l2",
+   "start": 9.541,
+   "end": 16.407
+  }
+ ],
+ "engine": "pyopenjtalk-plus / HTS voice Mei (CC BY 3.0)",
+ "speed": 0.92,
+ "gap": 0.55
+}

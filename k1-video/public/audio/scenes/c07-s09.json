@@ -1,0 +1,39 @@
+{
+ "scene": "c07-s09",
+ "duration": 37.064,
+ "lines": [
+  {
+   "id": "c07-s09-l1",
+   "start": 0.0,
+   "end": 4.836
+  },
+  {
+   "id": "c07-s09-l2",
+   "start": 5.386,
+   "end": 10.17
+  },
+  {
+   "id": "c07-s09-l3",
+   "start": 10.72,
+   "end": 17.534
+  },
+  {
+   "id": "c07-s09-l4",
+   "start": 18.084,
+   "end": 26.474
+  },
+  {
+   "id": "c07-s09-l5",
+   "start": 27.024,
+   "end": 31.293
+  },
+  {
+   "id": "c07-s09-l6",
+   "start": 31.843,
+   "end": 37.064
+  }
+ ],
+ "engine": "pyopenjtalk-plus / HTS voice Mei (CC BY 3.0)",
+ "speed": 0.92,
+ "gap": 0.55
+}

@@ -319,6 +319,8 @@ export const Arrow: React.FC<{
   head?: boolean;
   opacity?: number;
 }> = ({from, to, bend = 0, p = 1, color = COLORS.green, width = 5, dashed = false, head = true, opacity = 1}) => {
+  // 描画開始前は何も描かない（丸い線端が点として残らないように）
+  if (p <= 0.001) return null;
   const [x1, y1] = from;
   const [x2, y2] = to;
   const mx = (x1 + x2) / 2;
