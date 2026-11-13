@@ -13,10 +13,10 @@ import {COLORS} from '../../theme';
 const W = 1760;
 const GAP = 40;
 const CARD_W = (W - GAP * 2) / 3;
-const CARD_TOP = 16;
-const CARD_H = 400;
-const BAND_TOP = 534;
-const BAND_H = 120;
+const CARD_TOP = 30;
+const CARD_H = 390;
+const BAND_TOP = 540;
+const BAND_H = 116;
 
 type Action = {title: string; body: string; icon: IconName; step: number};
 

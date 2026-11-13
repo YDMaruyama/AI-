@@ -1,7 +1,7 @@
 import React from 'react';
 import {Icon, IconName} from '../../components/Icons';
 import {fadeUp, useFocus, useReveal} from '../../components/scene-context';
-import {Arrow, NoteStrip, NotEqual, Pill, SvgText, Tone, toneColor} from '../../components/ui';
+import {Arrow, NotEqual, Pill, SvgText, Tone, toneColor} from '../../components/ui';
 import {COLORS} from '../../theme';
 import {Rich} from '../templates/helpers';
 
@@ -44,45 +44,97 @@ type SideSpec = {
 /* ------------------------------------------------------------------ */
 /* 上部の見出し札（1〜4）                                               */
 /* ------------------------------------------------------------------ */
-const Strip: React.FC<{index: number; labels: string[]; appear: number}> = ({index, labels, appear}) => (
-  <div style={{...fadeUp(appear, 10), position: 'absolute', left: 0, right: 0, top: 0, height: STRIP_H, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 22}}>
-    {labels.map((l, i) => {
-      const current = i + 1 === index;
-      return (
-        <div
-          key={l}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 12,
-            padding: '5px 24px 5px 6px',
-            borderRadius: 999,
-            border: `3px solid ${current ? COLORS.green : COLORS.lineSoft}`,
-            background: current ? COLORS.greenSoft : COLORS.surface,
-          }}
-        >
+const Strip: React.FC<{index: number; labels: string[]; appear: number; highlightFrom: number}> = ({index, labels, appear, highlightFrom}) => {
+  // highlightFrom の step までは四つの札を同じ見た目で並べ（「四つの例」の紹介）、以降は現在の札だけを示す
+  const hl = useFocus((s) => s >= highlightFrom);
+  return (
+    <div
+      style={{
+        ...fadeUp(appear, 10),
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: STRIP_H,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 22,
+      }}
+    >
+      {labels.map((l, i) => {
+        const current = i + 1 === index && hl > 0.5;
+        return (
           <div
+            key={l}
             style={{
-              width: 42,
-              height: 42,
-              borderRadius: 21,
-              boxSizing: 'border-box',
-              border: `3px solid ${current ? COLORS.green : COLORS.line}`,
-              background: current ? COLORS.green : COLORS.surface,
-              color: current ? COLORS.surface : COLORS.inkSoft,
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 28,
-              fontWeight: 700,
+              gap: 12,
+              padding: '5px 24px 5px 6px',
+              borderRadius: 999,
+              border: `3px solid ${current ? COLORS.green : COLORS.lineSoft}`,
+              background: current ? COLORS.greenSoft : COLORS.surface,
             }}
           >
-            {i + 1}
+            <div
+              style={{
+                width: 42,
+                height: 42,
+                borderRadius: 21,
+                boxSizing: 'border-box',
+                border: `3px solid ${current ? COLORS.green : COLORS.line}`,
+                background: current ? COLORS.green : COLORS.surface,
+                color: current ? COLORS.surface : COLORS.inkSoft,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 28,
+                fontWeight: 700,
+              }}
+            >
+              {i + 1}
+            </div>
+            <div style={{fontSize: 28, fontWeight: 700, color: current ? COLORS.greenDeep : COLORS.inkSoft, whiteSpace: 'nowrap'}}>{l}</div>
           </div>
-          <div style={{fontSize: 28, fontWeight: 700, color: current ? COLORS.greenDeep : COLORS.inkSoft, whiteSpace: 'nowrap'}}>{l}</div>
-        </div>
-      );
-    })}
+        );
+      })}
+    </div>
+  );
+};
+
+/* ------------------------------------------------------------------ */
+/* 下端の帯（例・補足）。共通の NoteStrip と同じ見た目で、ラベルを 28px にしたもの */
+/* ------------------------------------------------------------------ */
+const ExampleStrip: React.FC<{children: React.ReactNode; label?: string; appear?: number}> = ({children, label = '補足', appear = 1}) => (
+  <div
+    style={{
+      ...fadeUp(appear, 12),
+      display: 'flex',
+      alignItems: 'center',
+      gap: 22,
+      background: COLORS.goldSoft,
+      borderLeft: `8px solid ${COLORS.gold}`,
+      borderRadius: 12,
+      padding: '14px 28px',
+      boxSizing: 'border-box',
+    }}
+  >
+    <div
+      style={{
+        flexShrink: 0,
+        fontSize: 28,
+        fontWeight: 700,
+        color: COLORS.surface,
+        background: COLORS.gold,
+        borderRadius: 8,
+        padding: '3px 14px',
+        letterSpacing: '0.08em',
+      }}
+    >
+      {label}
+    </div>
+    <div style={{fontSize: 32, fontWeight: 500, color: COLORS.ink, lineHeight: 1.45}}>{children}</div>
   </div>
 );
 
@@ -174,7 +226,18 @@ const PlainWord: React.FC<{text: string; icon?: IconName; tone: Tone; appear: nu
   return (
     <div style={{...fadeUp(appear), display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30, textAlign: 'center'}}>
       {icon ? (
-        <div style={{width: 132, height: 132, borderRadius: 66, background: c.soft, color: c.main, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <div
+          style={{
+            width: 132,
+            height: 132,
+            borderRadius: 66,
+            background: c.soft,
+            color: c.main,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <Icon name={icon} size={84} />
         </div>
       ) : null}
@@ -290,7 +353,9 @@ export const ClaimCheck: React.FC<{
   note?: string;
   noteStep?: number;
   noteLabel?: string;
-}> = ({index, labels = DEFAULT_LABELS, left, right, relation = 'arrow', relationLabel, relationStep, note, noteStep = 2, noteLabel}) => {
+  /** この step から上部の札で現在の例を示す（既定 0。章の最初の例では紹介の行のあとにする） */
+  stripFocusStep?: number;
+}> = ({index, labels = DEFAULT_LABELS, left, right, relation = 'arrow', relationLabel, relationStep, note, noteStep = 2, noteLabel, stripFocusStep = 0}) => {
   const leftStep = left.step ?? 0;
   const rightStep = right.step ?? 1;
   const relStep = relationStep ?? rightStep;
@@ -312,7 +377,7 @@ export const ClaimCheck: React.FC<{
 
   return (
     <div style={{position: 'absolute', inset: 0}}>
-      <Strip index={index} labels={labels} appear={frame} />
+      <Strip index={index} labels={labels} appear={frame} highlightFrom={stripFocusStep} />
 
       <Panel x={0} h={panelH} tone={leftTone} tag={left.tag} icon={left.kind === 'plain' ? undefined : left.icon} appear={frame} focus={leftFocus}>
         {left.kind === 'plain' ? (
@@ -323,7 +388,9 @@ export const ClaimCheck: React.FC<{
       </Panel>
 
       {/* 中央：確かめる矢印、または ≠ */}
-      <div style={{position: 'absolute', left: SIDE_W, width: MID_W, top: midY - 90, height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+      <div
+        style={{position: 'absolute', left: SIDE_W, width: MID_W, top: midY - 90, height: 180, display: 'flex', alignItems: 'center', justifyContent: 'center'}}
+      >
         {relation === 'arrow' ? (
           <svg width={MID_W} height={180} viewBox={`0 0 ${MID_W} 180`}>
             {relationLabel ? (
@@ -359,9 +426,9 @@ export const ClaimCheck: React.FC<{
 
       {note ? (
         <div style={{position: 'absolute', left: 0, right: 0, bottom: 0}}>
-          <NoteStrip appear={noteIn} label={noteLabel}>
+          <ExampleStrip appear={noteIn} label={noteLabel}>
             {note}
-          </NoteStrip>
+          </ExampleStrip>
         </div>
       ) : null}
     </div>
