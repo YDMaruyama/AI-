@@ -1,9 +1,9 @@
 import React from 'react';
 import {interpolate} from 'remotion';
 import {fadeUp, useFocus, useReveal} from '../../components/scene-context';
-import {CornerTag, NoteStrip, SvgPill, SvgText} from '../../components/ui';
+import {CornerTag, SvgText} from '../../components/ui';
 import {COLORS} from '../../theme';
-import {Box, IconBadge, Particle, seg} from './parts';
+import {Box, IconBadge, Note, Particle, seg} from './parts';
 
 /**
  * プラスチック容器：加熱条件や材質によって、微細な粒子が食品側へ出る可能性（N3）。
@@ -51,12 +51,11 @@ export const ContainerHeat: React.FC<{steps?: Steps}> = ({steps = {heat: 1, repo
     <div style={{position: 'absolute', inset: 0}}>
       {/* 条件 */}
       <div style={{...fadeUp(heat), opacity: heat * (0.5 + 0.5 * leftFocus), position: 'absolute', left: 150, top: 20, display: 'flex', alignItems: 'center', gap: 16}}>
-        <IconBadge name="microwave" tone="gold" size={76} />
-        <IconBadge name="flask" tone="gold" size={76} />
-        <div style={{fontSize: 34, fontWeight: 700, color: COLORS.gold, marginLeft: 6}}>加熱条件や材質によって</div>
+        <IconBadge name="heat" tone="gold" size={76} />
+        <div style={{fontSize: 36, fontWeight: 700, color: COLORS.gold, marginLeft: 6}}>加熱条件や材質によって</div>
       </div>
 
-      <svg width={980} height={560} viewBox="0 0 980 560" style={{position: 'absolute', left: 0, top: 10, opacity: 0.5 + 0.5 * leftFocus}}>
+      <svg width={1000} height={560} viewBox="0 0 1000 560" style={{position: 'absolute', left: 0, top: 10, opacity: 0.5 + 0.5 * leftFocus}}>
         <g opacity={base}>
           {/* 容器（外側）と縁 */}
           <path d="M170 200 L790 200 L730 500 L230 500 Z" fill="#D5DEE5" stroke={COLORS.slate} strokeWidth={3} />
@@ -81,12 +80,23 @@ export const ContainerHeat: React.FC<{steps?: Steps}> = ({steps = {heat: 1, repo
           const k = seg(heat, 0.08 * i, 0.08 * i + 0.45);
           const x = interpolate(k, [0, 1], [pt.from[0], pt.to[0]]);
           const y = interpolate(k, [0, 1], [pt.from[1], pt.to[1]]);
-          return <Particle key={i} x={x} y={y} s={19} opacity={heat > 0 ? Math.min(1, heat * 4) : 0} />;
+          const show = heat > 0 ? Math.min(1, heat * 4) : 0;
+          return (
+            <g key={i}>
+              {/* 容器の壁から離れた跡（点線） */}
+              <line x1={pt.from[0]} y1={pt.from[1]} x2={x} y2={y} stroke={COLORS.slate} strokeWidth={3} strokeDasharray="5 5" strokeLinecap="round" opacity={show * 0.7} />
+              <Particle x={x} y={y} s={20} opacity={show} />
+            </g>
+          );
         })}
 
+        {/* 凡例：小さな四角＝微細な粒子（点線は容器から離れた跡） */}
         <g opacity={label}>
-          <line x1={796} y1={318} x2={680} y2={330} stroke={COLORS.slate} strokeWidth={2.5} strokeDasharray="6 5" />
-          <SvgPill x={980} y={300} anchor="end" text="微細な粒子" size={30} fill={COLORS.surface} color={COLORS.slate} stroke={COLORS.slate} />
+          <rect x={784} y={274} width={210} height={54} rx={27} fill={COLORS.surface} stroke={COLORS.slate} strokeWidth={3} />
+          <Particle x={810} y={301} s={20} />
+          <SvgText x={828} y={302} anchor="start" size={30} weight={700} color={COLORS.slate}>
+            微細な粒子
+          </SvgText>
         </g>
       </svg>
 
@@ -100,7 +110,7 @@ export const ContainerHeat: React.FC<{steps?: Steps}> = ({steps = {heat: 1, repo
         focus={Math.max(r1Focus, r2Focus)}
         tone="slate"
         topBar
-        style={{left: 1010, top: 60, width: 750, height: 450, padding: '28px 36px', display: 'flex', flexDirection: 'column', gap: 26}}
+        style={{left: 1010, top: 90, width: 750, height: 380, padding: '28px 36px', display: 'flex', flexDirection: 'column', gap: 28}}
       >
         <div style={{display: 'flex', alignItems: 'center', gap: 18}}>
           <IconBadge name="flask" tone="slate" size={72} />
@@ -111,9 +121,9 @@ export const ContainerHeat: React.FC<{steps?: Steps}> = ({steps = {heat: 1, repo
       </Box>
 
       <div style={{position: 'absolute', left: 0, right: 0, bottom: 0}}>
-        <NoteStrip appear={caveat} label="ただし">
+        <Note appear={caveat} label="ただし">
           すべての容器で、同じ量が出るわけではありません
-        </NoteStrip>
+        </Note>
       </div>
     </div>
   );

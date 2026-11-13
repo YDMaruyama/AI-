@@ -16,11 +16,11 @@ type Steps = {scrape: number; study: number; attach: number};
 const SURF = 390;
 /** 削れで出る片：[出た位置, 食材に付着する位置（null は板の上に残る）] */
 const FRAGS: {at: [number, number]; to: [number, number] | null; r: number; rot: number}[] = [
-  {at: [588, SURF - 22], to: [748, SURF - 66], r: 15, rot: 10},
-  {at: [622, SURF - 40], to: [812, SURF - 70], r: 13, rot: -25},
-  {at: [650, SURF - 16], to: null, r: 14, rot: 35},
-  {at: [606, SURF - 12], to: [880, SURF - 64], r: 12, rot: 60},
-  {at: [672, SURF - 30], to: null, r: 12, rot: -50},
+  {at: [590, SURF - 24], to: [752, SURF - 66], r: 21, rot: 10},
+  {at: [626, SURF - 44], to: [818, SURF - 68], r: 18, rot: -25},
+  {at: [654, SURF - 18], to: null, r: 20, rot: 35},
+  {at: [606, SURF - 12], to: [884, SURF - 64], r: 17, rot: 60},
+  {at: [684, SURF - 34], to: null, r: 17, rot: -50},
 ];
 
 export const BoardScrape: React.FC<{steps?: Steps}> = ({steps = {scrape: 1, study: 2, attach: 3}}) => {
@@ -91,8 +91,8 @@ export const BoardScrape: React.FC<{steps?: Steps}> = ({steps = {scrape: 1, stud
         {/* ラベル */}
         <SvgPill x={110} y={130} anchor="start" text="包丁が表面を削る" size={30} fill={COLORS.surface} color={COLORS.ink} stroke={COLORS.inkSoft} opacity={labels} />
         <g opacity={labels}>
-          <line x1={640} y1={156} x2={630} y2={SURF - 54} stroke={COLORS.slate} strokeWidth={2.5} strokeDasharray="6 5" />
-          <SvgPill x={640} y={130} text="細かなプラスチック片" size={30} fill={COLORS.surface} color={COLORS.slate} stroke={COLORS.slate} />
+          <line x1={648} y1={156} x2={654} y2={SURF - 46} stroke={COLORS.slate} strokeWidth={2.5} strokeDasharray="6 5" />
+          <SvgPill x={648} y={130} text="細かなプラスチック片" size={30} fill={COLORS.surface} color={COLORS.slate} stroke={COLORS.slate} />
         </g>
         <g opacity={attachLabel}>
           <line x1={880} y1={246} x2={850} y2={SURF - 84} stroke={COLORS.green} strokeWidth={2.5} strokeDasharray="6 5" />

@@ -14,7 +14,7 @@ import {Box, IconBadge} from './parts';
 type Steps = {uses: number[]; cond: number; flow: number[]; softener: number};
 
 const USES: {icon: IconName; text: string}[] = [
-  {icon: 'microwave', text: '加熱する'},
+  {icon: 'heat', text: '加熱する'},
   {icon: 'knife', text: '包丁で削る'},
   {icon: 'spatula', text: '硬い道具でこする'},
   {icon: 'clock', text: '傷んだまま使い続ける'},

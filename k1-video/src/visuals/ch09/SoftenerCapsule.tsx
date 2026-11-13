@@ -1,19 +1,18 @@
 import React from 'react';
 import {fadeUp, useFocus, useReveal} from '../../components/scene-context';
-import {Arrow, CornerTag, Pill, SvgText} from '../../components/ui';
+import {Arrow, CornerTag, SvgText} from '../../components/ui';
 import {COLORS} from '../../theme';
 import {Box, Capsule, Fragment, IconBadge, ScentWave, seg} from './parts';
 
 /**
- * 香りが続く柔軟剤：香料とカプセル（N13・N14 前半）。衣類の拡大の模式図。
+ * 香りが続く柔軟剤：香料とカプセルの素材（N13）。衣類の拡大の模式図。
  *  1 衣類に付着（香料をマイクロカプセルに包む）
  *  2 着用時の摩擦・衝撃（カプセルが割れる）
  *  3 香りを放出（香料＝波線、殻・破片＝角ばった形で区別）
  *  4 殻に合成樹脂を使うものがある → 素材によってはマイクロプラスチックに該当
- *  5 注意したいもの：放出される香料／カプセルやその破片
- * 吸い込む量・数はこの図からは分からない（量は描かない）。
+ * 吸い込む量・数はこの図からは分からない（量は描かない）。注意したいものと留保（N14）は次の場面。
  */
-type Steps = {attach: number; friction: number; release: number; shell: number; attention: number};
+type Steps = {attach: number; friction: number; release: number; shell: number};
 
 const PW = 540;
 const PX = [0, 610, 1220];
@@ -40,29 +39,15 @@ const Fibers: React.FC = () => (
 );
 
 const PanelBox: React.FC<{x: number; title: string; appear: number; focus: number; children: React.ReactNode}> = ({x, title, appear, focus, children}) => (
-  <Box appear={appear} focus={focus} tone="gold" topBar style={{left: x, top: 14, width: PW, height: 396, padding: '18px 24px'}}>
-    <div style={{fontSize: 36, fontWeight: 700, color: COLORS.ink, textAlign: 'center'}}>{title}</div>
-    <svg width={480} height={300} viewBox="0 0 480 300" style={{display: 'block', marginTop: 6, overflow: 'visible'}}>
+  <Box appear={appear} focus={focus} tone="gold" topBar style={{left: x, top: 14, width: PW, height: 420, padding: '20px 24px'}}>
+    <div style={{fontSize: 38, fontWeight: 700, color: COLORS.ink, textAlign: 'center'}}>{title}</div>
+    <svg width={480} height={300} viewBox="0 0 480 300" style={{display: 'block', marginTop: 20, overflow: 'visible'}}>
       {children}
     </svg>
   </Box>
 );
 
-/** 香料（波線）と殻・破片（角ばった形）の凡例マーク */
-const WaveMark: React.FC = () => (
-  <svg width={44} height={44} viewBox="0 0 44 44">
-    <path d="M14 40 c -8 -6 8 -10 0 -18 s 8 -10 0 -18" fill="none" stroke={COLORS.gold} strokeWidth={4.5} strokeLinecap="round" />
-    <path d="M30 40 c -8 -6 8 -10 0 -18 s 8 -10 0 -18" fill="none" stroke={COLORS.gold} strokeWidth={4.5} strokeLinecap="round" />
-  </svg>
-);
-const FragMark: React.FC = () => (
-  <svg width={44} height={44} viewBox="0 0 44 44">
-    <polygon points="14,6 26,18 8,24" fill={COLORS.slate} />
-    <polygon points="30,20 40,34 24,38" fill={COLORS.slate} />
-  </svg>
-);
-
-export const SoftenerCapsule: React.FC<{steps?: Steps}> = ({steps = {attach: 1, friction: 2, release: 3, shell: 4, attention: 5}}) => {
+export const SoftenerCapsule: React.FC<{steps?: Steps}> = ({steps = {attach: 1, friction: 2, release: 3, shell: 4}}) => {
   const p1 = useReveal(steps.attach);
   const p1Label = useReveal(steps.attach, {delay: 0.8});
   const p2 = useReveal(steps.friction);
@@ -70,12 +55,10 @@ export const SoftenerCapsule: React.FC<{steps?: Steps}> = ({steps = {attach: 1, 
   const p3 = useReveal(steps.release);
   const scent = useReveal(steps.release, {delay: 0.3, duration: 1.6});
   const shell = useReveal(steps.shell);
-  const attention = useReveal(steps.attention);
-  const f1 = useFocus((s) => s === steps.attach || s === steps.shell);
+  const f1 = useFocus((s) => s === steps.attach || s >= steps.shell);
   const f2 = useFocus((s) => s === steps.friction);
-  const f3 = useFocus((s) => s === steps.release || s === steps.shell || s >= steps.attention);
-  const fShell = useFocus((s) => s === steps.shell);
-  const fAtt = useFocus((s) => s >= steps.attention);
+  const f3 = useFocus((s) => s === steps.release || s >= steps.shell);
+  const fShell = useFocus((s) => s >= steps.shell);
 
   return (
     <div style={{position: 'absolute', inset: 0}}>
@@ -141,8 +124,8 @@ export const SoftenerCapsule: React.FC<{steps?: Steps}> = ({steps = {attach: 1, 
 
       {/* 矢印（順序） */}
       <svg width={1760} height={400} viewBox="0 0 1760 400" style={{position: 'absolute', left: 0, top: 0}}>
-        <Arrow from={[550, 232]} to={[600, 232]} p={p2} color={COLORS.gold} width={6} />
-        <Arrow from={[1160, 232]} to={[1210, 232]} p={p3} color={COLORS.gold} width={6} />
+        <Arrow from={[550, 244]} to={[600, 244]} p={p2} color={COLORS.gold} width={6} />
+        <Arrow from={[1160, 244]} to={[1210, 244]} p={p3} color={COLORS.gold} width={6} />
       </svg>
 
       {/* 殻の素材 */}
@@ -150,36 +133,15 @@ export const SoftenerCapsule: React.FC<{steps?: Steps}> = ({steps = {attach: 1, 
         appear={shell}
         focus={fShell}
         tone="slate"
-        style={{left: 0, top: 428, width: 1760, height: 100, display: 'flex', alignItems: 'center', gap: 22, padding: '0 30px'}}
+        style={{left: 0, top: 466, width: 1760, height: 124, display: 'flex', alignItems: 'center', gap: 24, padding: '0 34px'}}
       >
-        <IconBadge name="capsule" tone="slate" size={70} />
-        <div style={{fontSize: 36, fontWeight: 700, color: COLORS.ink}}>殻に合成樹脂を使うものがある</div>
-        <div style={{fontSize: 40, fontWeight: 700, color: COLORS.slate}}>→</div>
-        <div style={{fontSize: 36, fontWeight: 700, color: COLORS.ink}}>素材によってはマイクロプラスチックに該当</div>
+        <IconBadge name="capsule" tone="slate" size={80} />
+        <div style={{fontSize: 38, fontWeight: 700, color: COLORS.ink}}>殻に合成樹脂を使うものがある</div>
+        <div style={{fontSize: 42, fontWeight: 700, color: COLORS.slate}}>→</div>
+        <div style={{fontSize: 38, fontWeight: 700, color: COLORS.ink}}>素材によってはマイクロプラスチックに該当</div>
       </Box>
 
-      {/* 注意したいもの */}
-      <Box
-        appear={attention}
-        focus={fAtt}
-        tone="green"
-        style={{left: 0, top: 546, width: 1380, height: 110, display: 'flex', alignItems: 'center', gap: 22, padding: '0 30px'}}
-      >
-        <Pill tone="green" size={30}>
-          注意したいもの
-        </Pill>
-        <div style={{...fadeUp(attention), display: 'flex', alignItems: 'center', gap: 12}}>
-          <WaveMark />
-          <div style={{fontSize: 36, fontWeight: 700, color: COLORS.ink}}>放出される香料</div>
-        </div>
-        <div style={{fontSize: 34, fontWeight: 700, color: COLORS.inkSoft}}>と</div>
-        <div style={{...fadeUp(attention), display: 'flex', alignItems: 'center', gap: 12}}>
-          <FragMark />
-          <div style={{fontSize: 36, fontWeight: 700, color: COLORS.ink}}>カプセルやその破片</div>
-        </div>
-      </Box>
-
-      <div style={{position: 'absolute', left: 1420, top: 580, opacity: p1}}>
+      <div style={{position: 'absolute', left: 0, top: 618, opacity: p1}}>
         <CornerTag>模式図</CornerTag>
       </div>
     </div>

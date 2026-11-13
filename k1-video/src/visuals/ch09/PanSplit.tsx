@@ -11,7 +11,7 @@ import {COLORS} from '../../theme';
  * 二つを同時に見える配置で示し、別の問題であることを「≠」で区別する。
  * 破片（角ばった形）とガス（波線）は形で区別する。
  */
-type Steps = {scrape: number; scrapeNote: number; tips?: number; heat: number; heatNote: number; both: number};
+type Steps = {scrape: number; scrapeNote: number; tips?: number; heat: number; heatNote: number; heatTips?: number; both: number};
 
 const PANEL_W = 790;
 const PANEL_H = 640;
@@ -100,7 +100,7 @@ export const PanSplit: React.FC<{
   heatNote?: string;
   heatTips?: string[];
 }> = ({
-  steps = {scrape: 1, scrapeNote: 2, tips: 3, heat: 4, heatNote: 5, both: 6},
+  steps = {scrape: 1, scrapeNote: 2, tips: 3, heat: 4, heatNote: 5, heatTips: 6, both: 7},
   scrapeNote = '飲み込むこと ≠ 健康被害が起こること',
   scrapeTips = ['メーカーが認める調理道具を使う', '剥がれが広がったら交換案内を確認'],
   heatNote = '粒子を食べる問題とは別の注意',
@@ -112,6 +112,7 @@ export const PanSplit: React.FC<{
   const sTip1 = useReveal(steps.tips ?? steps.scrapeNote, {delay: 0.4});
   const heat = useReveal(steps.heat, {duration: 2.2});
   const hNote = useReveal(steps.heatNote);
+  const hTip = useReveal(steps.heatTips ?? steps.heatNote, {delay: steps.heatTips === undefined ? 0.4 : 0.1});
   const both = useReveal(steps.both);
   const leftFocus = useFocus((s) => s < steps.heat || s >= steps.both);
   const rightFocus = useFocus((s) => s >= steps.heat || s === 0);
@@ -133,9 +134,9 @@ export const PanSplit: React.FC<{
           {/* 食品（丸み）と破片（角ばった形） */}
           <ellipse cx={250} cy={168} rx={48} ry={20} fill="#C9A56A" />
           <ellipse cx={400} cy={178} rx={56} ry={22} fill="#9DB48A" />
-          <Flake x={262} y={160} rot={10} opacity={flakes} />
-          <Flake x={395} y={170} r={10} rot={-30} opacity={flakes} />
-          <Flake x={320} y={182} r={9} rot={40} opacity={flakes} />
+          <Flake x={262} y={158} r={17} rot={10} opacity={flakes} />
+          <Flake x={398} y={168} r={15} rot={-30} opacity={flakes} />
+          <Flake x={322} y={184} r={14} rot={40} opacity={flakes} />
           {/* 金属製のヘラ */}
           <g transform={`translate(${spX} 0)`} opacity={scrape > 0 && scrape < 0.75 ? 1 : interpolate(scrape, [0.75, 0.9], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}>
             <rect x={300} y={40} width={22} height={110} rx={4} fill="#8B8F8C" transform="rotate(-28 311 95)" />
@@ -156,8 +157,13 @@ export const PanSplit: React.FC<{
         </div>
       </Panel>
 
-      <div style={{width: 120, alignSelf: 'center', display: 'flex', justifyContent: 'center'}}>
-        <NotEqual appear={both} label="別の注意" size={88} />
+      <div style={{width: 120, alignSelf: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4}}>
+        <NotEqual appear={both} size={88} />
+        <div style={{...fadeUp(both, 10), fontSize: 28, fontWeight: 700, color: COLORS.gold, lineHeight: 1.25, textAlign: 'center'}}>
+          別の
+          <br />
+          注意
+        </div>
       </div>
 
       {/* 右：空焚き・過熱 */}
@@ -187,15 +193,18 @@ export const PanSplit: React.FC<{
             </SvgText>
           </g>
           <g opacity={flame}>
-            <SvgText x={600} y={250} size={28} weight={700} color={COLORS.inkSoft} anchor="middle">
-              中身がないまま加熱
+            <SvgText x={650} y={226} size={28} weight={700} color={COLORS.inkSoft} anchor="middle">
+              中身がない
+            </SvgText>
+            <SvgText x={650} y={262} size={28} weight={700} color={COLORS.inkSoft} anchor="middle">
+              まま加熱
             </SvgText>
           </g>
         </svg>
         <div style={{...fadeUp(hNote, 10), fontSize: 30, fontWeight: 700, color: COLORS.ink, lineHeight: 1.45, marginTop: 4}}>{heatNote}</div>
         <div style={{display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 16}}>
           {heatTips.map((t) => (
-            <Chip key={t} text={t} appear={hNote} />
+            <Chip key={t} text={t} appear={hTip} />
           ))}
         </div>
       </Panel>

@@ -172,5 +172,63 @@ export const TipChip: React.FC<{text: string; appear: number; size?: number; sty
   </div>
 );
 
+/**
+ * 留保・補足の帯（共通の NoteStrip と同じ見た目で、ラベルを 28px にした章内用の写し）。
+ * 不安をあおらない落ち着いた見た目にする（赤・点滅は使わない）。
+ */
+export const Note: React.FC<{children: React.ReactNode; label?: string; appear?: number; style?: React.CSSProperties}> = ({
+  children,
+  label = '補足',
+  appear = 1,
+  style,
+}) => (
+  <div
+    style={{
+      ...fadeUp(appear, 12),
+      display: 'flex',
+      alignItems: 'center',
+      gap: 22,
+      background: COLORS.goldSoft,
+      borderLeft: `8px solid ${COLORS.gold}`,
+      borderRadius: 12,
+      padding: '14px 28px',
+      boxSizing: 'border-box',
+      ...style,
+    }}
+  >
+    <div
+      style={{
+        flexShrink: 0,
+        fontSize: 28,
+        fontWeight: 700,
+        color: COLORS.surface,
+        background: COLORS.gold,
+        borderRadius: 8,
+        padding: '3px 14px',
+        letterSpacing: '0.08em',
+      }}
+    >
+      {label}
+    </div>
+    <div style={{fontSize: 32, fontWeight: 500, color: COLORS.ink, lineHeight: 1.45}}>{children}</div>
+  </div>
+);
+
+/** 香料（波線）の凡例マーク */
+export const WaveMark: React.FC<{size?: number}> = ({size = 44}) => (
+  <svg width={size} height={size} viewBox="0 0 44 44" style={{flexShrink: 0}}>
+    <path d="M14 40 c -8 -6 8 -10 0 -18 s 8 -10 0 -18" fill="none" stroke={COLORS.gold} strokeWidth={4.5} strokeLinecap="round" />
+    <path d="M30 40 c -8 -6 8 -10 0 -18 s 8 -10 0 -18" fill="none" stroke={COLORS.gold} strokeWidth={4.5} strokeLinecap="round" />
+  </svg>
+);
+
+/** カプセルの殻・破片（角ばった形）の凡例マーク */
+export const FragMark: React.FC<{size?: number}> = ({size = 44}) => (
+  <svg width={size} height={size} viewBox="0 0 44 44" style={{flexShrink: 0}}>
+    <polygon points="14,6 26,18 8,24" fill={COLORS.slate} />
+    <polygon points="30,20 40,34 24,38" fill={COLORS.slate} />
+  </svg>
+);
+
 /** 0→1 の進行度を区間 [a, b] に割り当てる */
 export const seg = (p: number, a: number, b: number) => Math.max(0, Math.min(1, (p - a) / (b - a)));
