@@ -12,7 +12,9 @@ import {Fragment, Panel, PanelTitle} from './parts';
 type Steps = {particles: number; chemicals: number};
 
 const LW = 520;
-const H = 640;
+const H = 624;
+/** 見出しとの余白 */
+const TOP = 16;
 const PW = (1760 - LW - 40 - 40) / 2;
 
 const CONTACTS: {icon: IconName; label: string}[] = [
@@ -72,7 +74,7 @@ export const ThemeIntro: React.FC<{steps?: Steps}> = ({steps = {particles: 1, ch
         style={{
           position: 'absolute',
           left: 0,
-          top: 0,
+          top: TOP,
           width: LW,
           height: H,
           boxSizing: 'border-box',
@@ -99,7 +101,7 @@ export const ThemeIntro: React.FC<{steps?: Steps}> = ({steps = {particles: 1, ch
       </div>
 
       {/* 右：ここから学ぶ二つのテーマ */}
-      <div style={{position: 'absolute', left: LW + 40, right: 0, top: 0, display: 'flex', justifyContent: 'space-between'}}>
+      <div style={{position: 'absolute', left: LW + 40, right: 0, top: TOP, display: 'flex', justifyContent: 'space-between'}}>
         <Panel tone="slate" appear={a} focus={fa} width={PW} height={H}>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 70, gap: 36, textAlign: 'center'}}>
             <div style={{transform: 'scale(1.3)', transformOrigin: 'center top', height: 230}}>

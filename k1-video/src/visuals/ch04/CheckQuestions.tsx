@@ -28,7 +28,9 @@ const IntakeIcon: React.FC<{size: number}> = ({size}) => (
   </svg>
 );
 const GAP = (1760 - COLS.reduce((a, c) => a + c.w, 0)) / 2;
-const PH = 500;
+const PH = 520;
+/** 見出しとの余白 */
+const TOP = 16;
 
 const Q: React.FC<{text: string; appear: number; focus: number; tone: Tone}> = ({text, appear, focus, tone}) => {
   const c = toneColor(tone);
@@ -87,7 +89,7 @@ export const CheckQuestions: React.FC<{steps?: Steps}> = ({
       {COLS.map((col, i) => {
         const c = toneColor(col.tone);
         return (
-          <div key={col.title} style={{position: 'absolute', left: xs[i], top: 0}}>
+          <div key={col.title} style={{position: 'absolute', left: xs[i], top: TOP}}>
             <Panel tone={col.tone} appear={base} focus={colFocus[i]} width={col.w} height={PH}>
               <div style={{display: 'flex', alignItems: 'center', gap: 18, padding: '22px 28px 10px'}}>
                 <div style={{width: 76, height: 76, borderRadius: 38, background: c.soft, color: c.main, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0}}>
@@ -113,9 +115,9 @@ export const CheckQuestions: React.FC<{steps?: Steps}> = ({
       })}
       {/* 欄の区切り（点線。矢印ではない） */}
       {[1, 2].map((i) => (
-        <div key={i} style={{position: 'absolute', left: xs[i] - GAP / 2 - 1.5, top: 30, height: PH - 60, borderLeft: `3px dashed ${COLORS.line}`, opacity: base}} />
+        <div key={i} style={{position: 'absolute', left: xs[i] - GAP / 2 - 1.5, top: TOP + 30, height: PH - 60, borderLeft: `3px dashed ${COLORS.line}`, opacity: base}} />
       ))}
-      <div style={{position: 'absolute', left: 0, right: 0, top: PH + 40, display: 'flex', justifyContent: 'center'}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: TOP + PH + 30, display: 'flex', justifyContent: 'center'}}>
         <div style={{...fadeUp(all), fontSize: 44, fontWeight: 700, color: COLORS.greenDeep, background: COLORS.greenSoft, borderRadius: 16, padding: '12px 40px'}}>
           それぞれを分けて考える
         </div>

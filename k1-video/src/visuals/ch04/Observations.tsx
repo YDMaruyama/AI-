@@ -15,6 +15,8 @@ type Steps = {pairA: number; pairB: number};
 const PW = 360;
 const GAP = (1760 - PW * 4) / 3;
 const PH = 420;
+/** 見出しとの余白 */
+const TOP = 16;
 const xOf = (i: number) => i * (PW + GAP);
 
 const SKIN = '#EED9C4';
@@ -97,7 +99,7 @@ export const Observations: React.FC<{steps?: Steps}> = ({steps = {pairA: 1, pair
   return (
     <div style={{position: 'absolute', inset: 0}}>
       {ITEMS.map((it, i) => (
-        <div key={it.kind} style={{position: 'absolute', left: xOf(i), top: 0}}>
+        <div key={it.kind} style={{position: 'absolute', left: xOf(i), top: TOP}}>
           <Panel tone={i < 2 ? 'green' : 'slate'} appear={appears[i]} focus={focus[i]} width={PW} height={PH}>
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 22, gap: 6, textAlign: 'center'}}>
               <Illust kind={it.kind} />
@@ -109,22 +111,22 @@ export const Observations: React.FC<{steps?: Steps}> = ({steps = {pairA: 1, pair
       ))}
 
       {/* ≠（接触と吸収／検出と健康への影響） */}
-      <div style={{position: 'absolute', left: PW, width: GAP, top: PH / 2 - 60, display: 'flex', justifyContent: 'center'}}>
+      <div style={{position: 'absolute', left: PW, width: GAP, top: TOP + PH / 2 - 60, display: 'flex', justifyContent: 'center'}}>
         <NeSign appear={neA} size={88} />
       </div>
-      <div style={{position: 'absolute', left: xOf(2) + PW, width: GAP, top: PH / 2 - 60, display: 'flex', justifyContent: 'center'}}>
+      <div style={{position: 'absolute', left: xOf(2) + PW, width: GAP, top: TOP + PH / 2 - 60, display: 'flex', justifyContent: 'center'}}>
         <NeSign appear={neB} size={88} />
       </div>
       {/* 中央の区切り（矢印ではなく点線） */}
-      <div style={{position: 'absolute', left: xOf(1) + PW + GAP / 2 - 1.5, top: 20, height: PH - 40, borderLeft: `3px dashed ${COLORS.line}`, opacity: sepLine}} />
+      <div style={{position: 'absolute', left: xOf(1) + PW + GAP / 2 - 1.5, top: TOP + 20, height: PH - 40, borderLeft: `3px dashed ${COLORS.line}`, opacity: sepLine}} />
 
       {/* 対の説明 */}
-      <div style={{position: 'absolute', left: 0, width: xOf(1) + PW, top: PH + 26, display: 'flex', justifyContent: 'center'}}>
+      <div style={{position: 'absolute', left: 0, width: xOf(1) + PW, top: TOP + PH + 26, display: 'flex', justifyContent: 'center'}}>
         <div style={{...fadeUp(labelA, 10), fontSize: 36, fontWeight: 700, color: COLORS.ink, background: COLORS.goldSoft, borderRadius: 14, padding: '8px 28px', whiteSpace: 'nowrap'}}>
           付いた <span style={{color: COLORS.gold}}>≠</span> 吸収された
         </div>
       </div>
-      <div style={{position: 'absolute', left: xOf(2), width: xOf(1) + PW, top: PH + 26, display: 'flex', justifyContent: 'center'}}>
+      <div style={{position: 'absolute', left: xOf(2), width: xOf(1) + PW, top: TOP + PH + 26, display: 'flex', justifyContent: 'center'}}>
         <div style={{...fadeUp(labelB, 10), fontSize: 36, fontWeight: 700, color: COLORS.ink, background: COLORS.goldSoft, borderRadius: 14, padding: '8px 28px', whiteSpace: 'nowrap'}}>
           検出された <span style={{color: COLORS.gold}}>≠</span> 影響が生じた
         </div>

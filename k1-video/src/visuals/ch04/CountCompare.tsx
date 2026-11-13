@@ -14,6 +14,8 @@ type Steps = {groups: number; differ: number; point: number};
 const PW = 620;
 const CW = 1760 - PW * 2;
 const PH = 450;
+/** 見出しとの余白 */
+const TOP = 16;
 
 const Group: React.FC<{big: boolean}> = ({big}) => (
   <svg width={560} height={290} viewBox="0 0 560 290">
@@ -55,7 +57,7 @@ export const CountCompare: React.FC<{steps?: Steps}> = ({steps = {groups: 1, dif
 
   return (
     <div style={{position: 'absolute', inset: 0}}>
-      <div style={{position: 'absolute', left: 0, top: 0}}>
+      <div style={{position: 'absolute', left: 0, top: TOP}}>
         <Panel tone="slate" appear={left} focus={1} width={PW} height={PH}>
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 28px 6px'}}>
             <PanelTitle size={44}>大きな破片</PanelTitle>
@@ -69,13 +71,13 @@ export const CountCompare: React.FC<{steps?: Steps}> = ({steps = {groups: 1, dif
         </Panel>
       </div>
 
-      <div style={{position: 'absolute', left: PW, width: CW, top: 70, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 34}}>
+      <div style={{position: 'absolute', left: PW, width: CW, top: TOP + 70, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 34}}>
         <Row label="個数" sym="＝" appear={count} />
         <Row label="重さ" sym="≠" appear={weight} />
         <Row label="表面積" sym="≠" appear={area} />
       </div>
 
-      <div style={{position: 'absolute', left: PW + CW, top: 0}}>
+      <div style={{position: 'absolute', left: PW + CW, top: TOP}}>
         <Panel tone="slate" appear={right} focus={1} width={PW} height={PH}>
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 28px 6px'}}>
             <PanelTitle size={44}>小さな粒子</PanelTitle>
@@ -89,11 +91,11 @@ export const CountCompare: React.FC<{steps?: Steps}> = ({steps = {groups: 1, dif
         </Panel>
       </div>
 
-      <div style={{position: 'absolute', left: PW, width: CW, top: PH - 56, display: 'flex', justifyContent: 'center'}}>
+      <div style={{position: 'absolute', left: PW, width: CW, top: TOP + PH - 56, display: 'flex', justifyContent: 'center'}}>
         <CornerTag appear={base}>模式図</CornerTag>
       </div>
 
-      <div style={{position: 'absolute', left: 0, right: 0, top: PH + 60}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: TOP + PH + 50}}>
         <NoteBand appear={point} label="ポイント" style={{justifyContent: 'center'}}>
           個数だけで、危険度を比較することはできない
         </NoteBand>

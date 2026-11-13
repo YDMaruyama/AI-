@@ -17,6 +17,8 @@ type Steps = {particle: number; molecule: number; ne: number; lump: number};
 const PW = 760;
 const CW = 1760 - PW * 2;
 const PH = 460;
+/** 見出しとの余白 */
+const TOP = 16;
 const WALL = {x: 20, y: 20, w: 660, h: 96};
 const FOOD_Y = WALL.y + WALL.h;
 const FOOD_H = 150;
@@ -77,7 +79,7 @@ export const MaterialSplit: React.FC<{steps?: Steps}> = ({steps = {particle: 1, 
   return (
     <div style={{position: 'absolute', inset: 0}}>
       {/* ---------- 左：粒子として離れる ---------- */}
-      <div style={{position: 'absolute', left: 0, top: 0}}>
+      <div style={{position: 'absolute', left: 0, top: TOP}}>
         <Panel tone="slate" appear={base} focus={lf} width={PW} height={PH}>
           <div style={{display: 'flex', alignItems: 'center', gap: 16, padding: '20px 28px 4px'}}>
             <Tag tone="slate" size={30}>
@@ -98,15 +100,15 @@ export const MaterialSplit: React.FC<{steps?: Steps}> = ({steps = {particle: 1, 
         </Panel>
       </div>
 
-      <div style={{position: 'absolute', left: PW, width: CW, top: PH / 2 - 90, display: 'flex', justifyContent: 'center'}}>
+      <div style={{position: 'absolute', left: PW, width: CW, top: TOP + PH / 2 - 90, display: 'flex', justifyContent: 'center'}}>
         <NeSign appear={ne} size={100} lines={['別の現象']} />
       </div>
-      <div style={{position: 'absolute', left: PW, width: CW, top: PH - 60, display: 'flex', justifyContent: 'center'}}>
+      <div style={{position: 'absolute', left: PW, width: CW, top: TOP + PH - 60, display: 'flex', justifyContent: 'center'}}>
         <CornerTag appear={base}>模式図</CornerTag>
       </div>
 
       {/* ---------- 右：分子として移る ---------- */}
-      <div style={{position: 'absolute', left: PW + CW, top: 0}}>
+      <div style={{position: 'absolute', left: PW + CW, top: TOP}}>
         <Panel tone="gold" appear={base} focus={rf} width={PW} height={PH}>
           <div style={{display: 'flex', alignItems: 'center', gap: 16, padding: '20px 28px 4px'}}>
             <Tag tone="gold" size={30}>
@@ -134,7 +136,7 @@ export const MaterialSplit: React.FC<{steps?: Steps}> = ({steps = {particle: 1, 
           position: 'absolute',
           left: 0,
           right: 0,
-          top: PH + 50,
+          top: TOP + PH + 40,
           height: 120,
           boxSizing: 'border-box',
           display: 'flex',
