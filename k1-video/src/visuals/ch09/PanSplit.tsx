@@ -11,10 +11,10 @@ import {COLORS} from '../../theme';
  * 二つを同時に見える配置で示し、別の問題であることを「≠」で区別する。
  * 破片（角ばった形）とガス（波線）は形で区別する。
  */
-type Steps = {scrape: number; scrapeNote: number; heat: number; heatNote: number; both: number};
+type Steps = {scrape: number; scrapeNote: number; tips?: number; heat: number; heatNote: number; both: number};
 
 const PANEL_W = 790;
-const PANEL_H = 600;
+const PANEL_H = 640;
 
 const Flake: React.FC<{x: number; y: number; r?: number; rot?: number; opacity: number}> = ({x, y, r = 12, rot = 0, opacity}) => (
   <polygon
@@ -63,7 +63,7 @@ const Panel: React.FC<{
     }}
   >
     <div style={{display: 'flex', alignItems: 'center', gap: 16}}>
-      <Pill tone={tone === COLORS.slate ? 'slate' : 'gold'} size={24}>
+      <Pill tone={tone === COLORS.slate ? 'slate' : 'gold'} size={28}>
         {tag}
       </Pill>
       <div style={{fontSize: 38, fontWeight: 700, color: COLORS.ink}}>{title}</div>
@@ -79,7 +79,7 @@ const Chip: React.FC<{text: string; appear: number}> = ({text, appear}) => (
       display: 'inline-flex',
       alignItems: 'center',
       gap: 12,
-      fontSize: 26,
+      fontSize: 28,
       fontWeight: 700,
       color: COLORS.greenDeep,
       background: COLORS.greenSoft,
@@ -88,7 +88,7 @@ const Chip: React.FC<{text: string; appear: number}> = ({text, appear}) => (
       whiteSpace: 'nowrap',
     }}
   >
-    <span style={{fontSize: 26}}>✓</span>
+    <span style={{fontSize: 28}}>✓</span>
     {text}
   </div>
 );
@@ -100,7 +100,7 @@ export const PanSplit: React.FC<{
   heatNote?: string;
   heatTips?: string[];
 }> = ({
-  steps = {scrape: 1, scrapeNote: 2, heat: 3, heatNote: 4, both: 5},
+  steps = {scrape: 1, scrapeNote: 2, tips: 3, heat: 4, heatNote: 5, both: 6},
   scrapeNote = '飲み込むこと ≠ 健康被害が起こること',
   scrapeTips = ['メーカーが認める調理道具を使う', '剥がれが広がったら交換案内を確認'],
   heatNote = '粒子を食べる問題とは別の注意',
@@ -109,7 +109,7 @@ export const PanSplit: React.FC<{
   const base = useReveal(0, {duration: 0.7});
   const scrape = useReveal(steps.scrape, {duration: 2.2});
   const sNote = useReveal(steps.scrapeNote);
-  const sTip1 = useReveal(steps.scrapeNote, {delay: 0.4});
+  const sTip1 = useReveal(steps.tips ?? steps.scrapeNote, {delay: 0.4});
   const heat = useReveal(steps.heat, {duration: 2.2});
   const hNote = useReveal(steps.heatNote);
   const both = useReveal(steps.both);
@@ -142,7 +142,7 @@ export const PanSplit: React.FC<{
             <rect x={330} y={-30} width={12} height={90} rx={6} fill={COLORS.ink} transform="rotate(-28 311 95)" />
           </g>
           <g opacity={flakes}>
-            <SvgText x={600} y={70} size={26} weight={700} color={COLORS.inkSoft} anchor="middle">
+            <SvgText x={600} y={70} size={28} weight={700} color={COLORS.inkSoft} anchor="middle">
               剥がれた破片
             </SvgText>
             <line x1={540} y1={86} x2={420} y2={160} stroke={COLORS.inkSoft} strokeWidth={2.5} strokeDasharray="5 5" />
@@ -182,12 +182,12 @@ export const PanSplit: React.FC<{
             <path key={x} d={`M${x} 290 c -26 -20 -10 -44 0 -56 c 10 12 26 36 0 56 z`} fill={COLORS.gold} opacity={flame * 0.85} />
           ))}
           <g opacity={gas}>
-            <SvgText x={600} y={70} size={26} weight={700} color={COLORS.gold} anchor="middle">
+            <SvgText x={600} y={70} size={28} weight={700} color={COLORS.gold} anchor="middle">
               分解して生じるガス
             </SvgText>
           </g>
           <g opacity={flame}>
-            <SvgText x={600} y={250} size={26} weight={700} color={COLORS.inkSoft} anchor="middle">
+            <SvgText x={600} y={250} size={28} weight={700} color={COLORS.inkSoft} anchor="middle">
               中身がないまま加熱
             </SvgText>
           </g>
