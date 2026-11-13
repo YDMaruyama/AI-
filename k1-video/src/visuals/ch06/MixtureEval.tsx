@@ -67,8 +67,8 @@ export const MixtureEval: React.FC<{steps?: Steps}> = ({steps = {group: 0, cavea
           position: 'absolute',
           left: 1050,
           right: 0,
-          top: 80,
-          height: 476,
+          top: 120,
+          height: 380,
           boxSizing: 'border-box',
           background: COLORS.surface,
           border: `3px solid ${cf > 0.5 ? COLORS.slate : COLORS.lineSoft}`,
@@ -85,16 +85,13 @@ export const MixtureEval: React.FC<{steps?: Steps}> = ({steps = {group: 0, cavea
             ただし
           </Pill>
         </div>
-        <div style={{fontSize: 42, fontWeight: 700, color: COLORS.ink, lineHeight: 1.5}}>
+        {/* 否定の部分だけが切り離されて読まれないよう、1 つの文として区切らずに置く */}
+        <div style={{fontSize: 42, fontWeight: 700, color: COLORS.ink, lineHeight: 1.55}}>
           すべての組み合わせで
           <br />
-          影響が何倍にもなる、
-        </div>
-        <div style={{borderTop: `3px dashed ${COLORS.line}`}} />
-        <div style={{fontSize: 42, fontWeight: 700, color: COLORS.slate, lineHeight: 1.5}}>
-          と決まっている
+          影響が何倍にもなる、と
           <br />
-          わけではない
+          <span style={{color: COLORS.slate, borderBottom: `4px solid ${COLORS.slate}`}}>決まっているわけではない</span>
         </div>
       </div>
     </div>

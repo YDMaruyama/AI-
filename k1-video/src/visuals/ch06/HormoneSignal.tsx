@@ -31,7 +31,7 @@ const HORMONE_R = 18;
 /** 血液中の「運ぶたんぱく質」（模式）の位置 */
 const CARRIERS = [690, 930];
 /** 動きの説明ラベルの高さ（補足帯と重ならない位置） */
-const ACT_Y = 494;
+const ACT_Y = 500;
 
 const Hormone: React.FC<{x: number; y: number; opacity?: number}> = ({x, y, opacity = 1}) => (
   <circle cx={x} cy={y} r={HORMONE_R} fill={COLORS.green} stroke={COLORS.surface} strokeWidth={3} opacity={opacity} />
@@ -157,13 +157,15 @@ export const HormoneSignal: React.FC<{
     mode === 'normal' ? interpolate(act, [0.85, 1], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) :
     mode === 'mimic' ? interpolate(act, [0.85, 1], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) :
     mode === 'block' ? interpolate(act, [0.85, 1], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) :
-    mode === 'overview' ? base * 0.9 : base * 0.9;
+    base * 0.9;
+  /** 受容体→反応の矢印の描画進行度（背景として描く場面でも矢じりまで描く） */
+  const signalP = mode === 'normal' || mode === 'mimic' || mode === 'block' ? responseAppear : base;
 
   const actText: Record<HormoneMode, string> = {
     normal: '',
     overview: '',
-    mimic: '本来とは異なるタイミング・強さの信号',
-    block: 'ホルモンがあっても、伝わる信号が変わる',
+    mimic: '必要なタイミング・強さとは異なる信号',
+    block: 'ホルモンが十分あっても、伝わる信号が変わる',
     synth: '作られる量が変わる',
     transport: '作用する場所や時間が変わる',
   };
@@ -180,9 +182,21 @@ export const HormoneSignal: React.FC<{
           {/* 血液 */}
           <rect x={VES.x0} y={VES.y - VES.h / 2} width={VES.x1 - VES.x0} height={VES.h} rx={VES.h / 2} fill="#EFD6D2" stroke="#C49690" strokeWidth={4} />
           <SvgText x={(VES.x0 + VES.x1) / 2} y={VES.y + VES.h / 2 + 38} size={30} weight={500} color={COLORS.inkSoft}>血液で運ばれる</SvgText>
-          {/* 運ぶたんぱく質（模式） */}
-          {CARRIERS.map((x) => (
-            <rect key={x} x={x - 34} y={VES.y - 20} width={68} height={40} rx={20} fill="none" stroke="#B9817A" strokeWidth={3.5} strokeDasharray="6 5" />
+          {/* 運ぶたんぱく質（模式）：ラベルを付ける transport の場面だけに描く（他の場面の点線と混同させない） */}
+          {(mode === 'transport' ? CARRIERS : []).map((x) => (
+            <rect
+              key={x}
+              x={x - 34}
+              y={VES.y - 20}
+              width={68}
+              height={40}
+              rx={20}
+              fill="none"
+              stroke="#B9817A"
+              strokeWidth={3.5}
+              strokeDasharray="6 5"
+              opacity={interpolate(act, [0.2, 0.45], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}
+            />
           ))}
           {/* 受け取る細胞 */}
           <rect x={CELL.x} y={CELL.y} width={CELL.w} height={CELL.h} rx={70} fill={COLORS.greenSoft} stroke={COLORS.green} strokeWidth={4} />
@@ -192,7 +206,7 @@ export const HormoneSignal: React.FC<{
           <Receptor glow={isNormalBound ? 1 : 0} />
           <SvgText x={REC.x + 22} y={REC.y - 62} size={28} weight={700} color={COLORS.inkSoft} anchor="start">受容体</SvgText>
           {/* 受容体から核への信号 */}
-          <Arrow from={[REC.x + 10, REC.y]} to={[NUC.x - NUC.r - 12, NUC.y]} p={responseAppear} color={mode === 'mimic' ? COLORS.gold : COLORS.green} width={5} dashed={mode === 'block'} />
+          <Arrow from={[REC.x + 10, REC.y]} to={[NUC.x - NUC.r - 12, NUC.y]} p={signalP} color={mode === 'mimic' ? COLORS.gold : COLORS.green} width={5} dashed={mode === 'block'} />
           <Response level={responseLevel} appear={responseAppear} changed={mode === 'mimic' || mode === 'block'} />
         </g>
 
